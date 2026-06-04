@@ -28,92 +28,54 @@
         * { margin:0; padding:0; box-sizing:border-box; }
         body {
             font-family: 'Segoe UI', system-ui, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            transition: background 0.3s, color 0.3s;
-            overflow-x: hidden;
+            background: var(--bg); color: var(--text);
+            min-height: 100vh; transition: background 0.3s, color 0.3s; overflow-x: hidden;
         }
         .app { min-height: 100vh; display: flex; flex-direction: column; }
-
-        /* Header */
         .header {
-            background: var(--header-bg);
-            padding: 14px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            z-index: 10;
-            flex-wrap: wrap;
-            gap: 10px;
+            background: var(--header-bg); padding: 14px 20px;
+            display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3); z-index: 10; flex-wrap: wrap; gap: 10px;
         }
         .logo-area { display: flex; align-items: center; gap: 10px; }
         .logo-icon { font-size: 36px; animation: float 3s infinite; }
         @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
         .logo-text .titulo {
-            font-family: 'Arial Black', sans-serif;
-            font-size: clamp(20px, 5vw, 28px);
-            font-weight: 900; color: white;
-            letter-spacing: 2px; text-transform: uppercase;
+            font-family: 'Arial Black', sans-serif; font-size: clamp(20px, 5vw, 28px);
+            font-weight: 900; color: white; letter-spacing: 2px; text-transform: uppercase;
         }
         .logo-text .titulo span { color: #27ae60; }
         .logo-text .subtitulo {
-            font-size: 10px; letter-spacing: 2px;
-            color: rgba(255,255,255,0.7); text-transform: uppercase;
+            font-size: 10px; letter-spacing: 2px; color: rgba(255,255,255,0.7); text-transform: uppercase;
         }
         .header-actions { display: flex; gap: 8px; align-items: center; }
         .btn-icon {
             background: rgba(255,255,255,0.15); border: none; color: white;
             width: 38px; height: 38px; border-radius: 50%; font-size: 1.2rem;
-            cursor: pointer; transition: 0.2s;
-            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center;
         }
         .btn-icon:hover { background: rgba(255,255,255,0.3); }
-
-        /* Conteúdo principal */
         .main-view { flex: 1; padding: 20px; overflow-y: auto; }
-
-        /* Hub */
         .hub {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 16px;
-            max-width: 900px;
-            margin: 20px auto;
-            padding: 10px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px; max-width: 900px; margin: 20px auto; padding: 10px;
         }
         .hub-card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 24px 16px;
-            text-align: center;
-            cursor: pointer;
-            box-shadow: var(--shadow);
-            transition: all 0.3s;
-            border: 2px solid transparent;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
+            background: var(--card-bg); border-radius: 20px; padding: 24px 16px;
+            text-align: center; cursor: pointer; box-shadow: var(--shadow);
+            transition: all 0.3s; border: 2px solid transparent;
+            display: flex; flex-direction: column; align-items: center; gap: 10px;
         }
-        .hub-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
-        }
+        .hub-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.12); }
         .hub-card .icone { font-size: 48px; }
         .hub-card .titulo-card { font-weight: 700; font-size: 1.1rem; }
         .hub-card .desc-card { font-size: 0.8rem; color: var(--text-light); }
-
-        /* Cores dos cards do hub */
         .hub-card.vendas { border-left: 5px solid #27ae60; }
         .hub-card.estoque { border-left: 5px solid #3498db; }
         .hub-card.financeiro { border-left: 5px solid #f39c12; }
         .hub-card.dashboard { border-left: 5px solid #8e44ad; }
         .hub-card.ajuda { border-left: 5px solid #e74c3c; }
         .hub-card.ver-tudo { border-left: 5px solid #1abc9c; }
-
-        /* Seções */
         .secao { display: none; flex-direction: column; gap: 16px; }
         .secao.ativa { display: flex; }
         .btn-voltar {
@@ -124,36 +86,27 @@
         .btn-voltar:hover { background: var(--primary); color: white; }
         .card { background: var(--card-bg); border-radius: 20px; padding: 20px; box-shadow: var(--shadow); }
         h2 { font-size: 1.2rem; margin-bottom: 12px; border-left: 4px solid var(--primary); padding-left: 10px; }
-        .grid-vendas {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 10px;
-        }
+        .grid-vendas { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
         .input-group { display: flex; flex-direction: column; gap: 4px; }
         .input-group label { font-size: 0.75rem; font-weight: 600; }
-        .input-group input {
+        .input-group input, .input-group select {
             padding: 10px; border: 1px solid #dcdfe3; border-radius: 12px;
             font-size: 0.9rem; background: var(--input-bg); color: var(--text);
             transition: 0.2s; width: 100%;
         }
-        .input-group input:focus {
-            border-color: var(--primary); box-shadow: 0 0 0 3px rgba(39,174,96,0.15); outline: none;
-        }
+        .input-group input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(39,174,96,0.15); outline: none; }
         .input-group input::placeholder { color: #999; font-style: italic; }
         .btn {
-            background: var(--primary); color: white; border: none;
-            padding: 10px 20px; border-radius: 30px; font-weight: 700;
-            cursor: pointer; box-shadow: 0 4px 15px rgba(39,174,96,0.3);
-            display: inline-flex; align-items: center; gap: 6px;
-            font-size: 0.9rem; transition: 0.2s; white-space: nowrap;
+            background: var(--primary); color: white; border: none; padding: 10px 20px;
+            border-radius: 30px; font-weight: 700; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(39,174,96,0.3); display: inline-flex;
+            align-items: center; gap: 6px; font-size: 0.9rem; transition: 0.2s; white-space: nowrap;
         }
         .btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
         .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); box-shadow: none; }
         .btn-outline:hover { background: var(--primary); color: white; }
         .btn-laranja { background: #e67e22; box-shadow: 0 4px 15px rgba(230,126,34,0.4); }
         .btn-azul { background: #3498db; box-shadow: 0 4px 15px rgba(52,152,219,0.4); }
-
-        /* Cards de insumo */
         .estoque-cards { display: flex; flex-direction: column; gap: 14px; }
         .insumo-card {
             background: var(--card-bg); border-radius: 18px; padding: 14px;
@@ -178,18 +131,12 @@
         .insumo-status { font-size: 0.75rem; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
         .progress-bar { height: 6px; background: #ecf0f1; border-radius: 10px; margin: 8px 0; overflow: hidden; }
         .progress-fill { height: 100%; border-radius: 10px; transition: width 0.5s; }
-        .insumo-dados, .insumo-resultados {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-            gap: 8px;
-        }
+        .insumo-dados, .insumo-resultados { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 8px; }
         .insumo-resultados { background: #f8faf9; padding: 10px; border-radius: 12px; font-size: 0.8rem; margin-top: 8px; }
         .result-item { display: flex; flex-direction: column; }
         .result-label { font-size: 0.65rem; color: var(--text-light); text-transform: uppercase; }
         .result-value { font-weight: 700; }
         .sugestao-text { font-size: 0.8rem; font-style: italic; background: #fef9e7; padding: 6px 10px; border-radius: 8px; margin-top: 8px; }
-
-        /* Modal */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.65); z-index: 100;
@@ -199,26 +146,16 @@
             background: var(--card-bg); border-radius: 20px; padding: 20px;
             width: 100%; max-width: 600px; max-height: 85vh; overflow-y: auto;
         }
-
-        /* Ajuda contextual (botão ?) */
         .ajuda-contextual {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 22px; height: 22px;
-            border-radius: 50%;
-            background: #bdc3c7;
-            color: white;
-            font-size: 0.75rem;
-            font-weight: 700;
-            cursor: pointer;
-            margin-left: 6px;
-            transition: 0.2s;
-            border: none;
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 22px; height: 22px; border-radius: 50%; background: #bdc3c7;
+            color: white; font-size: 0.75rem; font-weight: 700; cursor: pointer;
+            margin-left: 6px; transition: 0.2s; border: none;
         }
         .ajuda-contextual:hover { background: #95a5a6; }
-
-        /* Responsivo */
+        .tabela-custos { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .tabela-custos th, .tabela-custos td { padding: 8px 6px; border-bottom: 1px solid #ddd; text-align: left; font-size: 0.85rem; }
+        .tabela-custos th { background: #f8f8f8; font-weight: 600; }
         @media (max-width: 600px) {
             .hub { grid-template-columns: 1fr 1fr; gap: 10px; }
             .grid-vendas { grid-template-columns: 1fr 1fr; }
@@ -231,7 +168,6 @@
 </head>
 <body>
 <div class="app" id="app">
-    <!-- Header -->
     <header class="header">
         <div class="logo-area">
             <div class="logo-icon">🍔📊</div>
@@ -244,48 +180,19 @@
             <button class="btn-icon" id="darkToggle" title="Alternar tema">🌙</button>
         </div>
     </header>
-
-    <!-- Conteúdo principal -->
     <div class="main-view" id="mainView">
-        <!-- Hub (menu inicial) -->
         <div id="hub" class="hub">
-            <div class="hub-card vendas" onclick="mostrarSecao('vendas')">
-                <div class="icone">🛒</div>
-                <div class="titulo-card">Vendas</div>
-                <div class="desc-card">Lançar vendas e preços</div>
-            </div>
-            <div class="hub-card estoque" onclick="mostrarSecao('estoque')">
-                <div class="icone">📦</div>
-                <div class="titulo-card">Estoque</div>
-                <div class="desc-card">Gerenciar insumos</div>
-            </div>
-            <div class="hub-card financeiro" onclick="mostrarSecao('financeiro')">
-                <div class="icone">💰</div>
-                <div class="titulo-card">Financeiro</div>
-                <div class="desc-card">Receita, CMV e lucro</div>
-            </div>
-            <div class="hub-card dashboard" onclick="mostrarSecao('dashboard')">
-                <div class="icone">📊</div>
-                <div class="titulo-card">Dashboard</div>
-                <div class="desc-card">Visão geral e alertas</div>
-            </div>
-            <div class="hub-card ajuda" onclick="mostrarSecao('ajuda')">
-                <div class="icone">📚</div>
-                <div class="titulo-card">Ajuda</div>
-                <div class="desc-card">Central de dúvidas</div>
-            </div>
-            <div class="hub-card ver-tudo" onclick="mostrarSecao('ver-tudo')">
-                <div class="icone">📋</div>
-                <div class="titulo-card">Ver Tudo</div>
-                <div class="desc-card">Todas as seções juntas</div>
-            </div>
+            <div class="hub-card vendas" onclick="mostrarSecao('vendas')"><div class="icone">🛒</div><div class="titulo-card">Vendas</div><div class="desc-card">Lançar vendas e preços</div></div>
+            <div class="hub-card estoque" onclick="mostrarSecao('estoque')"><div class="icone">📦</div><div class="titulo-card">Estoque</div><div class="desc-card">Gerenciar insumos</div></div>
+            <div class="hub-card financeiro" onclick="mostrarSecao('financeiro')"><div class="icone">💰</div><div class="titulo-card">Financeiro</div><div class="desc-card">Receita, CMV e lucro</div></div>
+            <div class="hub-card dashboard" onclick="mostrarSecao('dashboard')"><div class="icone">📊</div><div class="titulo-card">Dashboard</div><div class="desc-card">Visão geral e alertas</div></div>
+            <div class="hub-card ajuda" onclick="mostrarSecao('ajuda')"><div class="icone">📚</div><div class="titulo-card">Ajuda</div><div class="desc-card">Central de dúvidas</div></div>
+            <div class="hub-card ver-tudo" onclick="mostrarSecao('ver-tudo')"><div class="icone">📋</div><div class="titulo-card">Ver Tudo</div><div class="desc-card">Todas as seções juntas</div></div>
         </div>
-
-        <!-- Seção Vendas -->
         <div id="secao-vendas" class="secao">
             <button class="btn-voltar" onclick="voltarHub()">← Voltar</button>
             <div class="card">
-                <h2>📈 Vendas do Período <button class="ajuda-contextual" onclick="mostrarAjudaContextual('vendas')">?</button></h2>
+                <h2>📈 Vendas da Semana <button class="ajuda-contextual" onclick="mostrarAjudaContextual('vendas')">?</button></h2>
                 <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;" id="abas-vendas">
                     <button class="btn btn-outline aba-btn ativa" data-tab="lanches">🍔 Lanches</button>
                     <button class="btn btn-outline aba-btn" data-tab="refri">🥤 Refrigerantes</button>
@@ -302,8 +209,6 @@
                 <button class="btn btn-laranja" id="simularVendasBtn" style="margin-top:12px;">🎲 Simular Dados</button>
             </div>
         </div>
-
-        <!-- Seção Estoque -->
         <div id="secao-estoque" class="secao">
             <button class="btn-voltar" onclick="voltarHub()">← Voltar</button>
             <div class="card">
@@ -316,50 +221,39 @@
                 <button class="btn" id="calcularBtnEstoque" style="margin-top:12px;">🔍 Calcular Divergências</button>
             </div>
         </div>
-
-        <!-- Seção Financeiro -->
         <div id="secao-financeiro" class="secao">
             <button class="btn-voltar" onclick="voltarHub()">← Voltar</button>
             <div class="card">
                 <h2>💰 Resumo Financeiro <button class="ajuda-contextual" onclick="mostrarAjudaContextual('financeiro')">?</button></h2>
-                <div id="resumoFinanceiro">Clique em "Calcular Divergências" na seção de Estoque para ver o resumo financeiro.</div>
+                <div id="resumoFinanceiro">Clique em "Calcular Divergências" na seção de Estoque para ver o resumo.</div>
+                <h3 style="margin-top:20px;">📋 Tabela de Custos dos Insumos</h3>
+                <table class="tabela-custos" id="tabelaCustos"><thead><tr><th>Insumo</th><th>Unid. Compra</th><th>Custo (R$)</th></tr></thead><tbody></tbody></table>
+                <button class="btn btn-azul" id="salvarCustosBtn" style="margin-top:10px;">💾 Salvar Custos</button>
                 <button class="btn btn-azul" id="exportarBtn" style="margin-top:12px;">📄 Exportar Relatório</button>
             </div>
         </div>
-
-        <!-- Seção Dashboard -->
         <div id="secao-dashboard" class="secao">
             <button class="btn-voltar" onclick="voltarHub()">← Voltar</button>
             <div class="card">
                 <h2>📊 Dashboard <button class="ajuda-contextual" onclick="mostrarAjudaContextual('dashboard')">?</button></h2>
-                <div id="dashboardContent">Clique em "Calcular Divergências" na seção de Estoque para ver o dashboard.</div>
+                <div id="dashboardContent">Clique em "Calcular Divergências" na seção de Estoque.</div>
             </div>
         </div>
-
-        <!-- Seção Ajuda -->
         <div id="secao-ajuda" class="secao">
             <button class="btn-voltar" onclick="voltarHub()">← Voltar</button>
             <div class="card">
                 <h2>📚 Central de Ajuda</h2>
                 <input type="text" class="input-group input" id="searchAjuda" placeholder="🔍 Pesquisar dúvidas..." oninput="filtrarAjuda()" style="width:100%;margin-bottom:15px;">
                 <div id="ajudaConteudo">
-                    <h3>🤔 O que é CMV?</h3>
-                    <p>CMV (Custo da Mercadoria Vendida) é o valor total gasto com insumos para produzir os itens vendidos. Ex.: um X-Bacon leva 150g de carne, 50g de bacon, etc. O CMV total é a soma disso vezes as vendas.</p>
-                    <h3>📦 O que é divergência de estoque?</h3>
-                    <p>É a diferença entre o estoque teórico (quanto deveria ter) e o estoque final real (quanto sobrou). Divergência positiva = perda (desperdício, furto). Negativa = ganho (sobra).</p>
-                    <h3>🧮 Como o aplicativo calcula?</h3>
-                    <p>1. Você informa as vendas.<br>2. O app multiplica cada venda pela ficha técnica.<br>3. O consumo teórico é somado.<br>4. Estoque teórico = inicial + compras – consumo.<br>5. Divergência = estoque teórico – estoque final real.</p>
-                    <h3>✏️ Como preencher os campos?</h3>
-                    <p>- Vendas: digite quantas unidades foram vendidas.<br>- Estoque Inicial: quanto havia no início da semana.<br>- Compras: quanto foi comprado.<br>- Estoque Final Real: quanto sobrou após contagem.</p>
-                    <h3>🔮 Simulador</h3>
-                    <p>O slider "Simular aumento" aumenta virtualmente as vendas em uma % para prever necessidades de compra.</p>
-                    <h3>💾 Histórico</h3>
-                    <p>Os últimos 10 cálculos ficam salvos no navegador.</p>
+                    <h3>🤔 O que é CMV?</h3><p>CMV (Custo da Mercadoria Vendida) é o valor total gasto com insumos para produzir os itens vendidos. Ex.: um X-Bacon leva 150g de carne, 50g de bacon, etc.</p>
+                    <h3>📦 O que é divergência de estoque?</h3><p>Diferença entre estoque teórico (quanto deveria ter) e estoque final real (quanto sobrou). Positiva = perda. Negativa = ganho.</p>
+                    <h3>🧮 Como calcular?</h3><p>1. Lance as vendas.<br>2. Preencha estoque inicial, compras e final real.<br>3. Clique em "Calcular Divergências".</p>
+                    <h3>✏️ Campos</h3><p>Use os placeholders como guia. Estoque mínimo é editável. Unidades de compra refletem como o insumo é adquirido (kg, dz, un, etc.).</p>
+                    <h3>🔮 Simulador</h3><p>O slider aumenta % as vendas para prever necessidades de compra.</p>
+                    <h3>💾 Histórico</h3><p>Últimos 10 cálculos salvos no navegador.</p>
                 </div>
             </div>
         </div>
-
-        <!-- Seção Ver Tudo -->
         <div id="secao-ver-tudo" class="secao">
             <button class="btn-voltar" onclick="voltarHub()">← Voltar</button>
             <div class="card"><h2>📈 Vendas</h2><div id="verTudoVendas"></div></div>
@@ -369,21 +263,11 @@
         </div>
     </div>
 </div>
-
-<!-- Modal Detalhes Insumo -->
-<div class="modal-overlay" id="modalDetalhes" style="display:none;">
-    <div class="modal-box" id="modalDetalhesConteudo"></div>
-</div>
-
-<!-- Modal Ajuda Contextual -->
-<div class="modal-overlay" id="modalAjudaContextual" style="display:none;">
-    <div class="modal-box" id="modalAjudaContextualConteudo"></div>
-</div>
-
+<div class="modal-overlay" id="modalDetalhes" style="display:none;"><div class="modal-box" id="modalDetalhesConteudo"></div></div>
+<div class="modal-overlay" id="modalAjudaContextual" style="display:none;"><div class="modal-box" id="modalAjudaContextualConteudo"></div></div>
 <script>
 // ======================= DADOS =======================
 function normaliza(str) { return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '').toLowerCase(); }
-
 const lanches = [
     { nome: 'X-Bacon', preco: 18.00, receita: { carne:150, bacon:50, queijo:30, pao:70 } },
     { nome: 'X-Salada', preco: 16.00, receita: { carne:120, queijo:20, alface:15, tomate:20, pao:70 } },
@@ -396,10 +280,8 @@ const lanches = [
     { nome: 'Misto Quente', preco: 10.00, receita: { presunto:50, queijo:50, pao:60 } },
     { nome: 'Veggie Burger', preco: 16.00, receita: { hamburguerGraoDeBico:130, alface:20, tomate:20, cebola:15, pao:70 } }
 ];
-
 const refris = ['Coca-Cola','Guaraná Antarctica','Sprite','Fanta Uva','Fanta Laranja','Pepsi','Soda Limonada','Água Tônica','Schweppes Citrus','H2OH']
     .map(nome => ({ nome, preco: 6.00, receita: { [normaliza(nome)]: 1 } }));
-
 const sucos = [
     { nome: 'Suco de Laranja', preco: 8.00, receita: { laranja:3, acucar:20 } },
     { nome: 'Limonada', preco: 7.00, receita: { limao:2, acucar:20 } },
@@ -412,47 +294,42 @@ const sucos = [
     { nome: 'Suco de Goiaba', preco: 7.00, receita: { goiaba:100, acucar:20 } },
     { nome: 'Suco de Caju', preco: 8.00, receita: { caju:80, acucar:20 } }
 ];
-
 const insumos = {
-    carne: { nome: 'Carne Bovina', unid: 'g', custoKg: 30, estoqueMin: 2000 },
-    bacon: { nome: 'Bacon', unid: 'g', custoKg: 40, estoqueMin: 800 },
-    queijo: { nome: 'Queijo', unid: 'g', custoKg: 35, estoqueMin: 1500 },
-    pao: { nome: 'Pão de Hambúrguer', unid: 'g', custoKg: 12, estoqueMin: 2000 },
-    ovo: { nome: 'Ovo', unid: 'un', custoUnit: 0.80, estoqueMin: 60 },
-    presunto: { nome: 'Presunto', unid: 'g', custoKg: 28, estoqueMin: 500 },
-    alface: { nome: 'Alface', unid: 'g', custoKg: 8, estoqueMin: 300 },
-    tomate: { nome: 'Tomate', unid: 'g', custoKg: 10, estoqueMin: 400 },
-    cebola: { nome: 'Cebola', unid: 'g', custoKg: 6, estoqueMin: 200 },
-    milho: { nome: 'Milho', unid: 'g', custoKg: 7, estoqueMin: 200 },
-    batataPalha: { nome: 'Batata Palha', unid: 'g', custoKg: 15, estoqueMin: 200 },
-    calabresa: { nome: 'Calabresa', unid: 'g', custoKg: 22, estoqueMin: 300 },
-    coracao: { nome: 'Coração de Frango', unid: 'g', custoKg: 18, estoqueMin: 300 },
-    frango: { nome: 'Filé de Frango', unid: 'g', custoKg: 20, estoqueMin: 500 },
-    hamburguerGraoDeBico: { nome: 'Hambúrguer Grão-de-Bico', unid: 'g', custoKg: 16, estoqueMin: 300 },
-    laranja: { nome: 'Laranja', unid: 'un', custoUnit: 0.50, estoqueMin: 80 },
-    limao: { nome: 'Limão', unid: 'un', custoUnit: 0.30, estoqueMin: 60 },
-    abacaxi: { nome: 'Abacaxi', unid: 'g', custoKg: 7, estoqueMin: 2000 },
-    maracuja: { nome: 'Maracujá', unid: 'un', custoUnit: 0.80, estoqueMin: 30 },
-    acerola: { nome: 'Acerola', unid: 'g', custoKg: 12, estoqueMin: 500 },
-    melancia: { nome: 'Melancia', unid: 'g', custoKg: 4, estoqueMin: 3000 },
-    morango: { nome: 'Morango', unid: 'g', custoKg: 18, estoqueMin: 500 },
-    manga: { nome: 'Manga', unid: 'g', custoKg: 8, estoqueMin: 1000 },
-    goiaba: { nome: 'Goiaba', unid: 'g', custoKg: 6, estoqueMin: 500 },
-    caju: { nome: 'Caju', unid: 'g', custoKg: 9, estoqueMin: 400 },
-    acucar: { nome: 'Açúcar', unid: 'g', custoKg: 4, estoqueMin: 1000 }
+    carne: { nome: 'Carne Bovina', unidCompra: 'kg', fatorCompra: 1, custoCompra: 30, estoqueMin: 2000 },
+    bacon: { nome: 'Bacon', unidCompra: 'kg', fatorCompra: 1, custoCompra: 40, estoqueMin: 800 },
+    queijo: { nome: 'Queijo', unidCompra: 'kg', fatorCompra: 1, custoCompra: 35, estoqueMin: 1500 },
+    pao: { nome: 'Pão de Hambúrguer', unidCompra: 'kg', fatorCompra: 1, custoCompra: 12, estoqueMin: 2000 },
+    ovo: { nome: 'Ovo', unidCompra: 'dz', fatorCompra: 12, custoCompra: 9.60, estoqueMin: 60 },
+    presunto: { nome: 'Presunto', unidCompra: 'kg', fatorCompra: 1, custoCompra: 28, estoqueMin: 500 },
+    alface: { nome: 'Alface', unidCompra: 'pé', fatorCompra: 1, custoCompra: 2.50, estoqueMin: 20 },
+    tomate: { nome: 'Tomate', unidCompra: 'kg', fatorCompra: 1, custoCompra: 10, estoqueMin: 400 },
+    cebola: { nome: 'Cebola', unidCompra: 'kg', fatorCompra: 1, custoCompra: 6, estoqueMin: 200 },
+    milho: { nome: 'Milho', unidCompra: 'lata', fatorCompra: 1, custoCompra: 5, estoqueMin: 10 },
+    batataPalha: { nome: 'Batata Palha', unidCompra: 'kg', fatorCompra: 1, custoCompra: 15, estoqueMin: 200 },
+    calabresa: { nome: 'Calabresa', unidCompra: 'kg', fatorCompra: 1, custoCompra: 22, estoqueMin: 300 },
+    coracao: { nome: 'Coração de Frango', unidCompra: 'kg', fatorCompra: 1, custoCompra: 18, estoqueMin: 300 },
+    frango: { nome: 'Filé de Frango', unidCompra: 'kg', fatorCompra: 1, custoCompra: 20, estoqueMin: 500 },
+    hamburguerGraoDeBico: { nome: 'Hambúrguer Grão-de-Bico', unidCompra: 'kg', fatorCompra: 1, custoCompra: 16, estoqueMin: 300 },
+    laranja: { nome: 'Laranja', unidCompra: 'un', fatorCompra: 1, custoCompra: 0.50, estoqueMin: 80 },
+    limao: { nome: 'Limão', unidCompra: 'un', fatorCompra: 1, custoCompra: 0.30, estoqueMin: 60 },
+    abacaxi: { nome: 'Abacaxi', unidCompra: 'un', fatorCompra: 1, custoCompra: 7, estoqueMin: 6 },
+    maracuja: { nome: 'Maracujá', unidCompra: 'un', fatorCompra: 1, custoCompra: 0.80, estoqueMin: 30 },
+    acerola: { nome: 'Acerola', unidCompra: 'kg', fatorCompra: 1, custoCompra: 12, estoqueMin: 500 },
+    melancia: { nome: 'Melancia', unidCompra: 'kg', fatorCompra: 1, custoCompra: 4, estoqueMin: 3000 },
+    morango: { nome: 'Morango', unidCompra: 'kg', fatorCompra: 1, custoCompra: 18, estoqueMin: 500 },
+    manga: { nome: 'Manga', unidCompra: 'un', fatorCompra: 1, custoCompra: 2, estoqueMin: 30 },
+    goiaba: { nome: 'Goiaba', unidCompra: 'kg', fatorCompra: 1, custoCompra: 6, estoqueMin: 500 },
+    caju: { nome: 'Caju', unidCompra: 'kg', fatorCompra: 1, custoCompra: 9, estoqueMin: 400 },
+    acucar: { nome: 'Açúcar', unidCompra: 'kg', fatorCompra: 1, custoCompra: 4, estoqueMin: 1000 }
 };
-refris.forEach(r => { const chave = normaliza(r.nome); insumos[chave] = { nome: r.nome + ' (lata)', unid: 'un', custoUnit: 2.50, estoqueMin: 40 }; });
-
+refris.forEach(r => { const chave = normaliza(r.nome); insumos[chave] = { nome: r.nome + ' (lata)', unidCompra: 'fardo', fatorCompra: 12, custoCompra: 30, estoqueMin: 40 }; });
 let historico = JSON.parse(localStorage.getItem('cmvHistorico') || '[]');
 let ultimoConsumo = {};
 
-// ======================= MONTAGEM DA INTERFACE =======================
+// ======================= INTERFACE =======================
 function criarCamposVenda(container, lista) {
     container.innerHTML = lista.map(p =>
-        `<div class="input-group">
-            <label>${p.nome} (R$ ${p.preco.toFixed(2)})</label>
-            <input type="number" id="venda_${normaliza(p.nome)}" min="0" step="1" placeholder="Qtd vendida">
-        </div>`
+        `<div class="input-group"><label>${p.nome} (R$ ${p.preco.toFixed(2)})</label><input type="number" id="venda_${normaliza(p.nome)}" min="0" step="1" placeholder="Qtd vendida"></div>`
     ).join('');
 }
 criarCamposVenda(document.getElementById('vendas-lanches'), lanches);
@@ -462,23 +339,23 @@ criarCamposVenda(document.getElementById('vendas-sucos'), sucos);
 function montarCardsEstoque() {
     const container = document.getElementById('estoque-cards-container');
     container.innerHTML = Object.entries(insumos).map(([chave, ins]) => {
-        const custo = ins.custoKg ? (ins.custoKg / 1000).toFixed(2) : ins.custoUnit.toFixed(2);
+        const custoUnitario = ins.custoCompra / ins.fatorCompra;
         return `<div class="insumo-card neutro" id="card_${chave}" onclick="abrirDetalhes('${chave}')">
             <div class="insumo-header">
-                <span class="insumo-nome">📦 ${ins.nome} <small style="color:var(--text-light);">(${ins.unid} - R$ ${custo})</small></span>
+                <span class="insumo-nome">📦 ${ins.nome} <small style="color:var(--text-light);">(compra: ${ins.unidCompra} - R$ ${ins.custoCompra.toFixed(2)})</small></span>
                 <span class="insumo-status" id="status_badge_${chave}" style="background:#ecf0f1;color:#5d6d7e;">-</span>
             </div>
             <div class="progress-bar"><div class="progress-fill" id="progress_${chave}" style="width:0%;background:#27ae60;"></div></div>
             <div class="insumo-dados">
-                <div class="input-group"><label>Estoque Inicial</label><input type="number" id="ini_${chave}" step="any" placeholder="0"></div>
-                <div class="input-group"><label>Compras</label><input type="number" id="compra_${chave}" step="any" placeholder="0"></div>
-                <div class="input-group"><label>Estoque Final Real</label><input type="number" id="final_${chave}" step="any" placeholder="0"></div>
+                <div class="input-group"><label>Estoque Inicial (g/un)</label><input type="number" id="ini_${chave}" step="any" placeholder="0"></div>
+                <div class="input-group"><label>Compras (g/un)</label><input type="number" id="compra_${chave}" step="any" placeholder="0"></div>
+                <div class="input-group"><label>Estoque Final Real (g/un)</label><input type="number" id="final_${chave}" step="any" placeholder="0"></div>
                 <div class="input-group"><label>Estoque Mínimo</label><input type="number" id="min_${chave}" step="any" value="${ins.estoqueMin}"></div>
             </div>
             <div class="insumo-resultados">
                 <div class="result-item"><span class="result-label">Consumo Teórico</span><span class="result-value" id="cons_${chave}">-</span></div>
                 <div class="result-item"><span class="result-label">Estoque Teórico</span><span class="result-value" id="teorico_${chave}">-</span></div>
-                <div class="result-item"><span class="result-label">Divergência Qtd</span><span class="result-value" id="div_${chave}">-</span></div>
+                <div class="result-item"><span class="result-label">Divergência</span><span class="result-value" id="div_${chave}">-</span></div>
                 <div class="result-item"><span class="result-label">Divergência R$</span><span class="result-value" id="divR_${chave}">-</span></div>
             </div>
             <div class="sugestao-text" id="sugestao_${chave}" style="display:none;"></div>
@@ -487,12 +364,33 @@ function montarCardsEstoque() {
 }
 montarCardsEstoque();
 
+// Tabela de Custos (Financeiro)
+function montarTabelaCustos() {
+    const tbody = document.querySelector('#tabelaCustos tbody');
+    tbody.innerHTML = Object.entries(insumos).map(([chave, ins]) =>
+        `<tr>
+            <td>${ins.nome}</td>
+            <td>${ins.unidCompra} (${ins.fatorCompra > 1 ? ins.fatorCompra + ' un' : ''})</td>
+            <td><input type="number" id="custo_${chave}" value="${ins.custoCompra}" step="0.01" style="width:100px;" onchange="atualizarCustoInsumo('${chave}', this.value)"></td>
+        </tr>`
+    ).join('');
+}
+montarTabelaCustos();
+
+window.atualizarCustoInsumo = function(chave, valor) {
+    const novoCusto = parseFloat(valor) || 0;
+    insumos[chave].custoCompra = novoCusto;
+    montarCardsEstoque();
+    if (typeof ultimoConsumo === 'object' && Object.keys(ultimoConsumo).length > 0) calcular(false);
+};
+
 // ======================= NAVEGAÇÃO =======================
 function mostrarSecao(secao) {
     document.getElementById('hub').style.display = 'none';
     document.querySelectorAll('.secao').forEach(s => s.classList.remove('ativa'));
     document.getElementById('secao-' + secao).classList.add('ativa');
     if (secao === 'ver-tudo') preencherVerTudo();
+    if (secao === 'financeiro') montarTabelaCustos();
 }
 function voltarHub() {
     document.getElementById('hub').style.display = 'grid';
@@ -504,22 +402,16 @@ function calcular(salvarHistorico = true) {
     const consumo = {}; Object.keys(insumos).forEach(k => consumo[k] = 0);
     const simPct = parseInt(document.getElementById('simulador')?.value || 0) / 100;
     let receitaTotal = 0;
-
     [lanches, refris, sucos].forEach(lista => {
         lista.forEach(p => {
             let qtd = parseFloat(document.getElementById('venda_' + normaliza(p.nome))?.value) || 0;
             qtd *= (1 + simPct);
-            if (qtd > 0) {
-                receitaTotal += qtd * p.preco;
-                Object.entries(p.receita).forEach(([k, v]) => { if (consumo[k] !== undefined) consumo[k] += v * qtd; });
-            }
+            if (qtd > 0) { receitaTotal += qtd * p.preco; Object.entries(p.receita).forEach(([k, v]) => { if (consumo[k] !== undefined) consumo[k] += v * qtd; }); }
         });
     });
     ultimoConsumo = consumo;
-
     let maiorPerdaR = -Infinity, insumoCritico = '', totais = { perdaTotal: 0, ganhoTotal: 0, cmvTotal: 0 };
     let pedidoSemanal = [];
-
     Object.entries(insumos).forEach(([chave, ins]) => {
         const ini = parseFloat(document.getElementById(`ini_${chave}`)?.value) || 0;
         const compra = parseFloat(document.getElementById(`compra_${chave}`)?.value) || 0;
@@ -528,66 +420,46 @@ function calcular(salvarHistorico = true) {
         const consTeo = consumo[chave] || 0;
         const estoqueTeo = ini + compra - consTeo;
         const divQtd = estoqueTeo - finalReal;
-        const custoUnit = ins.custoKg ? ins.custoKg / 1000 : ins.custoUnit;
-        const divR = divQtd * custoUnit;
-
-        totais.cmvTotal += consTeo * custoUnit;
-
+        const custoUnitario = ins.custoCompra / ins.fatorCompra;
+        const divR = divQtd * custoUnitario;
+        totais.cmvTotal += consTeo * custoUnitario;
         document.getElementById(`cons_${chave}`).textContent = consTeo.toFixed(2);
         document.getElementById(`teorico_${chave}`).textContent = estoqueTeo.toFixed(2);
         document.getElementById(`div_${chave}`).textContent = divQtd.toFixed(2);
         document.getElementById(`divR_${chave}`).textContent = 'R$ ' + divR.toFixed(2);
-
-        const card = document.getElementById(`card_${chave}`);
-        const badge = document.getElementById(`status_badge_${chave}`);
-        const sug = document.getElementById(`sugestao_${chave}`);
-        const progress = document.getElementById(`progress_${chave}`);
+        const card = document.getElementById(`card_${chave}`), badge = document.getElementById(`status_badge_${chave}`), sug = document.getElementById(`sugestao_${chave}`), progress = document.getElementById(`progress_${chave}`);
         card.classList.remove('perda', 'ok', 'neutro');
-
         const pctMinimo = Math.min(100, Math.max(0, (finalReal / minEstoque) * 100));
         progress.style.width = pctMinimo + '%';
         progress.style.background = pctMinimo < 30 ? '#e74c3c' : pctMinimo < 70 ? '#f39c12' : '#27ae60';
-
         if (finalReal < minEstoque) {
-            badge.textContent = '🔴 Abaixo';
-            badge.style.background = '#fdecea'; badge.style.color = '#e74c3c';
+            badge.textContent = '🔴 Abaixo'; badge.style.background = '#fdecea'; badge.style.color = '#e74c3c';
             const necessidade = minEstoque - finalReal;
-            const custoNecessidade = necessidade * custoUnit;
+            const custoNecessidade = necessidade * custoUnitario;
             sug.style.display = 'block';
-            sug.textContent = `💡 Comprar ${necessidade.toFixed(2)} ${ins.unid} (≈ R$ ${custoNecessidade.toFixed(2)})`;
-            pedidoSemanal.push({ nome: ins.nome, qtd: necessidade, unid: ins.unid, custoUnit, custoTotal: custoNecessidade });
+            sug.textContent = `💡 Comprar ${necessidade.toFixed(2)} unidades (≈ R$ ${custoNecessidade.toFixed(2)})`;
+            pedidoSemanal.push({ nome: ins.nome, qtd: necessidade, unidCompra: ins.unidCompra, fatorCompra: ins.fatorCompra, custoCompra: ins.custoCompra, custoUnitario, custoTotal: custoNecessidade });
         } else {
-            badge.textContent = '🟢 OK';
-            badge.style.background = '#eafaf1'; badge.style.color = '#27ae60';
-            sug.style.display = 'none';
+            badge.textContent = '🟢 OK'; badge.style.background = '#eafaf1'; badge.style.color = '#27ae60'; sug.style.display = 'none';
         }
-
         if (divQtd > 0.001) { card.classList.add('perda'); totais.perdaTotal += divR; if (divR > maiorPerdaR) { maiorPerdaR = divR; insumoCritico = ins.nome; } }
         else if (divQtd < -0.001) { card.classList.add('ok'); totais.ganhoTotal += Math.abs(divR); }
         else card.classList.add('neutro');
     });
-
     const lucroBruto = receitaTotal - totais.cmvTotal;
     const totalPedido = pedidoSemanal.reduce((s, i) => s + i.custoTotal, 0);
-
-    // Atualiza Dashboard
     document.getElementById('dashboardContent').innerHTML = `
         <p>🔴 <strong>Ponto Crítico:</strong> ${insumoCritico || 'Nenhum'} (R$ ${maiorPerdaR > -Infinity ? maiorPerdaR.toFixed(2) : '0,00'})</p>
         <p>📉 Perda total: R$ ${totais.perdaTotal.toFixed(2)} | 📈 Ganho total: R$ ${totais.ganhoTotal.toFixed(2)}</p>
-        <p>🛒 <strong>Pedido Semanal:</strong> ${pedidoSemanal.length} itens | Total: R$ ${totalPedido.toFixed(2)}</p>
-    `;
-
-    // Atualiza Financeiro
-    let pedidoHtml = pedidoSemanal.map(i => `<tr><td>${i.nome}</td><td>${i.qtd.toFixed(2)} ${i.unid}</td><td>R$ ${i.custoUnit.toFixed(2)}</td><td>R$ ${i.custoTotal.toFixed(2)}</td></tr>`).join('');
+        <p>🛒 <strong>Pedido Semanal:</strong> ${pedidoSemanal.length} itens | Total: R$ ${totalPedido.toFixed(2)}</p>`;
+    let pedidoHtml = pedidoSemanal.map(i => `<tr><td>${i.nome}</td><td>${(i.qtd / i.fatorCompra).toFixed(2)} ${i.unidCompra}</td><td>R$ ${i.custoCompra.toFixed(2)}/${i.unidCompra}</td><td>R$ ${i.custoTotal.toFixed(2)}</td></tr>`).join('');
     document.getElementById('resumoFinanceiro').innerHTML = `
         <p>📈 <strong>Receita Total:</strong> R$ ${receitaTotal.toFixed(2)}</p>
         <p>📉 <strong>CMV Total:</strong> R$ ${totais.cmvTotal.toFixed(2)}</p>
         <p>💰 <strong>Lucro Bruto:</strong> R$ ${lucroBruto.toFixed(2)}</p>
         <h3>🛒 Pedido Semanal Sugerido</h3>
         <table style="width:100%;border-collapse:collapse;">${pedidoHtml || '<tr><td>Nenhum item abaixo do mínimo.</td></tr>'}</table>
-        <p><strong>Total do Pedido:</strong> R$ ${totalPedido.toFixed(2)}</p>
-    `;
-
+        <p><strong>Total do Pedido:</strong> R$ ${totalPedido.toFixed(2)}</p>`;
     if (salvarHistorico) {
         historico.push({ data: new Date().toLocaleString(), consumo: { ...consumo }, totais: { ...totais }, receitaTotal, lucroBruto, insumoCritico, totalPedido });
         if (historico.length > 10) historico.shift();
@@ -597,12 +469,7 @@ function calcular(salvarHistorico = true) {
 
 // ======================= EVENTOS =======================
 document.getElementById('calcularBtnEstoque').addEventListener('click', () => calcular());
-document.getElementById('simulador').addEventListener('input', function() {
-    document.getElementById('simValor').textContent = this.value + '%';
-    calcular(false);
-});
-
-// Abas vendas
+document.getElementById('simulador').addEventListener('input', function() { document.getElementById('simValor').textContent = this.value + '%'; calcular(false); });
 document.getElementById('abas-vendas').addEventListener('click', e => {
     if (e.target.classList.contains('aba-btn')) {
         document.querySelectorAll('#abas-vendas .aba-btn').forEach(b => b.classList.remove('ativa'));
@@ -611,18 +478,10 @@ document.getElementById('abas-vendas').addEventListener('click', e => {
         document.getElementById('vendas-' + e.target.dataset.tab).style.display = 'grid';
     }
 });
-
-// ======================= SIMULAR DADOS =======================
 document.getElementById('simularVendasBtn').addEventListener('click', () => {
-    [lanches, refris, sucos].forEach(lista => {
-        lista.forEach(p => {
-            const el = document.getElementById('venda_' + normaliza(p.nome));
-            if (el) el.value = Math.floor(Math.random() * 30) + 5;
-        });
-    });
+    [lanches, refris, sucos].forEach(lista => lista.forEach(p => { const el = document.getElementById('venda_' + normaliza(p.nome)); if (el) el.value = Math.floor(Math.random() * 30) + 5; }));
     calcular(false);
 });
-
 document.getElementById('simularEstoqueBtn').addEventListener('click', () => {
     Object.entries(insumos).forEach(([chave, ins]) => {
         const min = parseFloat(document.getElementById(`min_${chave}`)?.value) || ins.estoqueMin;
@@ -635,18 +494,17 @@ document.getElementById('simularEstoqueBtn').addEventListener('click', () => {
     });
     calcular(false);
 });
-
 document.getElementById('exemploBtn').addEventListener('click', () => {
-    const dados = {
-        carne:{ini:5000,compra:2000,final:5800}, bacon:{ini:1500,compra:600,final:1300},
-        queijo:{ini:3000,compra:1000,final:2800}, pao:{ini:4000,compra:2000,final:3900},
-        ovo:{ini:100,compra:30,final:105}, presunto:{ini:1000,compra:300,final:950}
-    };
-    Object.entries(dados).forEach(([k,v]) => {
-        ['ini','compra','final'].forEach(t => { const el = document.getElementById(`${t}_${k}`); if(el) el.value = v[t]; });
-    });
+    const dados = { carne:{ini:5000,compra:2000,final:5800}, bacon:{ini:1500,compra:600,final:1300}, queijo:{ini:3000,compra:1000,final:2800}, pao:{ini:4000,compra:2000,final:3900}, ovo:{ini:100,compra:30,final:105}, presunto:{ini:1000,compra:300,final:950} };
+    Object.entries(dados).forEach(([k,v]) => { ['ini','compra','final'].forEach(t => { const el = document.getElementById(`${t}_${k}`); if(el) el.value = v[t]; }); });
     ['xbacon','xtudo','xsalada'].forEach((id,i) => { const el = document.getElementById(`venda_${id}`); if(el) el.value = [20,10,15][i]; });
     calcular(false);
+});
+document.getElementById('salvarCustosBtn').addEventListener('click', () => { alert('Custos salvos!'); calcular(false); });
+document.getElementById('exportarBtn').addEventListener('click', () => {
+    let texto = '📄 Relatório CMV Legal – ' + new Date().toLocaleString() + '\n\n' + document.getElementById('resumoFinanceiro').innerText;
+    const blob = new Blob([texto], { type: 'text/plain;charset=utf-8' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'relatorio_cmv.txt'; a.click();
 });
 
 // ======================= DETALHES INSUMO =======================
@@ -658,35 +516,24 @@ window.abrirDetalhes = function(chave) {
     document.getElementById('modalDetalhesConteudo').innerHTML = `
         <h3>📦 ${ins.nome}</h3>
         <canvas id="grafico_${chave}" width="400" height="200" style="max-width:100%;"></canvas>
-        <p><strong>Consumo Teórico:</strong> ${consTeo.toFixed(2)} ${ins.unid}</p>
-        <p><strong>Estoque Final Real:</strong> ${finalReal.toFixed(2)} ${ins.unid}</p>
+        <p><strong>Consumo Teórico:</strong> ${consTeo.toFixed(2)} unidades</p>
+        <p><strong>Estoque Final Real:</strong> ${finalReal.toFixed(2)} unidades</p>
         <h4>📜 Histórico</h4>
-        ${historico.filter(h => h.consumo[chave]).slice(-5).map(h => `<p style="font-size:0.8rem;">${h.data}: ${h.consumo[chave].toFixed(2)} ${ins.unid}</p>`).join('') || '<p>Sem histórico.</p>'}
-        <button class="btn" onclick="document.getElementById('modalDetalhes').style.display='none'" style="margin-top:10px;">Fechar</button>
-    `;
+        ${historico.filter(h => h.consumo[chave]).slice(-5).map(h => `<p style="font-size:0.8rem;">${h.data}: ${h.consumo[chave].toFixed(2)} un</p>`).join('') || '<p>Sem histórico.</p>'}
+        <button class="btn" onclick="document.getElementById('modalDetalhes').style.display='none'" style="margin-top:10px;">Fechar</button>`;
     setTimeout(() => {
         const canvas = document.getElementById('grafico_' + chave);
-        if (canvas) {
-            const ctx = canvas.getContext('2d');
-            ctx.clearRect(0, 0, 400, 200);
-            ctx.fillStyle = '#27ae60';
-            ctx.fillRect(80, 180 - Math.min(160, consTeo/10), 80, Math.min(160, consTeo/10));
-            ctx.fillStyle = '#e74c3c';
-            ctx.fillRect(240, 180 - Math.min(160, finalReal/10), 80, Math.min(160, finalReal/10));
-            ctx.fillStyle = '#333';
-            ctx.fillText('Consumo', 80, 195);
-            ctx.fillText('Final Real', 240, 195);
-        }
+        if (canvas) { const ctx = canvas.getContext('2d'); ctx.clearRect(0,0,400,200); ctx.fillStyle='#27ae60'; ctx.fillRect(80,180-Math.min(160,consTeo/10),80,Math.min(160,consTeo/10)); ctx.fillStyle='#e74c3c'; ctx.fillRect(240,180-Math.min(160,finalReal/10),80,Math.min(160,finalReal/10)); ctx.fillStyle='#333'; ctx.fillText('Consumo',80,195); ctx.fillText('Final Real',240,195); }
     }, 200);
 };
 
 // ======================= AJUDA CONTEXTUAL =======================
 window.mostrarAjudaContextual = function(secao) {
     const textos = {
-        vendas: '<h3>🛒 Seção de Vendas</h3><p>Aqui você lança quantas unidades de cada produto foram vendidas na semana. Cada produto tem seu <strong>preço de venda</strong> (ex: X-Bacon R$ 18,00). Use as abas para alternar entre Lanches, Refrigerantes e Sucos. O <strong>simulador</strong> permite prever o impacto de um aumento % nas vendas.</p>',
-        estoque: '<h3>📦 Seção de Estoque</h3><p>Cada card representa um insumo. Preencha <strong>Estoque Inicial</strong> (quanto tinha no começo da semana), <strong>Compras</strong> (quanto comprou) e <strong>Estoque Final Real</strong> (quanto sobrou após contagem). O <strong>Estoque Mínimo</strong> é editável. Clique em "Calcular Divergências" para ver perdas e sugestões de compra.</p>',
-        financeiro: '<h3>💰 Seção Financeira</h3><p>Mostra a <strong>Receita Total</strong> (vendas × preço), o <strong>CMV Total</strong> (custo dos insumos) e o <strong>Lucro Bruto</strong> (receita − CMV). Abaixo, o <strong>Pedido Semanal Sugerido</strong> lista os insumos abaixo do mínimo e o valor total a gastar.</p>',
-        dashboard: '<h3>📊 Dashboard</h3><p>Visão geral com <strong>Ponto Crítico</strong> (insumo de maior perda financeira), totais de perda e ganho, e resumo do pedido semanal.</p>'
+        vendas: '<h3>🛒 Vendas</h3><p>Lance quantas unidades vendeu na semana. Cada produto tem preço de venda. Use as abas e o slider de simulação.</p>',
+        estoque: '<h3>📦 Estoque</h3><p>Cada card é um insumo. Preencha estoque inicial, compras, final real e mínimo (editável). Calcule para ver divergências e sugestões.</p>',
+        financeiro: '<h3>💰 Financeiro</h3><p>Receita, CMV e lucro. Abaixo, a Tabela de Custos (editável) e o Pedido Semanal Sugerido com valor total.</p>',
+        dashboard: '<h3>📊 Dashboard</h3><p>Ponto crítico, perdas, ganhos e resumo do pedido.</p>'
     };
     document.getElementById('modalAjudaContextual').style.display = 'flex';
     document.getElementById('modalAjudaContextualConteudo').innerHTML = (textos[secao] || '') + '<button class="btn" onclick="document.getElementById(\'modalAjudaContextual\').style.display=\'none\'" style="margin-top:10px;">Fechar</button>';
@@ -699,14 +546,6 @@ function preencherVerTudo() {
     document.getElementById('verTudoFinanceiro').innerHTML = document.getElementById('resumoFinanceiro').innerHTML || 'Clique em Calcular Divergências.';
     document.getElementById('verTudoDashboard').innerHTML = document.getElementById('dashboardContent').innerHTML || 'Clique em Calcular Divergências.';
 }
-
-// ======================= EXPORTAÇÃO =======================
-document.getElementById('exportarBtn').addEventListener('click', () => {
-    let texto = '📄 Relatório CMV Legal – ' + new Date().toLocaleString() + '\n\n';
-    texto += document.getElementById('resumoFinanceiro').innerText;
-    const blob = new Blob([texto], { type: 'text/plain;charset=utf-8' });
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'relatorio_cmv.txt'; a.click();
-});
 
 // ======================= DARK MODE =======================
 document.getElementById('darkToggle').addEventListener('click', () => {
