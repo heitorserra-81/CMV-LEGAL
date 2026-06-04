@@ -5,62 +5,412 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>CMV Legal | Heitor Serra Neto</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { height: 100%; font-family: 'Segoe UI', system-ui, sans-serif; background: #eef2f5; color: #1e2b38; display: flex; flex-direction: column; }
-        .app { display: flex; flex-direction: column; min-height: 100vh; width: 100%; }
-        .header { background: linear-gradient(135deg, #1e2b38 0%, #2c3e50 100%); color: white; padding: 18px 20px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); flex-shrink: 0; }
-        .logo-area { display: flex; flex-direction: column; align-items: center; gap: 2px; }
-        .logo-icon { font-size: 42px; line-height: 1; margin-bottom: 4px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
-        .logo-main { font-family: 'Arial Black', sans-serif; font-size: clamp(28px, 6vw, 42px); font-weight: 900; letter-spacing: 2px; color: white; text-transform: uppercase; line-height: 1.1; }
-        .logo-main span { color: #27ae60; }
-        .logo-subtitle { font-size: clamp(10px, 2.5vw, 14px); letter-spacing: 3px; color: rgba(255,255,255,0.8); text-transform: uppercase; margin-top: 2px; }
-        .logo-author { font-size: 11px; color: rgba(255,255,255,0.6); letter-spacing: 1px; margin-top: 6px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 6px; display: inline-block; }
-        .divider { width: 50px; height: 3px; background: #27ae60; margin: 8px auto 0; border-radius: 2px; }
-        .main-content { flex: 1; width: 100%; padding: 16px; display: flex; flex-direction: column; gap: 16px; overflow-y: auto; }
-        .card { background: white; border-radius: 16px; padding: clamp(14px, 3vw, 24px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); flex: 1; display: flex; flex-direction: column; }
-        h2 { font-size: clamp(16px, 3vw, 20px); margin: 16px 0 8px; padding-bottom: 6px; border-bottom: 2px solid #27ae60; color: #1e2b38; display: flex; align-items: center; gap: 6px; }
-        h2:first-of-type { margin-top: 0; }
-        .abas { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
-        .aba-btn { background: #ecf0f1; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
-        .aba-btn.ativa { background: #27ae60; color: white; }
-        .grid-vendas { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
-        .input-group { display: flex; flex-direction: column; gap: 2px; }
-        .input-group label { font-size: 0.8rem; font-weight: 600; color: #2c3e50; }
-        .input-group input { padding: 10px; border: 1px solid #ccd6dd; border-radius: 8px; font-size: 0.9rem; background: #fafbfc; transition: 0.2s; width: 100%; }
-        .input-group input:focus { outline: none; border-color: #27ae60; box-shadow: 0 0 0 3px rgba(39,174,96,0.1); }
-        .table-wrapper { overflow-x: auto; margin: 10px 0; border-radius: 12px; border: 1px solid #e1e8ed; }
-        table { width: 100%; border-collapse: collapse; font-size: 0.8rem; min-width: 900px; white-space: nowrap; }
-        th { background: #2c3e50; color: white; padding: 10px 6px; text-align: center; font-weight: 600; position: sticky; top: 0; }
-        td { padding: 8px 6px; text-align: center; border-bottom: 1px solid #e9ecef; background: white; }
-        td input { width: 80px; padding: 6px; border: 1px solid #ddd; border-radius: 4px; text-align: center; font-size: 0.8rem; }
-        .btn { background: #27ae60; color: white; border: none; padding: 12px 24px; border-radius: 10px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: background 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 6px; margin-top: 8px; }
-        .btn:hover { background: #229954; }
-        .btn-outline { background: transparent; border: 2px solid #27ae60; color: #27ae60; }
-        .btn-outline:hover { background: #27ae60; color: white; }
-        .resultado { background: #f8faf9; border-radius: 12px; padding: 16px; margin-top: 12px; font-size: 0.9rem; }
-        .status-ok { color: #27ae60; font-weight: bold; }
-        .status-baixo { color: #e74c3c; font-weight: bold; }
-        .perda { background: #ffeaea !important; }
-        .ganho { background: #eafaf1 !important; }
-        .sugestao { background: #fef9e7; font-style: italic; font-size: 0.75rem; }
-        .critico { background: #e74c3c; color: white; padding: 2px 8px; border-radius: 20px; font-size: 0.65rem; margin-left: 4px; }
-        .aviso { font-size: 0.8rem; color: #5d6d7e; margin-top: 6px; }
-        @media (max-width: 600px) { .grid-vendas { grid-template-columns: 1fr 1fr; } .btn { width: 100%; justify-content: center; } .header { padding: 14px 12px; } }
+        :root {
+            --bg: #f0f4f7;
+            --card-bg: #ffffff;
+            --primary: #27ae60;
+            --primary-dark: #1e8449;
+            --danger: #e74c3c;
+            --danger-glow: rgba(231, 76, 60, 0.5);
+            --success-glow: rgba(39, 174, 96, 0.5);
+            --text: #1e2b38;
+            --text-light: #5d6d7e;
+            --header-bg: linear-gradient(135deg, #0f1a24, #1e2b38);
+            --border-radius: 20px;
+            --shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .app {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        /* ========== HEADER & LOGO ========== */
+        .header {
+            background: var(--header-bg);
+            padding: 20px 20px 18px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 40%, rgba(39,174,96,0.15), transparent 60%);
+            animation: headerGlow 6s infinite alternate;
+            pointer-events: none;
+        }
+
+        @keyframes headerGlow {
+            0% { opacity: 0.5; transform: scale(1); }
+            100% { opacity: 0.8; transform: scale(1.05); }
+        }
+
+        .logo-container {
+            position: relative;
+            display: inline-block;
+            z-index: 1;
+        }
+
+        .logo-icon {
+            font-size: 52px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4));
+            margin-bottom: 6px;
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%,100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .logo-title {
+            font-family: 'Arial Black', 'Impact', sans-serif;
+            font-size: clamp(34px, 8vw, 52px);
+            font-weight: 900;
+            letter-spacing: 3px;
+            color: white;
+            text-transform: uppercase;
+            line-height: 1.1;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .logo-title .cmv {
+            background: linear-gradient(to right, #ffffff, #e0e0e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-title .legal {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: legalPulse 2s infinite;
+        }
+
+        @keyframes legalPulse {
+            0%,100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
+        }
+
+        .logo-subtitle {
+            font-size: clamp(11px, 2.5vw, 15px);
+            letter-spacing: 4px;
+            color: rgba(255,255,255,0.85);
+            text-transform: uppercase;
+            margin-top: 4px;
+            font-weight: 400;
+        }
+
+        .logo-author {
+            font-size: 12px;
+            color: rgba(255,255,255,0.6);
+            margin-top: 10px;
+            letter-spacing: 1.5px;
+            border-top: 1px solid rgba(255,255,255,0.15);
+            padding-top: 10px;
+            display: inline-block;
+        }
+
+        /* ========== MAIN CONTENT ========== */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            width: 100%;
+            transition: box-shadow 0.3s;
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            margin: 0 0 15px;
+            color: #1e2b38;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-left: 4px solid var(--primary);
+            padding-left: 12px;
+        }
+
+        /* Abas */
+        .abas {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        .aba-btn {
+            background: #ecf0f1;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .aba-btn.ativa {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(39,174,96,0.4);
+        }
+
+        .grid-vendas {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .input-group label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--text);
+        }
+        .input-group input {
+            padding: 10px 12px;
+            border: 1px solid #dcdfe3;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            background: #f9fafb;
+            transition: 0.2s;
+            width: 100%;
+        }
+        .input-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(39,174,96,0.15);
+            outline: none;
+        }
+
+        /* Estoque cards container */
+        .estoque-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 10px;
+        }
+
+        .insumo-card {
+            background: white;
+            border-radius: 18px;
+            padding: 16px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Glow states */
+        .insumo-card.perda {
+            border-color: #e74c3c;
+            animation: glowRed 1.8s infinite;
+        }
+        .insumo-card.ok {
+            border-color: #27ae60;
+            animation: glowGreen 2s infinite;
+        }
+        .insumo-card.neutro {
+            border-color: #dfe6e9;
+        }
+
+        @keyframes glowRed {
+            0% { box-shadow: 0 0 8px rgba(231,76,60,0.3), 0 6px 18px rgba(0,0,0,0.05); }
+            50% { box-shadow: 0 0 20px rgba(231,76,60,0.6), 0 6px 18px rgba(0,0,0,0.1); }
+            100% { box-shadow: 0 0 8px rgba(231,76,60,0.3), 0 6px 18px rgba(0,0,0,0.05); }
+        }
+
+        @keyframes glowGreen {
+            0% { box-shadow: 0 0 6px rgba(39,174,96,0.2), 0 6px 18px rgba(0,0,0,0.05); }
+            50% { box-shadow: 0 0 18px rgba(39,174,96,0.5), 0 6px 18px rgba(0,0,0,0.1); }
+            100% { box-shadow: 0 0 6px rgba(39,174,96,0.2), 0 6px 18px rgba(0,0,0,0.05); }
+        }
+
+        .insumo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .insumo-nome {
+            font-weight: 700;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .insumo-status {
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+        .status-ok-badge {
+            background: #eafaf1;
+            color: #27ae60;
+        }
+        .status-baixo-badge {
+            background: #fdecea;
+            color: #e74c3c;
+        }
+
+        .insumo-dados {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .insumo-dados .input-group input {
+            background: #f4f6f8;
+        }
+
+        .insumo-resultados {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 8px;
+            background: #f8faf9;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+        }
+        .result-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .result-label {
+            font-size: 0.7rem;
+            color: #5d6d7e;
+            text-transform: uppercase;
+        }
+        .result-value {
+            font-weight: 700;
+        }
+        .result-value.negativo {
+            color: #e74c3c;
+        }
+        .result-value.positivo {
+            color: #27ae60;
+        }
+
+        .sugestao-text {
+            font-size: 0.8rem;
+            font-style: italic;
+            background: #fef9e7;
+            padding: 6px 10px;
+            border-radius: 8px;
+            margin-top: 8px;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 6px 20px rgba(39,174,96,0.3);
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            box-shadow: none;
+        }
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .resultado-resumo {
+            background: white;
+            border-radius: 18px;
+            padding: 18px;
+            box-shadow: var(--shadow);
+            font-size: 0.95rem;
+        }
+        .ponto-critico {
+            font-weight: 700;
+            color: #e74c3c;
+        }
+
+        @media (max-width: 600px) {
+            .insumo-dados, .insumo-resultados {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
     </style>
 </head>
 <body>
 <div class="app">
+    <!-- ========== HEADER COM LOGO ========== -->
     <header class="header">
-        <div class="logo-area">
+        <div class="logo-container">
             <div class="logo-icon">🍔📊</div>
-            <div class="logo-main">CMV <span>Legal</span></div>
+            <div class="logo-title">
+                <span class="cmv">CMV</span> <span class="legal">Legal</span>
+            </div>
             <div class="logo-subtitle">Controle de Estoques e Gastos</div>
-            <div class="divider"></div>
             <div class="logo-author">Desenvolvido por Heitor Serra Neto</div>
         </div>
     </header>
 
     <div class="main-content">
+        <!-- Vendas -->
         <div class="card">
             <h2>📈 Vendas do Período</h2>
             <div class="abas" id="abas-vendas">
@@ -71,36 +421,29 @@
             <div id="vendas-lanches" class="grid-vendas tab-vendas"></div>
             <div id="vendas-refri" class="grid-vendas tab-vendas" style="display:none;"></div>
             <div id="vendas-sucos" class="grid-vendas tab-vendas" style="display:none;"></div>
+        </div>
 
+        <!-- Estoque (cards) -->
+        <div class="card">
             <h2>📦 Estoque & Divergências</h2>
-            <button class="btn-outline btn" id="exemplo-btn">📋 Dados de exemplo</button>
-            <div class="table-wrapper">
-                <table id="tabela-estoque">
-                    <thead>
-                        <tr>
-                            <th>Insumo</th><th>Unid.</th><th>Custo Unit.</th><th>Estoque Inicial</th><th>Compras</th>
-                            <th>Estoque Final Real</th><th>Consumo Teórico</th><th>Estoque Teórico</th>
-                            <th>Divergência (Qtd)</th><th>Divergência (R$)</th><th>Estoque Mínimo</th>
-                            <th>Status</th><th>Sugestão Compra</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+            <button class="btn-outline btn" id="exemplo-btn" style="margin-bottom:15px;">📋 Dados de exemplo</button>
+            <div id="estoque-cards-container" class="estoque-cards">
+                <!-- Cards gerados via JS -->
             </div>
-
             <button class="btn" id="calcular-btn">🔍 Calcular Divergências</button>
-            <div id="resultado" class="resultado">Aguardando cálculo...</div>
+            <div id="resultado-resumo" class="resultado-resumo" style="margin-top:20px;">
+                <strong>Aguardando cálculo...</strong>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
-    // Função auxiliar (precisa estar no topo)
+    // ======================= DADOS =======================
     function normalizaInsumo(str) {
         return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '').toLowerCase();
     }
 
-    // Dados dos produtos
     const lanches = [
         { nome: 'X-Bacon', receita: { carne:150, bacon:50, queijo:30, pao:70 } },
         { nome: 'X-Salada', receita: { carne:120, queijo:20, alface:15, tomate:20, pao:70 } },
@@ -132,7 +475,6 @@
         { nome: 'Suco de Caju', receita: { caju:80, acucar:20 } }
     ];
 
-    // Insumos
     const insumos = {
         carne: { nome: 'Carne Bovina', unid: 'g', custoKg: 30, estoqueMin: 2000 },
         bacon: { nome: 'Bacon', unid: 'g', custoKg: 40, estoqueMin: 800 },
@@ -162,7 +504,6 @@
         acucar: { nome: 'Açúcar', unid: 'g', custoKg: 4, estoqueMin: 1000 }
     };
 
-    // Adiciona refrigerantes como insumos
     refris.forEach(r => {
         const chave = normalizaInsumo(r.nome);
         insumos[chave] = {
@@ -173,7 +514,7 @@
         };
     });
 
-    // Montagem da interface
+    // ======================= MONTAGEM DA INTERFACE =======================
     function criarCamposVenda(container, lista) {
         container.innerHTML = lista.map(p =>
             `<div class="input-group">
@@ -187,28 +528,45 @@
     criarCamposVenda(document.getElementById('vendas-refri'), refris);
     criarCamposVenda(document.getElementById('vendas-sucos'), sucos);
 
-    const tbody = document.querySelector('#tabela-estoque tbody');
-    function montarTabelaEstoque() {
-        tbody.innerHTML = Object.entries(insumos).map(([chave, ins]) => {
+    // Cards de estoque
+    const containerCards = document.getElementById('estoque-cards-container');
+    function montarCardsEstoque() {
+        containerCards.innerHTML = Object.entries(insumos).map(([chave, ins]) => {
             const custo = ins.custoKg ? (ins.custoKg / 1000).toFixed(4) : ins.custoUnit.toFixed(2);
-            return `<tr>
-                <td>${ins.nome}</td>
-                <td>${ins.unid}</td>
-                <td>R$ ${custo}</td>
-                <td><input type="number" id="ini_${chave}" step="any" value="0"></td>
-                <td><input type="number" id="compra_${chave}" step="any" value="0"></td>
-                <td><input type="number" id="final_${chave}" step="any" value="0"></td>
-                <td id="cons_${chave}">-</td>
-                <td id="teorico_${chave}">-</td>
-                <td id="div_${chave}">-</td>
-                <td id="divR_${chave}">-</td>
-                <td>${ins.estoqueMin}</td>
-                <td id="status_${chave}">-</td>
-                <td id="sugestao_${chave}">-</td>
-            </tr>`;
+            return `
+            <div class="insumo-card neutro" id="card_${chave}">
+                <div class="insumo-header">
+                    <div class="insumo-nome">
+                        <span>📦</span> ${ins.nome} <small style="color:#5d6d7e;">(${ins.unid})</small>
+                    </div>
+                    <div class="insumo-status" id="status_badge_${chave}">-</div>
+                </div>
+                <div class="insumo-dados">
+                    <div class="input-group">
+                        <label>Estoque Inicial</label>
+                        <input type="number" id="ini_${chave}" step="any" value="0" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label>Compras</label>
+                        <input type="number" id="compra_${chave}" step="any" value="0" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label>Estoque Final Real</label>
+                        <input type="number" id="final_${chave}" step="any" value="0" placeholder="0">
+                    </div>
+                </div>
+                <div class="insumo-resultados" id="resultados_${chave}">
+                    <div class="result-item"><span class="result-label">Consumo Teórico</span><span class="result-value" id="cons_${chave}">-</span></div>
+                    <div class="result-item"><span class="result-label">Estoque Teórico</span><span class="result-value" id="teorico_${chave}">-</span></div>
+                    <div class="result-item"><span class="result-label">Divergência Qtd</span><span class="result-value" id="div_${chave}">-</span></div>
+                    <div class="result-item"><span class="result-label">Divergência R$</span><span class="result-value" id="divR_${chave}">-</span></div>
+                    <div class="result-item"><span class="result-label">Mínimo</span><span class="result-value">${ins.estoqueMin}</span></div>
+                </div>
+                <div class="sugestao-text" id="sugestao_${chave}" style="display:none;"></div>
+            </div>`;
         }).join('');
     }
-    montarTabelaEstoque();
+    montarCardsEstoque();
 
     // Exemplo
     document.getElementById('exemplo-btn').addEventListener('click', () => {
@@ -292,7 +650,8 @@
         processarVendas(refris);
         processarVendas(sucos);
 
-        let maiorPerdaR = 0, insumoCritico = '';
+        let maiorPerdaR = -Infinity;
+        let insumoCritico = '';
 
         Object.entries(insumos).forEach(([chave, ins]) => {
             const ini = parseFloat(document.getElementById(`ini_${chave}`)?.value) || 0;
@@ -309,34 +668,42 @@
             document.getElementById(`div_${chave}`).textContent = divergenciaQtd.toFixed(2);
             document.getElementById(`divR_${chave}`).textContent = 'R$ ' + divergenciaR.toFixed(2);
 
-            const statusEl = document.getElementById(`status_${chave}`);
+            const card = document.getElementById(`card_${chave}`);
+            const statusBadge = document.getElementById(`status_badge_${chave}`);
             const sugestaoEl = document.getElementById(`sugestao_${chave}`);
-            const tr = statusEl.parentElement;
 
+            // Status estoque mínimo
             if (finalReal < ins.estoqueMin) {
-                statusEl.innerHTML = '<span class="status-baixo">🔴 Abaixo</span>';
-                sugestaoEl.textContent = `Comprar ${(ins.estoqueMin - finalReal).toFixed(2)} ${ins.unid}`;
-                sugestaoEl.classList.add('sugestao');
+                statusBadge.className = 'insumo-status status-baixo-badge';
+                statusBadge.textContent = '🔴 Abaixo do mínimo';
+                sugestaoEl.style.display = 'block';
+                sugestaoEl.textContent = `💡 Sugestão: Comprar ${(ins.estoqueMin - finalReal).toFixed(2)} ${ins.unid}`;
             } else {
-                statusEl.innerHTML = '<span class="status-ok">🟢 OK</span>';
-                sugestaoEl.textContent = '-';
-                sugestaoEl.classList.remove('sugestao');
+                statusBadge.className = 'insumo-status status-ok-badge';
+                statusBadge.textContent = '🟢 OK';
+                sugestaoEl.style.display = 'none';
             }
 
-            tr.classList.remove('perda', 'ganho');
-            if (divergenciaQtd > 0.001) tr.classList.add('perda');
-            else if (divergenciaQtd < -0.001) tr.classList.add('ganho');
-
-            if (divergenciaR > maiorPerdaR) {
-                maiorPerdaR = divergenciaR;
-                insumoCritico = ins.nome;
+            // Classes de glow
+            card.classList.remove('perda', 'ok', 'neutro');
+            if (divergenciaQtd > 0.001) {
+                card.classList.add('perda');
+                if (divergenciaR > maiorPerdaR) {
+                    maiorPerdaR = divergenciaR;
+                    insumoCritico = ins.nome;
+                }
+            } else if (divergenciaQtd < -0.001) {
+                card.classList.add('ok');
+            } else {
+                card.classList.add('neutro');
             }
         });
 
-        document.getElementById('resultado').innerHTML = `
+        if (maiorPerdaR === -Infinity) maiorPerdaR = 0;
+        document.getElementById('resultado-resumo').innerHTML = `
             <strong>📊 Relatório de Divergências</strong><br>
-            🔴 <strong>Ponto Crítico:</strong> ${insumoCritico} com perda de <strong>R$ ${maiorPerdaR.toFixed(2)}</strong><br>
-            <span class="aviso">⬆️ Tabela colorida: vermelho = perda, verde = ganho.</span>
+            🔴 <span class="ponto-critico">Ponto Crítico:</span> ${insumoCritico || 'Nenhum'} com perda de <strong>R$ ${maiorPerdaR.toFixed(2)}</strong>
+            <div style="font-size:0.8rem; margin-top:6px;">✨ Cards com brilho vermelho indicam perdas, verde indicam ganhos.</div>
         `;
     });
 </script>
