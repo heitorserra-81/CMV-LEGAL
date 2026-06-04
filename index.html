@@ -1,21 +1,344 @@
-<!-- Logo CMV Legal - Incorporar no header do app -->
-<div style="text-align: center; padding: 20px 0;">
-  <div style="display: inline-block; position: relative;">
-    <!-- Ícone -->
-    <div style="font-size: 48px; line-height: 1.2;">🍔📊</div>
-    <!-- Nome principal -->
-    <div style="font-family: 'Segoe UI', 'Arial Black', sans-serif; font-size: 42px; font-weight: 900; color: #1e2b38; letter-spacing: 2px; text-transform: uppercase;">
-      CMV <span style="color: #27ae60;">Legal</span>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>CMV Legal | Heitor Serra Neto</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; font-family: 'Segoe UI', system-ui, sans-serif; background: #eef2f5; color: #1e2b38; display: flex; flex-direction: column; }
+        .app { display: flex; flex-direction: column; min-height: 100vh; width: 100%; }
+        .header { background: linear-gradient(135deg, #1e2b38 0%, #2c3e50 100%); color: white; padding: 18px 20px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); flex-shrink: 0; }
+        .logo-area { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+        .logo-icon { font-size: 42px; line-height: 1; margin-bottom: 4px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+        .logo-main { font-family: 'Arial Black', sans-serif; font-size: clamp(28px, 6vw, 42px); font-weight: 900; letter-spacing: 2px; color: white; text-transform: uppercase; line-height: 1.1; }
+        .logo-main span { color: #27ae60; }
+        .logo-subtitle { font-size: clamp(10px, 2.5vw, 14px); letter-spacing: 3px; color: rgba(255,255,255,0.8); text-transform: uppercase; margin-top: 2px; }
+        .logo-author { font-size: 11px; color: rgba(255,255,255,0.6); letter-spacing: 1px; margin-top: 6px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 6px; display: inline-block; }
+        .divider { width: 50px; height: 3px; background: #27ae60; margin: 8px auto 0; border-radius: 2px; }
+        .main-content { flex: 1; width: 100%; padding: 16px; display: flex; flex-direction: column; gap: 16px; overflow-y: auto; }
+        .card { background: white; border-radius: 16px; padding: clamp(14px, 3vw, 24px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); flex: 1; display: flex; flex-direction: column; }
+        h2 { font-size: clamp(16px, 3vw, 20px); margin: 16px 0 8px; padding-bottom: 6px; border-bottom: 2px solid #27ae60; color: #1e2b38; display: flex; align-items: center; gap: 6px; }
+        h2:first-of-type { margin-top: 0; }
+        .abas { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+        .aba-btn { background: #ecf0f1; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+        .aba-btn.ativa { background: #27ae60; color: white; }
+        .grid-vendas { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+        .input-group { display: flex; flex-direction: column; gap: 2px; }
+        .input-group label { font-size: 0.8rem; font-weight: 600; color: #2c3e50; }
+        .input-group input { padding: 10px; border: 1px solid #ccd6dd; border-radius: 8px; font-size: 0.9rem; background: #fafbfc; transition: 0.2s; width: 100%; }
+        .input-group input:focus { outline: none; border-color: #27ae60; box-shadow: 0 0 0 3px rgba(39,174,96,0.1); }
+        .table-wrapper { overflow-x: auto; margin: 10px 0; border-radius: 12px; border: 1px solid #e1e8ed; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.8rem; min-width: 900px; white-space: nowrap; }
+        th { background: #2c3e50; color: white; padding: 10px 6px; text-align: center; font-weight: 600; position: sticky; top: 0; }
+        td { padding: 8px 6px; text-align: center; border-bottom: 1px solid #e9ecef; background: white; }
+        td input { width: 80px; padding: 6px; border: 1px solid #ddd; border-radius: 4px; text-align: center; font-size: 0.8rem; }
+        .btn { background: #27ae60; color: white; border: none; padding: 12px 24px; border-radius: 10px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: background 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 6px; margin-top: 8px; }
+        .btn:hover { background: #229954; }
+        .btn-outline { background: transparent; border: 2px solid #27ae60; color: #27ae60; }
+        .btn-outline:hover { background: #27ae60; color: white; }
+        .resultado { background: #f8faf9; border-radius: 12px; padding: 16px; margin-top: 12px; font-size: 0.9rem; }
+        .status-ok { color: #27ae60; font-weight: bold; }
+        .status-baixo { color: #e74c3c; font-weight: bold; }
+        .perda { background: #ffeaea !important; }
+        .ganho { background: #eafaf1 !important; }
+        .sugestao { background: #fef9e7; font-style: italic; font-size: 0.75rem; }
+        .critico { background: #e74c3c; color: white; padding: 2px 8px; border-radius: 20px; font-size: 0.65rem; margin-left: 4px; }
+        .aviso { font-size: 0.8rem; color: #5d6d7e; margin-top: 6px; }
+        @media (max-width: 600px) { .grid-vendas { grid-template-columns: 1fr 1fr; } .btn { width: 100%; justify-content: center; } .header { padding: 14px 12px; } }
+    </style>
+</head>
+<body>
+<div class="app">
+    <header class="header">
+        <div class="logo-area">
+            <div class="logo-icon">🍔📊</div>
+            <div class="logo-main">CMV <span>Legal</span></div>
+            <div class="logo-subtitle">Controle de Estoques e Gastos</div>
+            <div class="divider"></div>
+            <div class="logo-author">Desenvolvido por Heitor Serra Neto</div>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="card">
+            <h2>📈 Vendas do Período</h2>
+            <div class="abas" id="abas-vendas">
+                <button class="aba-btn ativa" data-tab="lanches">Lanches</button>
+                <button class="aba-btn" data-tab="refri">Refrigerantes</button>
+                <button class="aba-btn" data-tab="sucos">Sucos Naturais</button>
+            </div>
+            <div id="vendas-lanches" class="grid-vendas tab-vendas"></div>
+            <div id="vendas-refri" class="grid-vendas tab-vendas" style="display:none;"></div>
+            <div id="vendas-sucos" class="grid-vendas tab-vendas" style="display:none;"></div>
+
+            <h2>📦 Estoque & Divergências</h2>
+            <button class="btn-outline btn" id="exemplo-btn">📋 Dados de exemplo</button>
+            <div class="table-wrapper">
+                <table id="tabela-estoque">
+                    <thead>
+                        <tr>
+                            <th>Insumo</th><th>Unid.</th><th>Custo Unit.</th><th>Estoque Inicial</th><th>Compras</th>
+                            <th>Estoque Final Real</th><th>Consumo Teórico</th><th>Estoque Teórico</th>
+                            <th>Divergência (Qtd)</th><th>Divergência (R$)</th><th>Estoque Mínimo</th>
+                            <th>Status</th><th>Sugestão Compra</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <button class="btn" id="calcular-btn">🔍 Calcular Divergências</button>
+            <div id="resultado" class="resultado">Aguardando cálculo...</div>
+        </div>
     </div>
-    <!-- Subtítulo -->
-    <div style="font-family: 'Segoe UI', Tahoma, sans-serif; font-size: 14px; color: #5d6d7e; letter-spacing: 3px; text-transform: uppercase; margin-top: 2px;">
-      Controle de Estoques e Gastos
-    </div>
-    <!-- Linha decorativa -->
-    <div style="width: 60px; height: 3px; background: #27ae60; margin: 10px auto; border-radius: 2px;"></div>
-    <!-- Autor -->
-    <div style="font-family: 'Segoe UI', Tahoma, sans-serif; font-size: 11px; color: #95a5a6; letter-spacing: 1px;">
-      Desenvolvido por Heitor Serra Neto
-    </div>
-  </div>
 </div>
+
+<script>
+    // Função auxiliar (precisa estar no topo)
+    function normalizaInsumo(str) {
+        return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '').toLowerCase();
+    }
+
+    // Dados dos produtos
+    const lanches = [
+        { nome: 'X-Bacon', receita: { carne:150, bacon:50, queijo:30, pao:70 } },
+        { nome: 'X-Salada', receita: { carne:120, queijo:20, alface:15, tomate:20, pao:70 } },
+        { nome: 'X-Tudo', receita: { carne:150, bacon:40, ovo:1, presunto:30, queijo:30, alface:15, tomate:20, milho:20, batataPalha:20, pao:70 } },
+        { nome: 'X-Egg', receita: { carne:150, ovo:1, queijo:30, pao:70 } },
+        { nome: 'X-Frango', receita: { frango:150, queijo:30, alface:15, tomate:20, pao:70 } },
+        { nome: 'X-Burger', receita: { carne:150, queijo:30, pao:70 } },
+        { nome: 'X-Calabresa', receita: { carne:120, calabresa:50, queijo:30, pao:70 } },
+        { nome: 'X-Coração', receita: { carne:120, coracao:60, queijo:30, pao:70 } },
+        { nome: 'Misto Quente', receita: { presunto:50, queijo:50, pao:60 } },
+        { nome: 'Veggie Burger', receita: { hamburguerGraoDeBico:130, alface:20, tomate:20, cebola:15, pao:70 } }
+    ];
+
+    const refris = [
+        'Coca-Cola','Guaraná Antarctica','Sprite','Fanta Uva','Fanta Laranja',
+        'Pepsi','Soda Limonada','Água Tônica','Schweppes Citrus','H2OH'
+    ].map(nome => ({ nome, receita: { [normalizaInsumo(nome)]: 1 } }));
+
+    const sucos = [
+        { nome: 'Suco de Laranja', receita: { laranja:3, acucar:20 } },
+        { nome: 'Limonada', receita: { limao:2, acucar:20 } },
+        { nome: 'Suco de Abacaxi', receita: { abacaxi:150, acucar:15 } },
+        { nome: 'Suco de Maracujá', receita: { maracuja:2, acucar:20 } },
+        { nome: 'Suco de Acerola', receita: { acerola:100, acucar:20 } },
+        { nome: 'Suco de Melancia', receita: { melancia:200, acucar:10 } },
+        { nome: 'Suco de Morango', receita: { morango:120, acucar:20 } },
+        { nome: 'Suco de Manga', receita: { manga:150, acucar:15 } },
+        { nome: 'Suco de Goiaba', receita: { goiaba:100, acucar:20 } },
+        { nome: 'Suco de Caju', receita: { caju:80, acucar:20 } }
+    ];
+
+    // Insumos
+    const insumos = {
+        carne: { nome: 'Carne Bovina', unid: 'g', custoKg: 30, estoqueMin: 2000 },
+        bacon: { nome: 'Bacon', unid: 'g', custoKg: 40, estoqueMin: 800 },
+        queijo: { nome: 'Queijo', unid: 'g', custoKg: 35, estoqueMin: 1500 },
+        pao: { nome: 'Pão de Hambúrguer', unid: 'g', custoKg: 12, estoqueMin: 2000 },
+        ovo: { nome: 'Ovo', unid: 'un', custoUnit: 0.80, estoqueMin: 60 },
+        presunto: { nome: 'Presunto', unid: 'g', custoKg: 28, estoqueMin: 500 },
+        alface: { nome: 'Alface', unid: 'g', custoKg: 8, estoqueMin: 300 },
+        tomate: { nome: 'Tomate', unid: 'g', custoKg: 10, estoqueMin: 400 },
+        cebola: { nome: 'Cebola', unid: 'g', custoKg: 6, estoqueMin: 200 },
+        milho: { nome: 'Milho', unid: 'g', custoKg: 7, estoqueMin: 200 },
+        batataPalha: { nome: 'Batata Palha', unid: 'g', custoKg: 15, estoqueMin: 200 },
+        calabresa: { nome: 'Calabresa', unid: 'g', custoKg: 22, estoqueMin: 300 },
+        coracao: { nome: 'Coração de Frango', unid: 'g', custoKg: 18, estoqueMin: 300 },
+        frango: { nome: 'Filé de Frango', unid: 'g', custoKg: 20, estoqueMin: 500 },
+        hamburguerGraoDeBico: { nome: 'Hambúrguer Grão-de-Bico', unid: 'g', custoKg: 16, estoqueMin: 300 },
+        laranja: { nome: 'Laranja', unid: 'un', custoUnit: 0.50, estoqueMin: 80 },
+        limao: { nome: 'Limão', unid: 'un', custoUnit: 0.30, estoqueMin: 60 },
+        abacaxi: { nome: 'Abacaxi', unid: 'g', custoKg: 7, estoqueMin: 2000 },
+        maracuja: { nome: 'Maracujá', unid: 'un', custoUnit: 0.80, estoqueMin: 30 },
+        acerola: { nome: 'Acerola', unid: 'g', custoKg: 12, estoqueMin: 500 },
+        melancia: { nome: 'Melancia', unid: 'g', custoKg: 4, estoqueMin: 3000 },
+        morango: { nome: 'Morango', unid: 'g', custoKg: 18, estoqueMin: 500 },
+        manga: { nome: 'Manga', unid: 'g', custoKg: 8, estoqueMin: 1000 },
+        goiaba: { nome: 'Goiaba', unid: 'g', custoKg: 6, estoqueMin: 500 },
+        caju: { nome: 'Caju', unid: 'g', custoKg: 9, estoqueMin: 400 },
+        acucar: { nome: 'Açúcar', unid: 'g', custoKg: 4, estoqueMin: 1000 }
+    };
+
+    // Adiciona refrigerantes como insumos
+    refris.forEach(r => {
+        const chave = normalizaInsumo(r.nome);
+        insumos[chave] = {
+            nome: r.nome + ' (lata)',
+            unid: 'un',
+            custoUnit: 2.50,
+            estoqueMin: 40
+        };
+    });
+
+    // Montagem da interface
+    function criarCamposVenda(container, lista) {
+        container.innerHTML = lista.map(p =>
+            `<div class="input-group">
+                <label>${p.nome}</label>
+                <input type="number" id="venda_${normalizaInsumo(p.nome)}" min="0" step="1" value="0">
+            </div>`
+        ).join('');
+    }
+
+    criarCamposVenda(document.getElementById('vendas-lanches'), lanches);
+    criarCamposVenda(document.getElementById('vendas-refri'), refris);
+    criarCamposVenda(document.getElementById('vendas-sucos'), sucos);
+
+    const tbody = document.querySelector('#tabela-estoque tbody');
+    function montarTabelaEstoque() {
+        tbody.innerHTML = Object.entries(insumos).map(([chave, ins]) => {
+            const custo = ins.custoKg ? (ins.custoKg / 1000).toFixed(4) : ins.custoUnit.toFixed(2);
+            return `<tr>
+                <td>${ins.nome}</td>
+                <td>${ins.unid}</td>
+                <td>R$ ${custo}</td>
+                <td><input type="number" id="ini_${chave}" step="any" value="0"></td>
+                <td><input type="number" id="compra_${chave}" step="any" value="0"></td>
+                <td><input type="number" id="final_${chave}" step="any" value="0"></td>
+                <td id="cons_${chave}">-</td>
+                <td id="teorico_${chave}">-</td>
+                <td id="div_${chave}">-</td>
+                <td id="divR_${chave}">-</td>
+                <td>${ins.estoqueMin}</td>
+                <td id="status_${chave}">-</td>
+                <td id="sugestao_${chave}">-</td>
+            </tr>`;
+        }).join('');
+    }
+    montarTabelaEstoque();
+
+    // Exemplo
+    document.getElementById('exemplo-btn').addEventListener('click', () => {
+        const dadosExemplo = {
+            carne: { ini: 5000, compra: 2000, final: 5800 },
+            bacon: { ini: 1500, compra: 600, final: 1300 },
+            queijo: { ini: 3000, compra: 1000, final: 2800 },
+            pao: { ini: 4000, compra: 2000, final: 3900 },
+            ovo: { ini: 100, compra: 30, final: 105 },
+            presunto: { ini: 1000, compra: 300, final: 950 },
+            alface: { ini: 500, compra: 200, final: 450 },
+            tomate: { ini: 600, compra: 300, final: 520 },
+            cebola: { ini: 300, compra: 100, final: 280 },
+            milho: { ini: 400, compra: 0, final: 350 },
+            batataPalha: { ini: 400, compra: 0, final: 330 },
+            calabresa: { ini: 600, compra: 100, final: 550 },
+            coracao: { ini: 500, compra: 100, final: 480 },
+            frango: { ini: 800, compra: 300, final: 750 },
+            hamburguerGraoDeBico: { ini: 500, compra: 100, final: 450 },
+            laranja: { ini: 120, compra: 40, final: 100 },
+            limao: { ini: 80, compra: 20, final: 65 },
+            abacaxi: { ini: 3000, compra: 0, final: 2500 },
+            maracuja: { ini: 50, compra: 10, final: 35 },
+            acerola: { ini: 700, compra: 0, final: 600 },
+            melancia: { ini: 5000, compra: 0, final: 4200 },
+            morango: { ini: 600, compra: 100, final: 520 },
+            manga: { ini: 1500, compra: 200, final: 1200 },
+            goiaba: { ini: 700, compra: 0, final: 580 },
+            caju: { ini: 500, compra: 50, final: 420 },
+            acucar: { ini: 2000, compra: 500, final: 1700 }
+        };
+        Object.entries(dadosExemplo).forEach(([chave, vals]) => {
+            const iniEl = document.getElementById(`ini_${chave}`);
+            const compraEl = document.getElementById(`compra_${chave}`);
+            const finalEl = document.getElementById(`final_${chave}`);
+            if (iniEl) iniEl.value = vals.ini;
+            if (compraEl) compraEl.value = vals.compra;
+            if (finalEl) finalEl.value = vals.final;
+        });
+        document.getElementById('venda_xbacon').value = 20;
+        document.getElementById('venda_xtudo').value = 10;
+        document.getElementById('venda_xsalada').value = 15;
+        document.getElementById('venda_xegg').value = 8;
+        document.getElementById('venda_xburger').value = 25;
+        document.getElementById('venda_mistoquente').value = 12;
+        document.getElementById('venda_cocacola').value = 30;
+        document.getElementById('venda_guaranaantarctica').value = 25;
+        document.getElementById('venda_sucodelaranja').value = 18;
+        document.getElementById('venda_limonada').value = 14;
+        alert('Dados de exemplo preenchidos! Clique em "Calcular Divergências".');
+    });
+
+    // Abas
+    document.getElementById('abas-vendas').addEventListener('click', (e) => {
+        if (e.target.classList.contains('aba-btn')) {
+            document.querySelectorAll('.aba-btn').forEach(b => b.classList.remove('ativa'));
+            e.target.classList.add('ativa');
+            const tab = e.target.dataset.tab;
+            document.querySelectorAll('.tab-vendas').forEach(el => el.style.display = 'none');
+            document.getElementById('vendas-' + tab).style.display = 'grid';
+        }
+    });
+
+    // Cálculo
+    document.getElementById('calcular-btn').addEventListener('click', () => {
+        const consumo = {};
+        Object.keys(insumos).forEach(k => consumo[k] = 0);
+
+        function processarVendas(lista) {
+            lista.forEach(prod => {
+                const qtd = parseFloat(document.getElementById('venda_' + normalizaInsumo(prod.nome))?.value) || 0;
+                if (qtd > 0) {
+                    Object.entries(prod.receita).forEach(([insKey, qtdPorUnidade]) => {
+                        if (consumo[insKey] !== undefined) consumo[insKey] += qtdPorUnidade * qtd;
+                    });
+                }
+            });
+        }
+
+        processarVendas(lanches);
+        processarVendas(refris);
+        processarVendas(sucos);
+
+        let maiorPerdaR = 0, insumoCritico = '';
+
+        Object.entries(insumos).forEach(([chave, ins]) => {
+            const ini = parseFloat(document.getElementById(`ini_${chave}`)?.value) || 0;
+            const compra = parseFloat(document.getElementById(`compra_${chave}`)?.value) || 0;
+            const finalReal = parseFloat(document.getElementById(`final_${chave}`)?.value) || 0;
+            const consTeorico = consumo[chave] || 0;
+            const estoqueTeorico = ini + compra - consTeorico;
+            const divergenciaQtd = estoqueTeorico - finalReal;
+            const custoUnitario = ins.custoKg ? ins.custoKg / 1000 : ins.custoUnit;
+            const divergenciaR = divergenciaQtd * custoUnitario;
+
+            document.getElementById(`cons_${chave}`).textContent = consTeorico.toFixed(2);
+            document.getElementById(`teorico_${chave}`).textContent = estoqueTeorico.toFixed(2);
+            document.getElementById(`div_${chave}`).textContent = divergenciaQtd.toFixed(2);
+            document.getElementById(`divR_${chave}`).textContent = 'R$ ' + divergenciaR.toFixed(2);
+
+            const statusEl = document.getElementById(`status_${chave}`);
+            const sugestaoEl = document.getElementById(`sugestao_${chave}`);
+            const tr = statusEl.parentElement;
+
+            if (finalReal < ins.estoqueMin) {
+                statusEl.innerHTML = '<span class="status-baixo">🔴 Abaixo</span>';
+                sugestaoEl.textContent = `Comprar ${(ins.estoqueMin - finalReal).toFixed(2)} ${ins.unid}`;
+                sugestaoEl.classList.add('sugestao');
+            } else {
+                statusEl.innerHTML = '<span class="status-ok">🟢 OK</span>';
+                sugestaoEl.textContent = '-';
+                sugestaoEl.classList.remove('sugestao');
+            }
+
+            tr.classList.remove('perda', 'ganho');
+            if (divergenciaQtd > 0.001) tr.classList.add('perda');
+            else if (divergenciaQtd < -0.001) tr.classList.add('ganho');
+
+            if (divergenciaR > maiorPerdaR) {
+                maiorPerdaR = divergenciaR;
+                insumoCritico = ins.nome;
+            }
+        });
+
+        document.getElementById('resultado').innerHTML = `
+            <strong>📊 Relatório de Divergências</strong><br>
+            🔴 <strong>Ponto Crítico:</strong> ${insumoCritico} com perda de <strong>R$ ${maiorPerdaR.toFixed(2)}</strong><br>
+            <span class="aviso">⬆️ Tabela colorida: vermelho = perda, verde = ganho.</span>
+        `;
+    });
+</script>
+</body>
+</html>
