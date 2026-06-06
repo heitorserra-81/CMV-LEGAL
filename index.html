@@ -1,568 +1,1248 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>CMV Legal | Heitor Serra Neto</title>
-    <style>
-        :root {
-            --bg: #f0f4f7;
-            --card-bg: #ffffff;
-            --primary: #27ae60;
-            --danger: #e74c3c;
-            --text: #1e2b38;
-            --text-light: #5d6d7e;
-            --header-bg: linear-gradient(135deg, #0f1a24, #1e2b38);
-            --shadow: 0 10px 30px rgba(0,0,0,0.08);
-            --input-bg: #f4f6f8;
-        }
-        .dark-mode {
-            --bg: #1a1f24;
-            --card-bg: #2a2f36;
-            --text: #e0e0e0;
-            --text-light: #a0a8b0;
-            --header-bg: linear-gradient(135deg, #0a0f14, #141b22);
-            --shadow: 0 10px 30px rgba(0,0,0,0.3);
-            --input-bg: #3a3f46;
-        }
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            background: var(--bg); color: var(--text);
-            min-height: 100vh; transition: background 0.3s, color 0.3s; overflow-x: hidden;
-        }
-        .app { min-height: 100vh; display: flex; flex-direction: column; }
-        .header {
-            background: var(--header-bg); padding: 14px 20px;
-            display: flex; align-items: center; justify-content: space-between;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3); z-index: 10; flex-wrap: wrap; gap: 10px;
-        }
-        .logo-area { display: flex; align-items: center; gap: 10px; }
-        .logo-icon { font-size: 36px; animation: float 3s infinite; }
-        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
-        .logo-text .titulo {
-            font-family: 'Arial Black', sans-serif; font-size: clamp(20px, 5vw, 28px);
-            font-weight: 900; color: white; letter-spacing: 2px; text-transform: uppercase;
-        }
-        .logo-text .titulo span { color: #27ae60; }
-        .logo-text .subtitulo {
-            font-size: 10px; letter-spacing: 2px; color: rgba(255,255,255,0.7); text-transform: uppercase;
-        }
-        .header-actions { display: flex; gap: 8px; align-items: center; }
-        .btn-icon {
-            background: rgba(255,255,255,0.15); border: none; color: white;
-            width: 38px; height: 38px; border-radius: 50%; font-size: 1.2rem;
-            cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center;
-        }
-        .btn-icon:hover { background: rgba(255,255,255,0.3); }
-        .main-view { flex: 1; padding: 20px; overflow-y: auto; }
-        .hub {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 16px; max-width: 900px; margin: 20px auto; padding: 10px;
-        }
-        .hub-card {
-            background: var(--card-bg); border-radius: 20px; padding: 24px 16px;
-            text-align: center; cursor: pointer; box-shadow: var(--shadow);
-            transition: all 0.3s; border: 2px solid transparent;
-            display: flex; flex-direction: column; align-items: center; gap: 10px;
-        }
-        .hub-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.12); }
-        .hub-card .icone { font-size: 48px; }
-        .hub-card .titulo-card { font-weight: 700; font-size: 1.1rem; }
-        .hub-card .desc-card { font-size: 0.8rem; color: var(--text-light); }
-        .hub-card.vendas { border-left: 5px solid #27ae60; }
-        .hub-card.estoque { border-left: 5px solid #3498db; }
-        .hub-card.financeiro { border-left: 5px solid #f39c12; }
-        .hub-card.dashboard { border-left: 5px solid #8e44ad; }
-        .hub-card.ajuda { border-left: 5px solid #e74c3c; }
-        .hub-card.ver-tudo { border-left: 5px solid #1abc9c; }
-        .secao { display: none; flex-direction: column; gap: 16px; }
-        .secao.ativa { display: flex; }
-        .btn-voltar {
-            background: transparent; border: 2px solid var(--primary); color: var(--primary);
-            padding: 8px 16px; border-radius: 25px; font-weight: 600; cursor: pointer;
-            align-self: flex-start; transition: 0.2s;
-        }
-        .btn-voltar:hover { background: var(--primary); color: white; }
-        .card { background: var(--card-bg); border-radius: 20px; padding: 20px; box-shadow: var(--shadow); }
-        h2 { font-size: 1.2rem; margin-bottom: 12px; border-left: 4px solid var(--primary); padding-left: 10px; }
-        .grid-vendas { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
-        .input-group { display: flex; flex-direction: column; gap: 4px; }
-        .input-group label { font-size: 0.75rem; font-weight: 600; }
-        .input-group input, .input-group select {
-            padding: 10px; border: 1px solid #dcdfe3; border-radius: 12px;
-            font-size: 0.9rem; background: var(--input-bg); color: var(--text);
-            transition: 0.2s; width: 100%;
-        }
-        .input-group input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(39,174,96,0.15); outline: none; }
-        .input-group input::placeholder { color: #999; font-style: italic; }
-        .btn {
-            background: var(--primary); color: white; border: none; padding: 10px 20px;
-            border-radius: 30px; font-weight: 700; cursor: pointer;
-            box-shadow: 0 4px 15px rgba(39,174,96,0.3); display: inline-flex;
-            align-items: center; gap: 6px; font-size: 0.9rem; transition: 0.2s; white-space: nowrap;
-        }
-        .btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
-        .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); box-shadow: none; }
-        .btn-outline:hover { background: var(--primary); color: white; }
-        .btn-laranja { background: #e67e22; box-shadow: 0 4px 15px rgba(230,126,34,0.4); }
-        .btn-azul { background: #3498db; box-shadow: 0 4px 15px rgba(52,152,219,0.4); }
-        .estoque-cards { display: flex; flex-direction: column; gap: 14px; }
-        .insumo-card {
-            background: var(--card-bg); border-radius: 18px; padding: 14px;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.05); border: 2px solid transparent;
-            transition: all 0.3s; cursor: pointer;
-        }
-        .insumo-card:hover { transform: translateY(-2px); }
-        .insumo-card.perda { border-color: #e74c3c; animation: glowRed 1.8s infinite; }
-        .insumo-card.ok { border-color: #27ae60; animation: glowGreen 2s infinite; }
-        @keyframes glowRed {
-            0% { box-shadow: 0 0 8px rgba(231,76,60,0.3); }
-            50% { box-shadow: 0 0 22px rgba(231,76,60,0.65); }
-            100% { box-shadow: 0 0 8px rgba(231,76,60,0.3); }
-        }
-        @keyframes glowGreen {
-            0% { box-shadow: 0 0 6px rgba(39,174,96,0.2); }
-            50% { box-shadow: 0 0 20px rgba(39,174,96,0.55); }
-            100% { box-shadow: 0 0 6px rgba(39,174,96,0.2); }
-        }
-        .insumo-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; }
-        .insumo-nome { font-weight: 700; font-size: 0.95rem; }
-        .insumo-status { font-size: 0.75rem; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
-        .progress-bar { height: 6px; background: #ecf0f1; border-radius: 10px; margin: 8px 0; overflow: hidden; }
-        .progress-fill { height: 100%; border-radius: 10px; transition: width 0.5s; }
-        .insumo-dados, .insumo-resultados { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 8px; }
-        .insumo-resultados { background: #f8faf9; padding: 10px; border-radius: 12px; font-size: 0.8rem; margin-top: 8px; }
-        .result-item { display: flex; flex-direction: column; }
-        .result-label { font-size: 0.65rem; color: var(--text-light); text-transform: uppercase; }
-        .result-value { font-weight: 700; }
-        .sugestao-text { font-size: 0.8rem; font-style: italic; background: #fef9e7; padding: 6px 10px; border-radius: 8px; margin-top: 8px; }
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.65); z-index: 100;
-            display: flex; align-items: center; justify-content: center; padding: 20px;
-        }
-        .modal-box {
-            background: var(--card-bg); border-radius: 20px; padding: 20px;
-            width: 100%; max-width: 600px; max-height: 85vh; overflow-y: auto;
-        }
-        .ajuda-contextual {
-            display: inline-flex; align-items: center; justify-content: center;
-            width: 22px; height: 22px; border-radius: 50%; background: #bdc3c7;
-            color: white; font-size: 0.75rem; font-weight: 700; cursor: pointer;
-            margin-left: 6px; transition: 0.2s; border: none;
-        }
-        .ajuda-contextual:hover { background: #95a5a6; }
-        .tabela-custos { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        .tabela-custos th, .tabela-custos td { padding: 8px 6px; border-bottom: 1px solid #ddd; text-align: left; font-size: 0.85rem; }
-        .tabela-custos th { background: #f8f8f8; font-weight: 600; }
-        @media (max-width: 600px) {
-            .hub { grid-template-columns: 1fr 1fr; gap: 10px; }
-            .grid-vendas { grid-template-columns: 1fr 1fr; }
-            .insumo-dados, .insumo-resultados { grid-template-columns: 1fr 1fr; }
-        }
-        @media (min-width: 1200px) {
-            .main-view { max-width: 1200px; margin: 0 auto; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>CMV Legal | Heitor Serra Neto</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f0f3f7;
+  --card: #ffffff;
+  --primary: #1db954;
+  --primary-d: #159c44;
+  --danger: #e5383b;
+  --warn: #f4a261;
+  --accent: #0077b6;
+  --purple: #7b2d8b;
+  --teal: #0d9488;
+  --text: #111827;
+  --text2: #6b7280;
+  --border: #e5e7eb;
+  --input-bg: #f3f4f6;
+  --header: #0a1628;
+  --shadow: 0 4px 24px rgba(0,0,0,0.07);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.13);
+  --r: 16px; --rs: 10px;
+}
+.dark {
+  --bg: #0d1117; --card: #161b22; --text: #e6edf3; --text2: #8b949e;
+  --border: #21262d; --input-bg: #1c2128; --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.5);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .3s,color .3s;overflow-x:hidden;}
+.app{display:flex;flex-direction:column;min-height:100vh;}
+
+/* HEADER */
+.header{background:var(--header);padding:11px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:60;box-shadow:0 2px 20px rgba(0,0,0,0.4);}
+.hlogo{display:flex;align-items:center;gap:10px;}
+.hbadge{background:linear-gradient(135deg,var(--primary),var(--primary-d));color:#fff;font-family:'Syne',sans-serif;font-weight:900;font-size:15px;padding:7px 11px;border-radius:9px;box-shadow:0 3px 12px rgba(29,185,84,.4);letter-spacing:1px;}
+.htitle{font-family:'Syne',sans-serif;font-size:19px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:1.5px;}
+.htitle span{color:var(--primary);}
+.hsub{font-size:8.5px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:2px;}
+.hactions{display:flex;gap:8px;}
+.btn-icon{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#fff;width:36px;height:36px;border-radius:50%;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.btn-icon:hover{background:rgba(255,255,255,.18);}
+
+/* MAIN */
+.main{flex:1;padding:14px;overflow-y:auto;}
+
+/* ── HUB ── */
+.hub{display:flex;flex-direction:column;align-items:center;gap:18px;max-width:540px;margin:0 auto;padding:8px 0 24px;}
+.hub-logo{background:var(--card);border-radius:22px;padding:22px 24px;box-shadow:var(--shadow);width:100%;display:flex;flex-direction:column;align-items:center;gap:8px;border:1px solid var(--border);position:relative;overflow:hidden;}
+.hub-logo::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:radial-gradient(circle,rgba(29,185,84,.15),transparent 70%);pointer-events:none;}
+.hub-badge-big{background:linear-gradient(135deg,var(--primary),#0f9940);color:#fff;font-family:'Syne',sans-serif;font-weight:900;font-size:26px;padding:14px 20px;border-radius:14px;box-shadow:0 6px 20px rgba(29,185,84,.35);letter-spacing:2px;}
+.hub-title-big{font-family:'Syne',sans-serif;font-size:24px;font-weight:900;text-transform:uppercase;letter-spacing:2px;}
+.hub-title-big span{color:var(--primary);}
+.hub-sub{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:2.5px;}
+
+.hub-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;}
+.hub-btn{border-radius:20px;padding:26px 14px;text-align:center;cursor:pointer;box-shadow:var(--shadow);transition:transform .18s,box-shadow .18s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;border:none;position:relative;overflow:hidden;min-height:128px;}
+.hub-btn::before{content:'';position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(rgba(255,255,255,.22),transparent);pointer-events:none;}
+.hub-btn:active{transform:scale(.95);}
+.hub-btn:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);}
+.hub-icone{font-size:2.6rem;filter:drop-shadow(0 4px 8px rgba(0,0,0,.25));}
+.hub-label{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;text-transform:uppercase;letter-spacing:.5px;color:#fff;}
+.hub-desc{font-size:.7rem;color:rgba(255,255,255,.75);font-weight:500;}
+.hb-vendas  {background:linear-gradient(140deg,#1db954,#0f7a36);}
+.hb-estoque {background:linear-gradient(140deg,#0077b6,#023e8a);}
+.hb-fin     {background:linear-gradient(140deg,#f4a261,#e76f51);}
+.hb-dash    {background:linear-gradient(140deg,#7b2d8b,#4a1259);}
+.hb-ajuda   {background:linear-gradient(140deg,#e5383b,#9b1c1f);}
+.hb-tudo    {background:linear-gradient(140deg,#0d9488,#065f46);}
+
+.hub-footer{background:var(--card);border-radius:18px;padding:14px 20px;width:100%;text-align:center;border:1px solid var(--border);box-shadow:var(--shadow);}
+.hub-footer-brand{font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;color:var(--primary);}
+.hub-footer-autor{font-size:.75rem;color:var(--text2);margin-top:3px;}
+
+/* ── SEÇÕES ── */
+.secao{display:none;flex-direction:column;gap:14px;max-width:860px;margin:0 auto;width:100%;}
+.secao.ativa{display:flex;}
+.sec-header{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:var(--r);padding:12px 16px;box-shadow:var(--shadow);border:1px solid var(--border);}
+.btn-voltar{background:transparent;border:2px solid var(--primary);color:var(--primary);padding:6px 14px;border-radius:25px;font-weight:700;cursor:pointer;font-size:.82rem;white-space:nowrap;font-family:'DM Sans',sans-serif;}
+.sec-titulo{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:800;}
+
+/* CARD */
+.card{background:var(--card);border-radius:var(--r);padding:18px;box-shadow:var(--shadow);border:1px solid var(--border);}
+.card-title{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:800;border-left:4px solid var(--primary);padding-left:10px;margin-bottom:14px;}
+
+/* INPUTS */
+.ig{display:flex;flex-direction:column;gap:4px;}
+.ig label{font-size:.7rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.6px;}
+.ig input,.ig select,.ig textarea{padding:9px 11px;border:2px solid var(--border);border-radius:var(--rs);font-size:.88rem;background:var(--input-bg);color:var(--text);width:100%;font-family:'DM Sans',sans-serif;transition:border-color .2s;}
+.ig input:focus,.ig select:focus{border-color:var(--primary);outline:none;}
+
+/* STEPPER */
+.stepper{display:flex;align-items:center;border:2px solid var(--border);border-radius:var(--rs);background:var(--input-bg);overflow:hidden;}
+.stepper:focus-within{border-color:var(--primary);}
+.st-btn{background:transparent;border:none;width:38px;height:38px;font-size:1.1rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;color:var(--text);}
+.st-btn.minus{color:var(--danger);}
+.st-btn.plus{color:var(--primary);}
+.st-btn:hover{background:var(--border);}
+.stepper input{flex:1;border:none;background:transparent;text-align:center;font-weight:700;font-size:.95rem;color:var(--text);padding:0;font-family:'DM Sans',sans-serif;}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:9px 16px;border-radius:25px;font-weight:700;font-size:.85rem;cursor:pointer;border:none;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.btn-green{background:var(--primary);color:#fff;}
+.btn-green:hover{background:var(--primary-d);}
+.btn-outline{background:transparent;border:2px solid var(--primary);color:var(--primary);}
+.btn-red{background:var(--danger);color:#fff;}
+.btn-orange{background:var(--warn);color:#fff;}
+.btn-blue{background:var(--accent);color:#fff;}
+.btn-full{width:100%;}
+.btn-sm{padding:5px 11px;font-size:.78rem;}
+
+/* BADGE */
+.badge{display:inline-flex;align-items:center;justify-content:center;padding:2px 8px;border-radius:20px;font-size:.72rem;font-weight:700;}
+.bg-green{background:#d1fae5;color:#065f46;}
+.bg-red{background:#fee2e2;color:#991b1b;}
+.bg-orange{background:#fef3c7;color:#92400e;}
+.bg-blue{background:#dbeafe;color:#1e40af;}
+.dark .bg-green{background:#064e3b;color:#6ee7b7;}
+.dark .bg-red{background:#7f1d1d;color:#fca5a5;}
+.dark .bg-orange{background:#78350f;color:#fde68a;}
+.dark .bg-blue{background:#1e3a5f;color:#93c5fd;}
+
+/* ── VENDAS ── */
+.abas{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.aba{padding:7px 14px;border-radius:20px;font-weight:700;cursor:pointer;border:2px solid var(--border);background:var(--input-bg);color:var(--text2);font-size:.82rem;transition:all .2s;display:flex;align-items:center;gap:6px;font-family:'DM Sans',sans-serif;}
+.aba.ativa{background:var(--primary);border-color:var(--primary);color:#fff;}
+.aba-ct{background:rgba(0,0,0,.12);padding:1px 6px;border-radius:10px;font-size:.68rem;}
+.ativa .aba-ct{background:rgba(255,255,255,.25);}
+
+.grid-prod{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:10px;}
+.prod-card{background:var(--input-bg);border-radius:var(--r);padding:13px;border:2px solid var(--border);display:flex;flex-direction:column;gap:9px;transition:border-color .2s;}
+.prod-card.ativo{border-color:var(--primary);background:#f0fdf4;}
+.dark .prod-card.ativo{background:#052e16;}
+.prod-nome{font-weight:700;font-size:.88rem;}
+.prod-preco{font-size:.75rem;color:var(--text2);}
+.prod-sub{font-size:.72rem;font-weight:700;color:var(--primary);text-align:center;}
+
+/* ── ESTOQUE ── */
+.cat-bar{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;}
+.cat-bar::-webkit-scrollbar{display:none;}
+.cat-pill{display:flex;align-items:center;gap:5px;padding:7px 14px;border-radius:20px;font-weight:700;font-size:.8rem;cursor:pointer;white-space:nowrap;border:2px solid var(--border);background:var(--input-bg);color:var(--text2);transition:all .2s;flex-shrink:0;font-family:'DM Sans',sans-serif;}
+.cat-pill.ativa{background:var(--accent);border-color:var(--accent);color:#fff;}
+
+.cat-bloco{border-radius:var(--r);overflow:hidden;margin-bottom:8px;border:1px solid var(--border);}
+.cat-hdr{display:flex;justify-content:space-between;align-items:center;padding:13px 15px;font-weight:700;cursor:pointer;background:var(--input-bg);transition:.2s;}
+.cat-hdr:hover{filter:brightness(.97);}
+.dark .cat-hdr:hover{filter:brightness(1.05);}
+.cat-hdr-l{display:flex;align-items:center;gap:8px;}
+.cat-seta{font-size:.85rem;color:var(--text2);transition:transform .2s;}
+.cat-body{display:none;flex-direction:column;gap:6px;padding:8px;}
+.cat-body.open{display:flex;}
+
+.ins-row{display:flex;justify-content:space-between;align-items:center;padding:11px 13px;background:var(--card);border-radius:var(--rs);cursor:pointer;border:1px solid var(--border);transition:all .2s;}
+.ins-row:hover{border-color:var(--accent);}
+.ins-nome{font-weight:700;font-size:.87rem;}
+.ins-info{font-size:.73rem;color:var(--text2);margin-top:2px;}
+.ins-row-r{display:flex;align-items:center;gap:7px;}
+
+/* ── MODAL CARROSSEL ESTOQUE ── */
+.modal-over{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.82);z-index:200;display:none;align-items:flex-end;justify-content:center;}
+.modal-over.open{display:flex;}
+@media(min-width:560px){.modal-over{align-items:center;}}
+.modal-car{background:var(--card);width:100%;max-width:520px;display:flex;flex-direction:column;max-height:100vh;animation:slideUp .28s cubic-bezier(.16,1,.3,1);}
+@media(min-width:560px){.modal-car{border-radius:24px;max-height:92vh;box-shadow:0 30px 80px rgba(0,0,0,.5);}}
+@keyframes slideUp{from{transform:translateY(40px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+
+.modal-cat-bar{background:var(--header);padding:14px 14px 10px;flex-shrink:0;}
+.modal-cat-label{color:rgba(255,255,255,.45);font-size:.65rem;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:7px;}
+.modal-cat-scroll{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;}
+.modal-cat-scroll::-webkit-scrollbar{display:none;}
+.mcat-chip{padding:5px 12px;border-radius:18px;font-weight:700;font-size:.75rem;cursor:pointer;white-space:nowrap;flex-shrink:0;background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.12);transition:all .2s;font-family:'DM Sans',sans-serif;}
+.mcat-chip.ativa{background:var(--primary);color:#fff;border-color:var(--primary);}
+
+.modal-nav{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.modal-nav-info{font-size:.78rem;color:var(--text2);font-weight:600;}
+.nav-btns{display:flex;gap:7px;}
+.nav-arr{background:var(--input-bg);border:1px solid var(--border);color:var(--text);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;transition:all .2s;}
+.nav-arr:hover{background:var(--primary);color:#fff;border-color:var(--primary);}
+.nav-arr:disabled{opacity:.3;cursor:not-allowed;pointer-events:none;}
+
+.modal-body{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:12px;}
+.m-ins-title{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:900;}
+.m-ins-sub{font-size:.75rem;color:var(--text2);margin-top:1px;}
+.campos-2{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.calcs-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.dado{padding:11px;border-radius:var(--rs);background:var(--input-bg);border-left:3px solid var(--border);}
+.dado.consumo{border-left-color:var(--danger);}
+.dado.teorico{border-left-color:var(--accent);}
+.dado.diverg{border-left-color:var(--warn);background:#fff7ed;}
+.dark .dado.diverg{background:#2d1f0a;}
+.dado.pedido{border-left-color:var(--primary);background:#f0fdf4;grid-column:1/-1;}
+.dark .dado.pedido{background:#052e16;}
+.dado-r{font-size:.65rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.6px;}
+.dado-v{font-size:.98rem;font-weight:800;margin-top:3px;}
+.dado-s{font-size:.73rem;color:var(--text2);margin-top:1px;}
+
+/* ── MODAIS DE FORM ── */
+.form-over{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.75);z-index:300;display:none;align-items:center;justify-content:center;padding:14px;}
+.form-over.open{display:flex;}
+.form-box{background:var(--card);border-radius:22px;padding:22px;width:100%;max-width:480px;max-height:88vh;overflow-y:auto;box-shadow:0 30px 70px rgba(0,0,0,.45);animation:popup .2s ease-out;display:flex;flex-direction:column;gap:12px;border:1px solid var(--border);}
+@keyframes popup{from{transform:scale(.9);opacity:0;}to{transform:scale(1);opacity:1;}}
+.form-title{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:900;}
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.fg2 .full{grid-column:1/-1;}
+
+/* ── FINANCEIRO ── */
+.fin-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.fin-card{padding:14px;border-radius:var(--r);display:flex;flex-direction:column;gap:4px;border:1px solid var(--border);}
+.fin-card.fat{background:#f0fdf4;border-left:4px solid var(--primary);}
+.fin-card.cst{background:#fff1f2;border-left:4px solid var(--danger);}
+.fin-card.mrg{background:#eff6ff;border-left:4px solid var(--accent);}
+.fin-card.ped{background:#fffbeb;border-left:4px solid var(--warn);}
+.dark .fin-card.fat{background:#052e16;} .dark .fin-card.cst{background:#450a0a;}
+.dark .fin-card.mrg{background:#0c1a3d;} .dark .fin-card.ped{background:#3d2000;}
+.fin-lbl{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text2);}
+.fin-val{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:900;}
+.fin-card.fat .fin-val{color:var(--primary);}
+.fin-card.cst .fin-val{color:var(--danger);}
+.fin-card.mrg .fin-val{color:var(--accent);}
+.fin-card.ped .fin-val{color:var(--warn);}
+
+.tabela{width:100%;border-collapse:collapse;}
+.tabela th{background:var(--input-bg);padding:9px 10px;text-align:left;font-size:.72rem;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);font-weight:700;}
+.tabela td{padding:9px 10px;border-bottom:1px solid var(--border);font-size:.83rem;}
+.tabela tbody tr:hover{background:var(--input-bg);}
+
+/* ── DASHBOARD ── */
+.alerta{display:flex;align-items:flex-start;gap:10px;padding:12px;border-radius:var(--rs);border-left:4px solid var(--border);background:var(--input-bg);margin-bottom:7px;}
+.alerta.crit{border-left-color:var(--danger);background:#fff1f2;}
+.alerta.atenc{border-left-color:var(--warn);background:#fffbeb;}
+.alerta.ok{border-left-color:var(--primary);background:#f0fdf4;}
+.dark .alerta.crit{background:#450a0a;} .dark .alerta.atenc{background:#3d2000;} .dark .alerta.ok{background:#052e16;}
+.al-ico{font-size:1.2rem;flex-shrink:0;}
+.al-tit{font-weight:700;font-size:.87rem;}
+.al-desc{font-size:.76rem;color:var(--text2);margin-top:2px;}
+
+/* ── FORNECEDORES ── */
+.forn-card{background:var(--input-bg);border-radius:var(--rs);padding:12px;border:1px solid var(--border);margin-bottom:8px;}
+.forn-nome{font-weight:700;font-size:.9rem;}
+.forn-info{font-size:.76rem;color:var(--text2);margin-top:3px;}
+
+/* DIVIDER */
+hr.dv{border:0;border-top:1px dashed var(--border);margin:4px 0;}
+.txt-m{color:var(--text2);}
+.txt-s{color:var(--primary);}
+.txt-d{color:var(--danger);}
+.bold{font-weight:800;}
+.mt4{margin-top:4px;} .mt8{margin-top:8px;} .mt12{margin-top:12px;} .mt14{margin-top:14px;}
+.flex{display:flex;} .wrap{flex-wrap:wrap;} .gap6{gap:6px;} .gap8{gap:8px;} .gap10{gap:10px;}
+.jb{justify-content:space-between;} .ac{align-items:center;} .w100{width:100%;}
+
+.footer{text-align:center;padding:18px;font-size:.75rem;color:var(--text2);border-top:1px solid var(--border);margin-top:auto;}
+
+/* Swipe anim */
+.swipe-in{animation:swIn .22s cubic-bezier(.16,1,.3,1);}
+@keyframes swIn{from{transform:translateX(18px);opacity:0;}to{transform:translateX(0);opacity:1;}}
+</style>
 </head>
 <body>
 <div class="app" id="app">
-    <header class="header">
-        <div class="logo-area">
-            <div class="logo-icon">🍔📊</div>
-            <div class="logo-text">
-                <div class="titulo">CMV <span>Legal</span></div>
-                <div class="subtitulo">Controle de Estoques e Gastos</div>
-            </div>
-        </div>
-        <div class="header-actions">
-            <button class="btn-icon" id="darkToggle" title="Alternar tema">🌙</button>
-        </div>
-    </header>
-    <div class="main-view" id="mainView">
-        <div id="hub" class="hub">
-            <div class="hub-card vendas" onclick="mostrarSecao('vendas')"><div class="icone">🛒</div><div class="titulo-card">Vendas</div><div class="desc-card">Lançar vendas e preços</div></div>
-            <div class="hub-card estoque" onclick="mostrarSecao('estoque')"><div class="icone">📦</div><div class="titulo-card">Estoque</div><div class="desc-card">Gerenciar insumos</div></div>
-            <div class="hub-card financeiro" onclick="mostrarSecao('financeiro')"><div class="icone">💰</div><div class="titulo-card">Financeiro</div><div class="desc-card">Receita, CMV e lucro</div></div>
-            <div class="hub-card dashboard" onclick="mostrarSecao('dashboard')"><div class="icone">📊</div><div class="titulo-card">Dashboard</div><div class="desc-card">Visão geral e alertas</div></div>
-            <div class="hub-card ajuda" onclick="mostrarSecao('ajuda')"><div class="icone">📚</div><div class="titulo-card">Ajuda</div><div class="desc-card">Central de dúvidas</div></div>
-            <div class="hub-card ver-tudo" onclick="mostrarSecao('ver-tudo')"><div class="icone">📋</div><div class="titulo-card">Ver Tudo</div><div class="desc-card">Todas as seções juntas</div></div>
-        </div>
-        <div id="secao-vendas" class="secao">
-            <button class="btn-voltar" onclick="voltarHub()">← Voltar</button>
-            <div class="card">
-                <h2>📈 Vendas da Semana <button class="ajuda-contextual" onclick="mostrarAjudaContextual('vendas')">?</button></h2>
-                <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;" id="abas-vendas">
-                    <button class="btn btn-outline aba-btn ativa" data-tab="lanches">🍔 Lanches</button>
-                    <button class="btn btn-outline aba-btn" data-tab="refri">🥤 Refrigerantes</button>
-                    <button class="btn btn-outline aba-btn" data-tab="sucos">🧃 Sucos</button>
-                </div>
-                <div style="margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-                    <label style="font-size:0.8rem;font-weight:600;">🔮 Simular aumento:</label>
-                    <input type="range" id="simulador" min="0" max="50" value="0" style="flex:1;max-width:200px;">
-                    <span id="simValor" style="font-weight:700;">0%</span>
-                </div>
-                <div id="vendas-lanches" class="grid-vendas tab-vendas"></div>
-                <div id="vendas-refri" class="grid-vendas tab-vendas" style="display:none;"></div>
-                <div id="vendas-sucos" class="grid-vendas tab-vendas" style="display:none;"></div>
-                <button class="btn btn-laranja" id="simularVendasBtn" style="margin-top:12px;">🎲 Simular Dados</button>
-            </div>
-        </div>
-        <div id="secao-estoque" class="secao">
-            <button class="btn-voltar" onclick="voltarHub()">← Voltar</button>
-            <div class="card">
-                <h2>📦 Estoque & Divergências <button class="ajuda-contextual" onclick="mostrarAjudaContextual('estoque')">?</button></h2>
-                <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
-                    <button class="btn btn-outline" id="exemploBtn">📋 Preencher Exemplo</button>
-                    <button class="btn btn-laranja" id="simularEstoqueBtn">🎲 Simular Dados</button>
-                </div>
-                <div id="estoque-cards-container" class="estoque-cards"></div>
-                <button class="btn" id="calcularBtnEstoque" style="margin-top:12px;">🔍 Calcular Divergências</button>
-            </div>
-        </div>
-        <div id="secao-financeiro" class="secao">
-            <button class="btn-voltar" onclick="voltarHub()">← Voltar</button>
-            <div class="card">
-                <h2>💰 Resumo Financeiro <button class="ajuda-contextual" onclick="mostrarAjudaContextual('financeiro')">?</button></h2>
-                <div id="resumoFinanceiro">Clique em "Calcular Divergências" na seção de Estoque para ver o resumo.</div>
-                <h3 style="margin-top:20px;">📋 Tabela de Custos dos Insumos</h3>
-                <table class="tabela-custos" id="tabelaCustos"><thead><tr><th>Insumo</th><th>Unid. Compra</th><th>Custo (R$)</th></tr></thead><tbody></tbody></table>
-                <button class="btn btn-azul" id="salvarCustosBtn" style="margin-top:10px;">💾 Salvar Custos</button>
-                <button class="btn btn-azul" id="exportarBtn" style="margin-top:12px;">📄 Exportar Relatório</button>
-            </div>
-        </div>
-        <div id="secao-dashboard" class="secao">
-            <button class="btn-voltar" onclick="voltarHub()">← Voltar</button>
-            <div class="card">
-                <h2>📊 Dashboard <button class="ajuda-contextual" onclick="mostrarAjudaContextual('dashboard')">?</button></h2>
-                <div id="dashboardContent">Clique em "Calcular Divergências" na seção de Estoque.</div>
-            </div>
-        </div>
-        <div id="secao-ajuda" class="secao">
-            <button class="btn-voltar" onclick="voltarHub()">← Voltar</button>
-            <div class="card">
-                <h2>📚 Central de Ajuda</h2>
-                <input type="text" class="input-group input" id="searchAjuda" placeholder="🔍 Pesquisar dúvidas..." oninput="filtrarAjuda()" style="width:100%;margin-bottom:15px;">
-                <div id="ajudaConteudo">
-                    <h3>🤔 O que é CMV?</h3><p>CMV (Custo da Mercadoria Vendida) é o valor total gasto com insumos para produzir os itens vendidos. Ex.: um X-Bacon leva 150g de carne, 50g de bacon, etc.</p>
-                    <h3>📦 O que é divergência de estoque?</h3><p>Diferença entre estoque teórico (quanto deveria ter) e estoque final real (quanto sobrou). Positiva = perda. Negativa = ganho.</p>
-                    <h3>🧮 Como calcular?</h3><p>1. Lance as vendas.<br>2. Preencha estoque inicial, compras e final real.<br>3. Clique em "Calcular Divergências".</p>
-                    <h3>✏️ Campos</h3><p>Use os placeholders como guia. Estoque mínimo é editável. Unidades de compra refletem como o insumo é adquirido (kg, dz, un, etc.).</p>
-                    <h3>🔮 Simulador</h3><p>O slider aumenta % as vendas para prever necessidades de compra.</p>
-                    <h3>💾 Histórico</h3><p>Últimos 10 cálculos salvos no navegador.</p>
-                </div>
-            </div>
-        </div>
-        <div id="secao-ver-tudo" class="secao">
-            <button class="btn-voltar" onclick="voltarHub()">← Voltar</button>
-            <div class="card"><h2>📈 Vendas</h2><div id="verTudoVendas"></div></div>
-            <div class="card"><h2>📦 Estoque</h2><div id="verTudoEstoque"></div></div>
-            <div class="card"><h2>💰 Financeiro</h2><div id="verTudoFinanceiro"></div></div>
-            <div class="card"><h2>📊 Dashboard</h2><div id="verTudoDashboard"></div></div>
-        </div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="hlogo">
+    <div class="hbadge">CMV</div>
+    <div>
+      <div class="htitle">Le<span>ga</span>l</div>
+      <div class="hsub">Gestão Operacional</div>
     </div>
+  </div>
+  <div class="hactions">
+    <button class="btn-icon" id="darkToggle" title="Modo escuro">🌙</button>
+  </div>
+</header>
+
+<div class="main" id="mainView">
+
+  <!-- ════ HUB ════ -->
+  <div id="hub" class="hub">
+    <div class="hub-logo">
+      <div class="hub-badge-big">CMV</div>
+      <div class="hub-title-big">Le<span>ga</span>l</div>
+      <div class="hub-sub">Sistema de Gestão Operacional</div>
+    </div>
+
+    <div class="hub-grid">
+      <div class="hub-btn hb-vendas" onclick="ir('vendas')">
+        <div class="hub-icone">🛒</div>
+        <div class="hub-label">Vendas</div>
+        <div class="hub-desc">Registrar saídas</div>
+      </div>
+      <div class="hub-btn hb-estoque" onclick="ir('estoque')">
+        <div class="hub-icone">📦</div>
+        <div class="hub-label">Estoque</div>
+        <div class="hub-desc">Insumos & compras</div>
+      </div>
+      <div class="hub-btn hb-fin" onclick="ir('financeiro')">
+        <div class="hub-icone">💰</div>
+        <div class="hub-label">Financeiro</div>
+        <div class="hub-desc">CMV & lucro</div>
+      </div>
+      <div class="hub-btn hb-dash" onclick="ir('dashboard')">
+        <div class="hub-icone">📊</div>
+        <div class="hub-label">Dashboard</div>
+        <div class="hub-desc">Alertas & pontos</div>
+      </div>
+      <div class="hub-btn hb-ajuda" onclick="ir('ajuda')">
+        <div class="hub-icone">📚</div>
+        <div class="hub-label">Ajuda</div>
+        <div class="hub-desc">Manual do usuário</div>
+      </div>
+      <div class="hub-btn hb-tudo" onclick="ir('vertudo')">
+        <div class="hub-icone">📋</div>
+        <div class="hub-label">Ver Tudo</div>
+        <div class="hub-desc">Consolidação geral</div>
+      </div>
+    </div>
+
+    <div class="hub-footer">
+      <div class="hub-footer-brand">CMV Legal v2.0</div>
+      <div class="hub-footer-autor">💡 Desenvolvido por Heitor Serra Neto © 2026</div>
+    </div>
+  </div>
+
+  <!-- ════ VENDAS ════ -->
+  <div id="secao-vendas" class="secao">
+    <div class="sec-header">
+      <button class="btn-voltar" onclick="voltar()">← Voltar</button>
+      <span class="sec-titulo">🛒 Vendas da Semana</span>
+    </div>
+    <div class="card">
+      <div class="flex jb ac wrap gap8" style="margin-bottom:12px;">
+        <div class="card-title" style="margin:0;">Registrar Produtos Vendidos</div>
+        <div class="flex gap8">
+          <button class="btn btn-outline btn-sm" onclick="abrirForm('formNovoProd')">➕ Produto</button>
+          <button class="btn btn-orange btn-sm" id="btnSimVendas">🎲 Simular</button>
+        </div>
+      </div>
+      <div class="abas" id="abas-vendas"></div>
+      <div id="grid-vendas"></div>
+      <hr class="dv" style="margin:14px 0;">
+      <button class="btn btn-green btn-full" onclick="processarVendas()">✅ Processar Vendas e Baixar Estoque</button>
+    </div>
+  </div>
+
+  <!-- ════ ESTOQUE ════ -->
+  <div id="secao-estoque" class="secao">
+    <div class="sec-header">
+      <button class="btn-voltar" onclick="voltar()">← Voltar</button>
+      <span class="sec-titulo">📦 Estoque</span>
+    </div>
+    <div class="card" style="padding:12px 14px;">
+      <div class="cat-bar" id="catFiltroBar"></div>
+    </div>
+    <div class="card">
+      <div class="flex jb ac wrap gap8" style="margin-bottom:12px;">
+        <div class="card-title" style="margin:0;">Insumos por Categoria</div>
+        <div class="flex gap8 wrap">
+          <button class="btn btn-outline btn-sm" onclick="abrirForm('formNovoIns')">➕ Insumo</button>
+          <button class="btn btn-red btn-sm" onclick="abrirModalQuebra()">⚠️ Quebra</button>
+          <button class="btn btn-orange btn-sm" id="btnSimEst">🎲 Simular</button>
+        </div>
+      </div>
+      <div id="est-accordion"></div>
+    </div>
+  </div>
+
+  <!-- ════ FINANCEIRO ════ -->
+  <div id="secao-financeiro" class="secao">
+    <div class="sec-header">
+      <button class="btn-voltar" onclick="voltar()">← Voltar</button>
+      <span class="sec-titulo">💰 Financeiro</span>
+    </div>
+    <div class="card">
+      <div class="card-title">📊 Resumo</div>
+      <div class="fin-grid">
+        <div class="fin-card fat"><div class="fin-lbl">Faturamento Bruto</div><div class="fin-val" id="fv-fat">R$ 0,00</div></div>
+        <div class="fin-card cst"><div class="fin-lbl">Custo de Insumos</div><div class="fin-val" id="fv-cst">R$ 0,00</div></div>
+        <div class="fin-card mrg"><div class="fin-lbl">Margem Operacional</div><div class="fin-val" id="fv-mrg">R$ 0,00</div></div>
+        <div class="fin-card ped"><div class="fin-lbl">Invest. Reposição</div><div class="fin-val" id="fv-ped">R$ 0,00</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">🛒 Pedidos de Reposição</div>
+      <div id="tabPedidos"></div>
+    </div>
+    <div class="card">
+      <div class="flex jb ac" style="margin-bottom:12px;">
+        <div class="card-title" style="margin:0;">🏭 Fornecedores</div>
+        <button class="btn btn-outline btn-sm" onclick="abrirForm('formForn')">➕ Fornecedor</button>
+      </div>
+      <div id="listaForn"><p class="txt-m" style="font-size:.82rem;">Nenhum fornecedor cadastrado.</p></div>
+    </div>
+    <div class="card">
+      <div class="card-title">📋 Tabela de Custos</div>
+      <table class="tabela" id="tabCustos">
+        <thead><tr><th>Insumo</th><th>Unid.</th><th>Custo/Un.</th><th>CMV Semana</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <button class="btn btn-outline btn-full mt12" onclick="exportar()">📄 Exportar Relatório .TXT</button>
+    </div>
+  </div>
+
+  <!-- ════ DASHBOARD ════ -->
+  <div id="secao-dashboard" class="secao">
+    <div class="sec-header">
+      <button class="btn-voltar" onclick="voltar()">← Voltar</button>
+      <span class="sec-titulo">📊 Dashboard</span>
+    </div>
+    <div class="card">
+      <div class="card-title">🚨 Alertas Críticos</div>
+      <div id="dash-alertas"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">📈 Top Produtos & Previsão</div>
+      <div id="dash-stats"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">⚠️ Histórico de Quebras</div>
+      <div id="dash-quebras"></div>
+    </div>
+  </div>
+
+  <!-- ════ AJUDA ════ -->
+  <div id="secao-ajuda" class="secao">
+    <div class="sec-header">
+      <button class="btn-voltar" onclick="voltar()">← Voltar</button>
+      <span class="sec-titulo">📚 Ajuda</span>
+    </div>
+    <div class="card">
+      <div class="card-title">Manual do Usuário</div>
+      <div style="display:flex;flex-direction:column;gap:13px;line-height:1.7;font-size:.88rem;">
+        <div><strong>🛒 Vendas:</strong> Informe a quantidade de cada produto vendido. Ao clicar em "Processar", o sistema desconta automaticamente os ingredientes do estoque com base na ficha técnica de cada lanche.</div>
+        <div><strong>📦 Estoque:</strong> Toque na categoria para expandir a lista. Toque num insumo para abrir a ficha completa com campos de estoque inicial, compras e contagem final. Use as setas ou deslize para navegar entre itens sem fechar o card.</div>
+        <div><strong>📊 Auditoria (C1→C7):</strong> O app cruza <em>Estoque Teórico</em> (inicial + compras − consumo) com a <em>Contagem Real</em> e exibe a <strong>Divergência em Reais</strong> — revelando perdas, quebras ou erros de processo.</div>
+        <div><strong>💰 Financeiro:</strong> Acompanhe faturamento, CMV, margem e pedido de reposição. Cadastre fornecedores e exporte relatórios .TXT.</div>
+        <div><strong>📊 Dashboard:</strong> Alertas automáticos de estoque abaixo do mínimo, divergências suspeitas e previsão de demanda para a próxima semana.</div>
+        <div><strong>⚠️ Quebra:</strong> Registre perdas com motivo e data. O sistema desconta do estoque e alimenta o histórico do dashboard.</div>
+        <div><strong>➕ Novo Produto:</strong> Em Vendas → "+ Produto": crie o lanche com nome, preço e ingredientes. Os insumos novos são adicionados ao estoque automaticamente.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ VER TUDO ════ -->
+  <div id="secao-vertudo" class="secao">
+    <div class="sec-header">
+      <button class="btn-voltar" onclick="voltar()">← Voltar</button>
+      <span class="sec-titulo">📋 Ver Tudo</span>
+    </div>
+    <div class="card">
+      <div class="card-title">Consolidação Geral</div>
+      <div id="vertudo-conteudo"></div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- ═══════ MODAL CARROSSEL ESTOQUE ═══════ -->
+<div class="modal-over" id="modalEst" onclick="fecharModalEstFora(event)">
+  <div class="modal-car" onclick="event.stopPropagation()">
+    <div class="modal-cat-bar">
+      <div class="modal-cat-label">Categorias</div>
+      <div class="modal-cat-scroll" id="mCatScroll"></div>
+    </div>
+    <div class="modal-nav">
+      <div class="modal-nav-info" id="mNavInfo">— / —</div>
+      <div class="nav-btns">
+        <button class="nav-arr" id="btnPrev" onclick="navIns(-1)">‹</button>
+        <button class="nav-arr" id="btnNext" onclick="navIns(1)">›</button>
+      </div>
+    </div>
+    <div class="modal-body" id="mBody"></div>
+  </div>
 </div>
-<div class="modal-overlay" id="modalDetalhes" style="display:none;"><div class="modal-box" id="modalDetalhesConteudo"></div></div>
-<div class="modal-overlay" id="modalAjudaContextual" style="display:none;"><div class="modal-box" id="modalAjudaContextualConteudo"></div></div>
+
+<!-- ═══════ FORM: NOVO PRODUTO ═══════ -->
+<div class="form-over" id="formNovoProd">
+  <div class="form-box">
+    <div class="form-title">➕ Novo Produto</div>
+    <div class="fg2">
+      <div class="ig full"><label>Nome do Produto</label><input id="np_nome" placeholder="Ex: X-Especial"></div>
+      <div class="ig"><label>Categoria</label>
+        <select id="np_cat">
+          <option value="lanches">Lanche</option>
+          <option value="refri">Refrigerante</option>
+          <option value="sucos">Suco</option>
+        </select>
+      </div>
+      <div class="ig"><label>Preço de Venda (R$)</label><input type="number" id="np_preco" step="0.01" value="0"></div>
+    </div>
+    <div class="card-title" style="margin-top:4px;">Ficha Técnica — Ingredientes</div>
+    <div id="np_ings" style="display:flex;flex-direction:column;gap:8px;"></div>
+    <button class="btn btn-outline btn-sm" style="align-self:flex-start;" onclick="addLinhIng()">+ Ingrediente</button>
+    <div class="flex gap8 mt8">
+      <button class="btn btn-green" onclick="salvarNovoProd()">✅ Salvar</button>
+      <button class="btn btn-red" onclick="fecharForm('formNovoProd')">❌ Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ FORM: NOVO INSUMO ═══════ -->
+<div class="form-over" id="formNovoIns">
+  <div class="form-box">
+    <div class="form-title">➕ Novo Insumo</div>
+    <div class="fg2">
+      <div class="ig full"><label>Nome</label><input id="ni_nome" placeholder="Ex: Cream Cheese"></div>
+      <div class="ig"><label>Categoria</label>
+        <select id="ni_cat">
+          <option value="carnes">Carnes & Proteínas</option>
+          <option value="laticinios">Laticínios & Padaria</option>
+          <option value="hortifruti">Hortifrúti & Mercearia</option>
+          <option value="bebidas">Bebidas</option>
+        </select>
+      </div>
+      <div class="ig"><label>Unidade de Compra</label><input id="ni_unid" placeholder="kg, un, dz..."></div>
+      <div class="ig"><label>Fator de Conversão</label><input type="number" id="ni_fator" value="1000" title="Quantas unidades base (g/un) equivalem a 1 unidade de compra. Ex: 1 kg = 1000g"></div>
+      <div class="ig"><label>Custo por Unid. (R$)</label><input type="number" id="ni_custo" step="0.01" value="0"></div>
+      <div class="ig"><label>Estoque Mínimo (g/un)</label><input type="number" id="ni_min" value="500"></div>
+    </div>
+    <div class="flex gap8 mt8">
+      <button class="btn btn-green" onclick="salvarNovoIns()">✅ Salvar</button>
+      <button class="btn btn-red" onclick="fecharForm('formNovoIns')">❌ Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ FORM: QUEBRA ═══════ -->
+<div class="form-over" id="formQuebra">
+  <div class="form-box">
+    <div class="form-title">⚠️ Registrar Quebra de Estoque</div>
+    <div class="fg2">
+      <div class="ig full"><label>Insumo</label><select id="qb_ins"></select></div>
+      <div class="ig"><label>Quantidade Perdida (g/un)</label><input type="number" id="qb_qtd" value="0" min="0"></div>
+      <div class="ig"><label>Data</label><input type="date" id="qb_data"></div>
+      <div class="ig full"><label>Motivo</label>
+        <select id="qb_motivo">
+          <option>Vencimento</option><option>Avaria / Quebra física</option>
+          <option>Erro de processo</option><option>Roubo / Desvio</option><option>Outro</option>
+        </select>
+      </div>
+      <div class="ig full"><label>Observação</label><input id="qb_obs" placeholder="Opcional..."></div>
+    </div>
+    <div class="flex gap8 mt8">
+      <button class="btn btn-red" onclick="salvarQuebra()">⚠️ Registrar</button>
+      <button class="btn btn-outline" onclick="fecharForm('formQuebra')">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ FORM: FORNECEDOR ═══════ -->
+<div class="form-over" id="formForn">
+  <div class="form-box">
+    <div class="form-title">🏭 Novo Fornecedor</div>
+    <div class="fg2">
+      <div class="ig full"><label>Nome do Fornecedor</label><input id="forn_nome" placeholder="Ex: Frigorífico SP"></div>
+      <div class="ig full"><label>Insumos que Fornece</label><input id="forn_ins" placeholder="Ex: Carne Bovina, Bacon"></div>
+      <div class="ig"><label>Contato / Telefone</label><input id="forn_tel" placeholder="(11) 99999-9999"></div>
+      <div class="ig"><label>Prazo de Entrega</label><input id="forn_prazo" placeholder="Ex: 2 dias úteis"></div>
+    </div>
+    <div class="flex gap8 mt8">
+      <button class="btn btn-green" onclick="salvarForn()">✅ Salvar</button>
+      <button class="btn btn-red" onclick="fecharForm('formForn')">❌ Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<footer class="footer"><strong>CMV Legal</strong> · Desenvolvido por <strong>Heitor Serra Neto</strong> © 2026</footer>
+</div><!-- /app -->
+
 <script>
-// ======================= DADOS =======================
-function normaliza(str) { return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '').toLowerCase(); }
-const lanches = [
-    { nome: 'X-Bacon', preco: 18.00, receita: { carne:150, bacon:50, queijo:30, pao:70 } },
-    { nome: 'X-Salada', preco: 16.00, receita: { carne:120, queijo:20, alface:15, tomate:20, pao:70 } },
-    { nome: 'X-Tudo', preco: 22.00, receita: { carne:150, bacon:40, ovo:1, presunto:30, queijo:30, alface:15, tomate:20, milho:20, batataPalha:20, pao:70 } },
-    { nome: 'X-Egg', preco: 17.00, receita: { carne:150, ovo:1, queijo:30, pao:70 } },
-    { nome: 'X-Frango', preco: 18.00, receita: { frango:150, queijo:30, alface:15, tomate:20, pao:70 } },
-    { nome: 'X-Burger', preco: 14.00, receita: { carne:150, queijo:30, pao:70 } },
-    { nome: 'X-Calabresa', preco: 16.00, receita: { carne:120, calabresa:50, queijo:30, pao:70 } },
-    { nome: 'X-Coração', preco: 17.00, receita: { carne:120, coracao:60, queijo:30, pao:70 } },
-    { nome: 'Misto Quente', preco: 10.00, receita: { presunto:50, queijo:50, pao:60 } },
-    { nome: 'Veggie Burger', preco: 16.00, receita: { hamburguerGraoDeBico:130, alface:20, tomate:20, cebola:15, pao:70 } }
-];
-const refris = ['Coca-Cola','Guaraná Antarctica','Sprite','Fanta Uva','Fanta Laranja','Pepsi','Soda Limonada','Água Tônica','Schweppes Citrus','H2OH']
-    .map(nome => ({ nome, preco: 6.00, receita: { [normaliza(nome)]: 1 } }));
-const sucos = [
-    { nome: 'Suco de Laranja', preco: 8.00, receita: { laranja:3, acucar:20 } },
-    { nome: 'Limonada', preco: 7.00, receita: { limao:2, acucar:20 } },
-    { nome: 'Suco de Abacaxi', preco: 9.00, receita: { abacaxi:150, acucar:15 } },
-    { nome: 'Suco de Maracujá', preco: 8.00, receita: { maracuja:2, acucar:20 } },
-    { nome: 'Suco de Acerola', preco: 8.00, receita: { acerola:100, acucar:20 } },
-    { nome: 'Suco de Melancia', preco: 7.00, receita: { melancia:200, acucar:10 } },
-    { nome: 'Suco de Morango', preco: 9.00, receita: { morango:120, acucar:20 } },
-    { nome: 'Suco de Manga', preco: 8.00, receita: { manga:150, acucar:15 } },
-    { nome: 'Suco de Goiaba', preco: 7.00, receita: { goiaba:100, acucar:20 } },
-    { nome: 'Suco de Caju', preco: 8.00, receita: { caju:80, acucar:20 } }
-];
-const insumos = {
-    carne: { nome: 'Carne Bovina', unidCompra: 'kg', fatorCompra: 1, custoCompra: 30, estoqueMin: 2000 },
-    bacon: { nome: 'Bacon', unidCompra: 'kg', fatorCompra: 1, custoCompra: 40, estoqueMin: 800 },
-    queijo: { nome: 'Queijo', unidCompra: 'kg', fatorCompra: 1, custoCompra: 35, estoqueMin: 1500 },
-    pao: { nome: 'Pão de Hambúrguer', unidCompra: 'kg', fatorCompra: 1, custoCompra: 12, estoqueMin: 2000 },
-    ovo: { nome: 'Ovo', unidCompra: 'dz', fatorCompra: 12, custoCompra: 9.60, estoqueMin: 60 },
-    presunto: { nome: 'Presunto', unidCompra: 'kg', fatorCompra: 1, custoCompra: 28, estoqueMin: 500 },
-    alface: { nome: 'Alface', unidCompra: 'pé', fatorCompra: 1, custoCompra: 2.50, estoqueMin: 20 },
-    tomate: { nome: 'Tomate', unidCompra: 'kg', fatorCompra: 1, custoCompra: 10, estoqueMin: 400 },
-    cebola: { nome: 'Cebola', unidCompra: 'kg', fatorCompra: 1, custoCompra: 6, estoqueMin: 200 },
-    milho: { nome: 'Milho', unidCompra: 'lata', fatorCompra: 1, custoCompra: 5, estoqueMin: 10 },
-    batataPalha: { nome: 'Batata Palha', unidCompra: 'kg', fatorCompra: 1, custoCompra: 15, estoqueMin: 200 },
-    calabresa: { nome: 'Calabresa', unidCompra: 'kg', fatorCompra: 1, custoCompra: 22, estoqueMin: 300 },
-    coracao: { nome: 'Coração de Frango', unidCompra: 'kg', fatorCompra: 1, custoCompra: 18, estoqueMin: 300 },
-    frango: { nome: 'Filé de Frango', unidCompra: 'kg', fatorCompra: 1, custoCompra: 20, estoqueMin: 500 },
-    hamburguerGraoDeBico: { nome: 'Hambúrguer Grão-de-Bico', unidCompra: 'kg', fatorCompra: 1, custoCompra: 16, estoqueMin: 300 },
-    laranja: { nome: 'Laranja', unidCompra: 'un', fatorCompra: 1, custoCompra: 0.50, estoqueMin: 80 },
-    limao: { nome: 'Limão', unidCompra: 'un', fatorCompra: 1, custoCompra: 0.30, estoqueMin: 60 },
-    abacaxi: { nome: 'Abacaxi', unidCompra: 'un', fatorCompra: 1, custoCompra: 7, estoqueMin: 6 },
-    maracuja: { nome: 'Maracujá', unidCompra: 'un', fatorCompra: 1, custoCompra: 0.80, estoqueMin: 30 },
-    acerola: { nome: 'Acerola', unidCompra: 'kg', fatorCompra: 1, custoCompra: 12, estoqueMin: 500 },
-    melancia: { nome: 'Melancia', unidCompra: 'kg', fatorCompra: 1, custoCompra: 4, estoqueMin: 3000 },
-    morango: { nome: 'Morango', unidCompra: 'kg', fatorCompra: 1, custoCompra: 18, estoqueMin: 500 },
-    manga: { nome: 'Manga', unidCompra: 'un', fatorCompra: 1, custoCompra: 2, estoqueMin: 30 },
-    goiaba: { nome: 'Goiaba', unidCompra: 'kg', fatorCompra: 1, custoCompra: 6, estoqueMin: 500 },
-    caju: { nome: 'Caju', unidCompra: 'kg', fatorCompra: 1, custoCompra: 9, estoqueMin: 400 },
-    acucar: { nome: 'Açúcar', unidCompra: 'kg', fatorCompra: 1, custoCompra: 4, estoqueMin: 1000 }
+// ══════════════════════════════════════════
+// DADOS CENTRAIS
+// ══════════════════════════════════════════
+const norm = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,'').toLowerCase();
+
+const CATS = {
+  carnes:    { label:'🥩 Carnes & Proteínas',    cor:'#e5383b' },
+  laticinios:{ label:'🧀 Laticínios & Padaria',   cor:'#f4a261' },
+  hortifruti:{ label:'🥬 Hortifrúti & Mercearia', cor:'#1db954' },
+  bebidas:   { label:'🥤 Bebidas',                cor:'#0077b6' }
 };
-refris.forEach(r => { const chave = normaliza(r.nome); insumos[chave] = { nome: r.nome + ' (lata)', unidCompra: 'fardo', fatorCompra: 12, custoCompra: 30, estoqueMin: 40 }; });
-let historico = JSON.parse(localStorage.getItem('cmvHistorico') || '[]');
-let ultimoConsumo = {};
 
-// ======================= INTERFACE =======================
-function criarCamposVenda(container, lista) {
-    container.innerHTML = lista.map(p =>
-        `<div class="input-group"><label>${p.nome} (R$ ${p.preco.toFixed(2)})</label><input type="number" id="venda_${normaliza(p.nome)}" min="0" step="1" placeholder="Qtd vendida"></div>`
-    ).join('');
+const catItens = {
+  carnes:     ['carne','bacon','presunto','calabresa'],
+  laticinios: ['queijo','pao','ovo'],
+  hortifruti: ['alface','tomate','cebola','milho','batataPalha','acucar','laranja'],
+  bebidas:    ['cocacola','guarana','fanta']
+};
+
+// insumos: fator = quantas unidades base (g/un) em 1 unid de compra
+const INS = {
+  carne:       {nome:'Carne Bovina',         cat:'carnes',     unid:'kg',    fator:1000, custo:30,   min:2000, v:{ini:0,compra:0,final:0}},
+  bacon:       {nome:'Bacon',                cat:'carnes',     unid:'kg',    fator:1000, custo:40,   min:800,  v:{ini:0,compra:0,final:0}},
+  presunto:    {nome:'Presunto',             cat:'carnes',     unid:'kg',    fator:1000, custo:28,   min:500,  v:{ini:0,compra:0,final:0}},
+  calabresa:   {nome:'Calabresa',            cat:'carnes',     unid:'kg',    fator:1000, custo:22,   min:300,  v:{ini:0,compra:0,final:0}},
+  queijo:      {nome:'Queijo',               cat:'laticinios', unid:'kg',    fator:1000, custo:35,   min:1500, v:{ini:0,compra:0,final:0}},
+  pao:         {nome:'Pão de Hambúrguer',    cat:'laticinios', unid:'kg',    fator:1000, custo:12,   min:2000, v:{ini:0,compra:0,final:0}},
+  ovo:         {nome:'Ovo',                  cat:'laticinios', unid:'dz',    fator:12,   custo:9.60, min:60,   v:{ini:0,compra:0,final:0}},
+  alface:      {nome:'Alface',               cat:'hortifruti', unid:'pé',    fator:1,    custo:2.50, min:20,   v:{ini:0,compra:0,final:0}},
+  tomate:      {nome:'Tomate',               cat:'hortifruti', unid:'kg',    fator:1000, custo:10,   min:400,  v:{ini:0,compra:0,final:0}},
+  cebola:      {nome:'Cebola',               cat:'hortifruti', unid:'kg',    fator:1000, custo:6,    min:200,  v:{ini:0,compra:0,final:0}},
+  milho:       {nome:'Milho em Conserva',    cat:'hortifruti', unid:'lata',  fator:1,    custo:5,    min:10,   v:{ini:0,compra:0,final:0}},
+  batataPalha: {nome:'Batata Palha',         cat:'hortifruti', unid:'kg',    fator:1000, custo:15,   min:200,  v:{ini:0,compra:0,final:0}},
+  acucar:      {nome:'Açúcar',               cat:'hortifruti', unid:'kg',    fator:1000, custo:4,    min:1000, v:{ini:0,compra:0,final:0}},
+  laranja:     {nome:'Laranja',              cat:'hortifruti', unid:'un',    fator:1,    custo:0.50, min:80,   v:{ini:0,compra:0,final:0}},
+  cocacola:    {nome:'Coca-Cola (lata)',      cat:'bebidas',    unid:'fardo', fator:12,   custo:36,   min:48,   v:{ini:0,compra:0,final:0}},
+  guarana:     {nome:'Guaraná Antarctica',   cat:'bebidas',    unid:'fardo', fator:12,   custo:30,   min:48,   v:{ini:0,compra:0,final:0}},
+  fanta:       {nome:'Fanta Laranja (lata)', cat:'bebidas',    unid:'fardo', factor:12,  fator:12,   custo:30, min:24, v:{ini:0,compra:0,final:0}}
+};
+
+const PRODS = {
+  lanches:[
+    {nome:'X-Bacon',  preco:18, receita:{carne:150,bacon:50,queijo:30,pao:70}},
+    {nome:'X-Salada', preco:16, receita:{carne:120,queijo:20,alface:15,tomate:20,pao:70}},
+    {nome:'X-Tudo',   preco:22, receita:{carne:150,bacon:40,ovo:1,presunto:30,queijo:30,alface:15,tomate:20,milho:20,batataPalha:20,pao:70}}
+  ],
+  refri:[
+    {nome:'Coca-Cola',         preco:6, receita:{cocacola:1}},
+    {nome:'Guaraná Antarctica',preco:6, receita:{guarana:1}},
+    {nome:'Fanta Laranja',     preco:6, receita:{fanta:1}}
+  ],
+  sucos:[
+    {nome:'Suco de Laranja', preco:8, receita:{laranja:3,acucar:20}}
+  ]
+};
+
+// ESTADO
+let vendas = {};       // norm(nome) -> qtd
+let calc   = {};       // chave -> {consTeo, estoqueTeo, custoConsTeo, diverg, divergVal, nec, custoNec}
+let quebras = [];
+let fornecedores = [];
+let catFiltro = null;  // null = todas
+let abaAtual = 'lanches';
+
+// Carrossel modal
+let mCat = 'carnes';
+let mIdx = 0;
+let txStart = 0;
+
+// ══════════════════════════════════════════
+// NAVEGAÇÃO
+// ══════════════════════════════════════════
+function ir(id) {
+  document.getElementById('hub').style.display = 'none';
+  document.querySelectorAll('.secao').forEach(s => s.classList.remove('ativa'));
+  document.getElementById('secao-' + id).classList.add('ativa');
+  if(id==='estoque')    { renderEst(); }
+  if(id==='financeiro') { atualizarFin(); }
+  if(id==='dashboard')  { atualizarDash(); }
+  if(id==='vertudo')    { atualizarVertudo(); }
 }
-criarCamposVenda(document.getElementById('vendas-lanches'), lanches);
-criarCamposVenda(document.getElementById('vendas-refri'), refris);
-criarCamposVenda(document.getElementById('vendas-sucos'), sucos);
+function voltar() {
+  document.getElementById('hub').style.display = 'flex';
+  document.querySelectorAll('.secao').forEach(s => s.classList.remove('ativa'));
+}
 
-function montarCardsEstoque() {
-    const container = document.getElementById('estoque-cards-container');
-    container.innerHTML = Object.entries(insumos).map(([chave, ins]) => {
-        const custoUnitario = ins.custoCompra / ins.fatorCompra;
-        return `<div class="insumo-card neutro" id="card_${chave}" onclick="abrirDetalhes('${chave}')">
-            <div class="insumo-header">
-                <span class="insumo-nome">📦 ${ins.nome} <small style="color:var(--text-light);">(compra: ${ins.unidCompra} - R$ ${ins.custoCompra.toFixed(2)})</small></span>
-                <span class="insumo-status" id="status_badge_${chave}" style="background:#ecf0f1;color:#5d6d7e;">-</span>
-            </div>
-            <div class="progress-bar"><div class="progress-fill" id="progress_${chave}" style="width:0%;background:#27ae60;"></div></div>
-            <div class="insumo-dados">
-                <div class="input-group"><label>Estoque Inicial (g/un)</label><input type="number" id="ini_${chave}" step="any" placeholder="0"></div>
-                <div class="input-group"><label>Compras (g/un)</label><input type="number" id="compra_${chave}" step="any" placeholder="0"></div>
-                <div class="input-group"><label>Estoque Final Real (g/un)</label><input type="number" id="final_${chave}" step="any" placeholder="0"></div>
-                <div class="input-group"><label>Estoque Mínimo</label><input type="number" id="min_${chave}" step="any" value="${ins.estoqueMin}"></div>
-            </div>
-            <div class="insumo-resultados">
-                <div class="result-item"><span class="result-label">Consumo Teórico</span><span class="result-value" id="cons_${chave}">-</span></div>
-                <div class="result-item"><span class="result-label">Estoque Teórico</span><span class="result-value" id="teorico_${chave}">-</span></div>
-                <div class="result-item"><span class="result-label">Divergência</span><span class="result-value" id="div_${chave}">-</span></div>
-                <div class="result-item"><span class="result-label">Divergência R$</span><span class="result-value" id="divR_${chave}">-</span></div>
-            </div>
-            <div class="sugestao-text" id="sugestao_${chave}" style="display:none;"></div>
-        </div>`;
+// ══════════════════════════════════════════
+// VENDAS
+// ══════════════════════════════════════════
+function initVendas() {
+  const cats = [{key:'lanches',lbl:'🍔 Lanches'},{key:'refri',lbl:'🥤 Refris'},{key:'sucos',lbl:'🧃 Sucos'}];
+  document.getElementById('abas-vendas').innerHTML = cats.map((c,i) =>
+    `<button class="aba ${i===0?'ativa':''}" data-cat="${c.key}" onclick="trocarAba('${c.key}',this)">
+      ${c.lbl} <span class="aba-ct">${PRODS[c.key].length}</span>
+    </button>`
+  ).join('');
+  renderGrid('lanches');
+}
+
+function trocarAba(key, btn) {
+  document.querySelectorAll('#abas-vendas .aba').forEach(b => b.classList.remove('ativa'));
+  btn.classList.add('ativa');
+  abaAtual = key;
+  renderGrid(key);
+}
+
+function renderGrid(key) {
+  document.getElementById('grid-vendas').innerHTML =
+    `<div class="grid-prod">${PRODS[key].map(p => {
+      const k = norm(p.nome);
+      const q = vendas[k] || 0;
+      return `<div class="prod-card ${q>0?'ativo':''}" id="pc_${k}">
+        <div class="prod-nome">${p.nome}</div>
+        <div class="prod-preco">R$ ${p.preco.toFixed(2)}</div>
+        <div class="stepper">
+          <button class="st-btn minus" onclick="stepV('${k}',-1)">−</button>
+          <input type="number" id="vi_${k}" value="${q}" min="0" onchange="onV('${k}')">
+          <button class="st-btn plus" onclick="stepV('${k}',1)">+</button>
+        </div>
+        ${q>0?`<div class="prod-sub">R$ ${(q*p.preco).toFixed(2)}</div>`:''}
+      </div>`;
+    }).join('')}</div>`;
+}
+
+function stepV(k, d) {
+  const inp = document.getElementById('vi_'+k);
+  if(!inp) return;
+  inp.value = Math.max(0,(parseInt(inp.value)||0)+d);
+  onV(k);
+}
+function onV(k) {
+  const inp = document.getElementById('vi_'+k);
+  vendas[k] = Math.max(0,parseInt(inp?.value)||0);
+  const card = document.getElementById('pc_'+k);
+  if(card) card.classList.toggle('ativo', vendas[k]>0);
+  calcularDados();
+}
+
+function processarVendas() {
+  const all = todosProds();
+  let algum = false;
+  all.forEach(p => {
+    const q = vendas[norm(p.nome)] || 0;
+    if(q>0) algum = true;
+    Object.entries(p.receita).forEach(([ins,qtdU]) => {
+      INS[ins] && (INS[ins].v.final = Math.max(0, INS[ins].v.ini + INS[ins].v.compra - qtdU*q));
+    });
+  });
+  if(!algum){ alert('Nenhuma venda registrada.'); return; }
+  calcularDados();
+  alert('✅ Vendas processadas!\nEstoque descontado automaticamente com base nas fichas técnicas.');
+}
+
+// ══════════════════════════════════════════
+// CÁLCULO CENTRAL
+// ══════════════════════════════════════════
+function calcularDados() {
+  const all = todosProds();
+  let consTeoTotal = {};
+  let fat = 0;
+  Object.keys(INS).forEach(k => consTeoTotal[k] = 0);
+
+  all.forEach(p => {
+    const q = vendas[norm(p.nome)] || 0;
+    fat += q * p.preco;
+    Object.entries(p.receita).forEach(([ins,qtdU]) => {
+      if(consTeoTotal[ins]!==undefined) consTeoTotal[ins] += qtdU*q;
+    });
+  });
+
+  let custoTotal=0, pedTotal=0;
+  Object.entries(INS).forEach(([k,ins]) => {
+    const consTeo = consTeoTotal[k] || 0;
+    const estTeo  = ins.v.ini + ins.v.compra - consTeo;
+    const cUnit   = ins.custo / ins.fator;
+    const custoCons = consTeo * cUnit;
+    custoTotal += custoCons;
+
+    const div      = ins.v.final - estTeo;
+    const divVal   = div * cUnit;
+    let nec=0, custoNec=0;
+    if(ins.v.final < ins.min){ nec = ins.min - ins.v.final; custoNec = nec * cUnit; pedTotal += custoNec; }
+
+    calc[k] = { consTeo, estTeo, custoCons, div, divVal, nec, custoNec };
+  });
+
+  // Atualizar cards financeiros se visíveis
+  const fvFat = document.getElementById('fv-fat');
+  if(fvFat){
+    fvFat.textContent = `R$ ${fat.toFixed(2)}`;
+    document.getElementById('fv-cst').textContent = `R$ ${custoTotal.toFixed(2)}`;
+    document.getElementById('fv-mrg').textContent = `R$ ${(fat-custoTotal).toFixed(2)}`;
+    document.getElementById('fv-ped').textContent = `R$ ${pedTotal.toFixed(2)}`;
+  }
+}
+
+function todosProds(){ return [...PRODS.lanches,...PRODS.refri,...PRODS.sucos]; }
+
+// ══════════════════════════════════════════
+// ESTOQUE — ACCORDION
+// ══════════════════════════════════════════
+function renderEst() {
+  // Carrossel filtro
+  const bar = document.getElementById('catFiltroBar');
+  bar.innerHTML = `<div class="cat-pill ${catFiltro===null?'ativa':''}" onclick="filtCat(null,this)">🔍 Todas</div>` +
+    Object.entries(CATS).map(([k,c]) =>
+      `<div class="cat-pill ${catFiltro===k?'ativa':''}" onclick="filtCat('${k}',this)">${c.label}</div>`
+    ).join('');
+
+  renderAccordion();
+}
+
+function filtCat(key, el) {
+  catFiltro = key;
+  document.querySelectorAll('#catFiltroBar .cat-pill').forEach(p => p.classList.remove('ativa'));
+  el.classList.add('ativa');
+  renderAccordion();
+}
+
+function renderAccordion() {
+  const catsFilt = catFiltro ? {[catFiltro]:CATS[catFiltro]} : CATS;
+  document.getElementById('est-accordion').innerHTML = Object.entries(catsFilt).map(([ck, cat]) => {
+    const itens = catItens[ck] || [];
+    const linhas = itens.map(k => {
+      const ins = INS[k]; if(!ins) return '';
+      const c   = calc[k];
+      const lbl = ins.unid === 'kg' ? 'g' : ins.unid;
+      const baixo = ins.v.final < ins.min;
+      return `<div class="ins-row" onclick="abrirModalEst('${ck}','${k}')">
+        <div>
+          <div class="ins-nome">${ins.nome}</div>
+          <div class="ins-info">Final: ${ins.v.final.toFixed(0)} ${lbl} &nbsp;|&nbsp; Mín: ${ins.min.toFixed(0)} ${lbl}${c&&c.div<-50?' &nbsp;|&nbsp; Div: ⚠️':''}</div>
+        </div>
+        <div class="ins-row-r">
+          ${baixo?'<span class="badge bg-red">⚠️ Repor</span>':'<span class="badge bg-green">✅ OK</span>'}
+          <span class="txt-m" style="font-size:1.1rem;">›</span>
+        </div>
+      </div>`;
     }).join('');
-}
-montarCardsEstoque();
 
-// Tabela de Custos (Financeiro)
-function montarTabelaCustos() {
-    const tbody = document.querySelector('#tabelaCustos tbody');
-    tbody.innerHTML = Object.entries(insumos).map(([chave, ins]) =>
-        `<tr>
-            <td>${ins.nome}</td>
-            <td>${ins.unidCompra} (${ins.fatorCompra > 1 ? ins.fatorCompra + ' un' : ''})</td>
-            <td><input type="number" id="custo_${chave}" value="${ins.custoCompra}" step="0.01" style="width:100px;" onchange="atualizarCustoInsumo('${chave}', this.value)"></td>
-        </tr>`
-    ).join('');
-}
-montarTabelaCustos();
-
-window.atualizarCustoInsumo = function(chave, valor) {
-    const novoCusto = parseFloat(valor) || 0;
-    insumos[chave].custoCompra = novoCusto;
-    montarCardsEstoque();
-    if (typeof ultimoConsumo === 'object' && Object.keys(ultimoConsumo).length > 0) calcular(false);
-};
-
-// ======================= NAVEGAÇÃO =======================
-function mostrarSecao(secao) {
-    document.getElementById('hub').style.display = 'none';
-    document.querySelectorAll('.secao').forEach(s => s.classList.remove('ativa'));
-    document.getElementById('secao-' + secao).classList.add('ativa');
-    if (secao === 'ver-tudo') preencherVerTudo();
-    if (secao === 'financeiro') montarTabelaCustos();
-}
-function voltarHub() {
-    document.getElementById('hub').style.display = 'grid';
-    document.querySelectorAll('.secao').forEach(s => s.classList.remove('ativa'));
+    return `<div class="cat-bloco">
+      <div class="cat-hdr" onclick="toggleCat(this)" style="border-left:4px solid ${cat.cor};">
+        <div class="cat-hdr-l">
+          <span>${cat.label}</span>
+          <span class="badge bg-blue">${itens.length}</span>
+        </div>
+        <span class="cat-seta">▼</span>
+      </div>
+      <div class="cat-body">${linhas}</div>
+    </div>`;
+  }).join('');
 }
 
-// ======================= CÁLCULO =======================
-function calcular(salvarHistorico = true) {
-    const consumo = {}; Object.keys(insumos).forEach(k => consumo[k] = 0);
-    const simPct = parseInt(document.getElementById('simulador')?.value || 0) / 100;
-    let receitaTotal = 0;
-    [lanches, refris, sucos].forEach(lista => {
-        lista.forEach(p => {
-            let qtd = parseFloat(document.getElementById('venda_' + normaliza(p.nome))?.value) || 0;
-            qtd *= (1 + simPct);
-            if (qtd > 0) { receitaTotal += qtd * p.preco; Object.entries(p.receita).forEach(([k, v]) => { if (consumo[k] !== undefined) consumo[k] += v * qtd; }); }
-        });
-    });
-    ultimoConsumo = consumo;
-    let maiorPerdaR = -Infinity, insumoCritico = '', totais = { perdaTotal: 0, ganhoTotal: 0, cmvTotal: 0 };
-    let pedidoSemanal = [];
-    Object.entries(insumos).forEach(([chave, ins]) => {
-        const ini = parseFloat(document.getElementById(`ini_${chave}`)?.value) || 0;
-        const compra = parseFloat(document.getElementById(`compra_${chave}`)?.value) || 0;
-        const finalReal = parseFloat(document.getElementById(`final_${chave}`)?.value) || 0;
-        const minEstoque = parseFloat(document.getElementById(`min_${chave}`)?.value) || ins.estoqueMin;
-        const consTeo = consumo[chave] || 0;
-        const estoqueTeo = ini + compra - consTeo;
-        const divQtd = estoqueTeo - finalReal;
-        const custoUnitario = ins.custoCompra / ins.fatorCompra;
-        const divR = divQtd * custoUnitario;
-        totais.cmvTotal += consTeo * custoUnitario;
-        document.getElementById(`cons_${chave}`).textContent = consTeo.toFixed(2);
-        document.getElementById(`teorico_${chave}`).textContent = estoqueTeo.toFixed(2);
-        document.getElementById(`div_${chave}`).textContent = divQtd.toFixed(2);
-        document.getElementById(`divR_${chave}`).textContent = 'R$ ' + divR.toFixed(2);
-        const card = document.getElementById(`card_${chave}`), badge = document.getElementById(`status_badge_${chave}`), sug = document.getElementById(`sugestao_${chave}`), progress = document.getElementById(`progress_${chave}`);
-        card.classList.remove('perda', 'ok', 'neutro');
-        const pctMinimo = Math.min(100, Math.max(0, (finalReal / minEstoque) * 100));
-        progress.style.width = pctMinimo + '%';
-        progress.style.background = pctMinimo < 30 ? '#e74c3c' : pctMinimo < 70 ? '#f39c12' : '#27ae60';
-        if (finalReal < minEstoque) {
-            badge.textContent = '🔴 Abaixo'; badge.style.background = '#fdecea'; badge.style.color = '#e74c3c';
-            const necessidade = minEstoque - finalReal;
-            const custoNecessidade = necessidade * custoUnitario;
-            sug.style.display = 'block';
-            sug.textContent = `💡 Comprar ${necessidade.toFixed(2)} unidades (≈ R$ ${custoNecessidade.toFixed(2)})`;
-            pedidoSemanal.push({ nome: ins.nome, qtd: necessidade, unidCompra: ins.unidCompra, fatorCompra: ins.fatorCompra, custoCompra: ins.custoCompra, custoUnitario, custoTotal: custoNecessidade });
-        } else {
-            badge.textContent = '🟢 OK'; badge.style.background = '#eafaf1'; badge.style.color = '#27ae60'; sug.style.display = 'none';
-        }
-        if (divQtd > 0.001) { card.classList.add('perda'); totais.perdaTotal += divR; if (divR > maiorPerdaR) { maiorPerdaR = divR; insumoCritico = ins.nome; } }
-        else if (divQtd < -0.001) { card.classList.add('ok'); totais.ganhoTotal += Math.abs(divR); }
-        else card.classList.add('neutro');
-    });
-    const lucroBruto = receitaTotal - totais.cmvTotal;
-    const totalPedido = pedidoSemanal.reduce((s, i) => s + i.custoTotal, 0);
-    document.getElementById('dashboardContent').innerHTML = `
-        <p>🔴 <strong>Ponto Crítico:</strong> ${insumoCritico || 'Nenhum'} (R$ ${maiorPerdaR > -Infinity ? maiorPerdaR.toFixed(2) : '0,00'})</p>
-        <p>📉 Perda total: R$ ${totais.perdaTotal.toFixed(2)} | 📈 Ganho total: R$ ${totais.ganhoTotal.toFixed(2)}</p>
-        <p>🛒 <strong>Pedido Semanal:</strong> ${pedidoSemanal.length} itens | Total: R$ ${totalPedido.toFixed(2)}</p>`;
-    let pedidoHtml = pedidoSemanal.map(i => `<tr><td>${i.nome}</td><td>${(i.qtd / i.fatorCompra).toFixed(2)} ${i.unidCompra}</td><td>R$ ${i.custoCompra.toFixed(2)}/${i.unidCompra}</td><td>R$ ${i.custoTotal.toFixed(2)}</td></tr>`).join('');
-    document.getElementById('resumoFinanceiro').innerHTML = `
-        <p>📈 <strong>Receita Total:</strong> R$ ${receitaTotal.toFixed(2)}</p>
-        <p>📉 <strong>CMV Total:</strong> R$ ${totais.cmvTotal.toFixed(2)}</p>
-        <p>💰 <strong>Lucro Bruto:</strong> R$ ${lucroBruto.toFixed(2)}</p>
-        <h3>🛒 Pedido Semanal Sugerido</h3>
-        <table style="width:100%;border-collapse:collapse;">${pedidoHtml || '<tr><td>Nenhum item abaixo do mínimo.</td></tr>'}</table>
-        <p><strong>Total do Pedido:</strong> R$ ${totalPedido.toFixed(2)}</p>`;
-    if (salvarHistorico) {
-        historico.push({ data: new Date().toLocaleString(), consumo: { ...consumo }, totais: { ...totais }, receitaTotal, lucroBruto, insumoCritico, totalPedido });
-        if (historico.length > 10) historico.shift();
-        localStorage.setItem('cmvHistorico', JSON.stringify(historico));
-    }
+function toggleCat(hdr) {
+  const body = hdr.nextElementSibling;
+  const seta = hdr.querySelector('.cat-seta');
+  const open = body.classList.toggle('open');
+  seta.textContent = open ? '▲' : '▼';
 }
 
-// ======================= EVENTOS =======================
-document.getElementById('calcularBtnEstoque').addEventListener('click', () => calcular());
-document.getElementById('simulador').addEventListener('input', function() { document.getElementById('simValor').textContent = this.value + '%'; calcular(false); });
-document.getElementById('abas-vendas').addEventListener('click', e => {
-    if (e.target.classList.contains('aba-btn')) {
-        document.querySelectorAll('#abas-vendas .aba-btn').forEach(b => b.classList.remove('ativa'));
-        e.target.classList.add('ativa');
-        document.querySelectorAll('.tab-vendas').forEach(el => el.style.display = 'none');
-        document.getElementById('vendas-' + e.target.dataset.tab).style.display = 'grid';
-    }
+// ══════════════════════════════════════════
+// MODAL CARROSSEL — ESTOQUE
+// ══════════════════════════════════════════
+function abrirModalEst(catKey, insKey) {
+  mCat = catKey;
+  mIdx = (catItens[catKey]||[]).indexOf(insKey);
+  if(mIdx<0) mIdx=0;
+  renderMCatBar();
+  renderMCard();
+  document.getElementById('modalEst').classList.add('open');
+}
+function fecharModalEst() { document.getElementById('modalEst').classList.remove('open'); }
+function fecharModalEstFora(e) { if(e.target.id==='modalEst') fecharModalEst(); }
+
+function renderMCatBar() {
+  document.getElementById('mCatScroll').innerHTML = Object.entries(CATS).map(([k,c]) =>
+    `<div class="mcat-chip ${k===mCat?'ativa':''}" onclick="mudarCat('${k}')">${c.label}</div>`
+  ).join('');
+}
+function mudarCat(k) { mCat=k; mIdx=0; renderMCatBar(); renderMCard(); }
+
+function navIns(d) {
+  const itens = catItens[mCat] || [];
+  mIdx += d;
+  const catKeys = Object.keys(CATS);
+  if(mIdx >= itens.length) {
+    const ci = catKeys.indexOf(mCat);
+    if(ci < catKeys.length-1){ mCat=catKeys[ci+1]; mIdx=0; renderMCatBar(); }
+    else mIdx = itens.length-1;
+  } else if(mIdx < 0) {
+    const ci = catKeys.indexOf(mCat);
+    if(ci > 0){ mCat=catKeys[ci-1]; mIdx=(catItens[mCat]||[]).length-1; renderMCatBar(); }
+    else mIdx=0;
+  }
+  renderMCard();
+}
+
+function renderMCard() {
+  const itens = catItens[mCat] || [];
+  const k     = itens[mIdx];
+  if(!k || !INS[k]) return;
+  const ins   = INS[k];
+  const c     = calc[k] || {consTeo:0,estTeo:0,custoCons:0,div:0,divVal:0,nec:0,custoNec:0};
+  const lbl   = ins.unid==='kg' ? 'g' : ins.unid;
+  const passo = ins.unid==='kg' ? 100 : 1;
+  const cUnit = ins.custo / ins.fator;
+
+  document.getElementById('mNavInfo').textContent = `${ins.nome} · ${mIdx+1} de ${itens.length}`;
+  document.getElementById('btnPrev').disabled = (mIdx===0 && mCat===Object.keys(CATS)[0]);
+  document.getElementById('btnNext').disabled = (mIdx===itens.length-1 && mCat===Object.keys(CATS).at(-1));
+
+  const texNec = c.nec > 0
+    ? (ins.unid==='kg' ? `${(c.nec/1000).toFixed(2)} kg` : `${(c.nec/ins.fator).toFixed(2)} ${ins.unid}`)
+    : '—';
+  const divClasse = c.div<0 ? 'txt-d' : c.div>0 ? 'txt-s' : '';
+  const divIco    = c.div<0 ? '⬇️' : c.div>0 ? '⬆️' : '—';
+
+  document.getElementById('mBody').innerHTML = `<div class="swipe-in">
+    <div class="m-ins-title">${ins.nome}</div>
+    <div class="m-ins-sub">${CATS[ins.cat]?.label||''} &nbsp;·&nbsp; R$ ${ins.custo.toFixed(2)} / ${ins.unid} &nbsp;·&nbsp; R$ ${cUnit.toFixed(4)}/g</div>
+    <div class="campos-2 mt12">
+      <div class="ig"><label>Estoque Inicial (${lbl})</label>
+        <div class="stepper">
+          <button class="st-btn minus" onclick="stepM('${k}','ini',${-passo})">−</button>
+          <input type="number" id="m_ini_${k}" value="${ins.v.ini}" onchange="saveM('${k}')">
+          <button class="st-btn plus" onclick="stepM('${k}','ini',${passo})">+</button>
+        </div>
+      </div>
+      <div class="ig"><label>Compras Recebidas (${lbl})</label>
+        <div class="stepper">
+          <button class="st-btn minus" onclick="stepM('${k}','compra',${-passo})">−</button>
+          <input type="number" id="m_compra_${k}" value="${ins.v.compra}" onchange="saveM('${k}')">
+          <button class="st-btn plus" onclick="stepM('${k}','compra',${passo})">+</button>
+        </div>
+      </div>
+      <div class="ig"><label>Contagem Final Real (${lbl})</label>
+        <div class="stepper">
+          <button class="st-btn minus" onclick="stepM('${k}','final',${-passo})">−</button>
+          <input type="number" id="m_final_${k}" value="${ins.v.final}" onchange="saveM('${k}')">
+          <button class="st-btn plus" onclick="stepM('${k}','final',${passo})">+</button>
+        </div>
+      </div>
+      <div class="ig"><label>Estoque Mínimo (${lbl})</label>
+        <div class="stepper">
+          <button class="st-btn minus" onclick="stepM('${k}','min',${-passo})">−</button>
+          <input type="number" id="m_min_${k}" value="${ins.min}" onchange="saveM('${k}')">
+          <button class="st-btn plus" onclick="stepM('${k}','min',${passo})">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="calcs-grid mt12">
+      <div class="dado consumo">
+        <div class="dado-r">Consumo Teórico</div>
+        <div class="dado-v">${c.consTeo.toFixed(0)} ${lbl}</div>
+        <div class="dado-s txt-d">R$ ${c.custoCons.toFixed(2)}</div>
+      </div>
+      <div class="dado teorico">
+        <div class="dado-r">Estoque Teórico</div>
+        <div class="dado-v">${c.estTeo.toFixed(0)} ${lbl}</div>
+        <div class="dado-s">Ini + Compra − Consumo</div>
+      </div>
+      <div class="dado diverg" style="grid-column:1/-1;">
+        <div class="dado-r">Divergência (Real vs Teórico)</div>
+        <div class="dado-v ${divClasse}">${divIco} ${Math.abs(c.div).toFixed(0)} ${lbl}</div>
+        <div class="dado-s ${divClasse}">R$ ${c.divVal.toFixed(2)} &nbsp;·&nbsp; ${c.div<0?'Possível perda/quebra':c.div>0?'Sobra':'Sem divergência'}</div>
+      </div>
+      <div class="dado pedido">
+        <div class="dado-r" style="color:var(--primary);">Pedido de Reposição</div>
+        <div class="flex jb ac mt4">
+          <div class="dado-v" style="color:var(--primary);">${texNec}</div>
+          <div class="dado-v" style="color:var(--primary);">R$ ${c.custoNec.toFixed(2)}</div>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-red btn-full mt12" onclick="fecharModalEst()">❌ Fechar</button>
+  </div>`;
+
+  // Swipe
+  const body = document.getElementById('mBody');
+  body.addEventListener('touchstart', e => { txStart = e.touches[0].clientX; }, {passive:true});
+  body.addEventListener('touchend', e => {
+    const d = e.changedTouches[0].clientX - txStart;
+    if(Math.abs(d)>50) navIns(d<0?1:-1);
+  }, {passive:true});
+}
+
+function stepM(k, campo, d) {
+  const id = campo==='min' ? `m_min_${k}` : `m_${campo}_${k}`;
+  const el = document.getElementById(id);
+  if(!el) return;
+  const novo = Math.max(0,(parseFloat(el.value)||0)+d);
+  el.value = novo;
+  if(campo==='min') INS[k].min = novo;
+  else INS[k].v[campo] = novo;
+  calcularDados();
+  renderMCard();
+}
+
+function saveM(k) {
+  const g = id => parseFloat(document.getElementById(id)?.value)||0;
+  INS[k].v.ini    = g(`m_ini_${k}`);
+  INS[k].v.compra = g(`m_compra_${k}`);
+  INS[k].v.final  = g(`m_final_${k}`);
+  INS[k].min      = g(`m_min_${k}`);
+  calcularDados();
+}
+
+// ══════════════════════════════════════════
+// FORMULÁRIOS
+// ══════════════════════════════════════════
+function abrirForm(id) { document.getElementById(id).classList.add('open'); }
+function fecharForm(id) { document.getElementById(id).classList.remove('open'); }
+
+// NOVO PRODUTO
+function addLinhIng() {
+  const opts = Object.entries(INS).map(([k,i]) => `<option value="${k}">${i.nome}</option>`).join('');
+  const div = document.createElement('div');
+  div.style.cssText = 'display:grid;grid-template-columns:2fr 1fr auto;gap:8px;align-items:end;';
+  div.innerHTML = `
+    <div class="ig"><label>Insumo</label><select class="np_ins">${opts}</select></div>
+    <div class="ig"><label>Qtd (g/un)</label><input type="number" class="np_qtd" value="0" min="0"></div>
+    <button class="btn btn-red btn-sm" style="align-self:flex-end;" onclick="this.parentElement.remove()">✕</button>`;
+  document.getElementById('np_ings').appendChild(div);
+}
+
+function salvarNovoProd() {
+  const nome  = document.getElementById('np_nome').value.trim();
+  const cat   = document.getElementById('np_cat').value;
+  const preco = parseFloat(document.getElementById('np_preco').value)||0;
+  if(!nome){ alert('Informe o nome.'); return; }
+  const receita = {};
+  document.querySelectorAll('#np_ings > div').forEach(d => {
+    const ins = d.querySelector('.np_ins').value;
+    const qtd = parseFloat(d.querySelector('.np_qtd').value)||0;
+    if(qtd>0) receita[ins] = qtd;
+  });
+  PRODS[cat].push({nome,preco,receita});
+  fecharForm('formNovoProd');
+  initVendas();
+  alert(`✅ Produto "${nome}" criado com sucesso!`);
+}
+
+// NOVO INSUMO
+function salvarNovoIns() {
+  const nome  = document.getElementById('ni_nome').value.trim();
+  const cat   = document.getElementById('ni_cat').value;
+  const unid  = document.getElementById('ni_unid').value.trim();
+  const fator = parseFloat(document.getElementById('ni_fator').value)||1;
+  const custo = parseFloat(document.getElementById('ni_custo').value)||0;
+  const min   = parseFloat(document.getElementById('ni_min').value)||0;
+  if(!nome||!unid){ alert('Nome e unidade são obrigatórios.'); return; }
+  const k = norm(nome);
+  INS[k] = {nome,cat,unid,fator,custo,min,v:{ini:0,compra:0,final:0}};
+  if(catItens[cat]) catItens[cat].push(k);
+  fecharForm('formNovoIns');
+  renderEst();
+  atualizarTabCustos();
+  alert(`✅ Insumo "${nome}" adicionado!`);
+}
+
+// QUEBRA
+function abrirModalQuebra() {
+  const sel = document.getElementById('qb_ins');
+  sel.innerHTML = Object.entries(INS).map(([k,i]) => `<option value="${k}">${i.nome}</option>`).join('');
+  document.getElementById('qb_data').value = new Date().toISOString().split('T')[0];
+  abrirForm('formQuebra');
+}
+function salvarQuebra() {
+  const k      = document.getElementById('qb_ins').value;
+  const qtd    = parseFloat(document.getElementById('qb_qtd').value)||0;
+  const data   = document.getElementById('qb_data').value;
+  const motivo = document.getElementById('qb_motivo').value;
+  const obs    = document.getElementById('qb_obs').value;
+  if(qtd<=0){ alert('Informe a quantidade perdida.'); return; }
+  INS[k].v.final = Math.max(0, INS[k].v.final - qtd);
+  const custoUnit = INS[k].custo / INS[k].fator;
+  quebras.push({k, nome:INS[k].nome, qtd, data, motivo, obs, custo:qtd*custoUnit});
+  fecharForm('formQuebra');
+  calcularDados();
+  alert(`⚠️ Quebra registrada: ${qtd} de ${INS[k].nome} — ${motivo}`);
+}
+
+// FORNECEDOR
+function salvarForn() {
+  const nome  = document.getElementById('forn_nome').value.trim();
+  const ins   = document.getElementById('forn_ins').value.trim();
+  const tel   = document.getElementById('forn_tel').value.trim();
+  const prazo = document.getElementById('forn_prazo').value.trim();
+  if(!nome){ alert('Nome obrigatório.'); return; }
+  fornecedores.push({nome,ins,tel,prazo});
+  fecharForm('formForn');
+  renderForn();
+  alert(`✅ Fornecedor "${nome}" cadastrado!`);
+}
+function renderForn() {
+  const el = document.getElementById('listaForn');
+  el.innerHTML = fornecedores.length
+    ? fornecedores.map((f,i) => `<div class="forn-card">
+        <div class="flex jb ac">
+          <div class="forn-nome">🏭 ${f.nome}</div>
+          <button class="btn btn-red btn-sm" onclick="remForn(${i})">✕</button>
+        </div>
+        <div class="forn-info">📦 ${f.ins||'—'}</div>
+        <div class="forn-info">📞 ${f.tel||'—'} &nbsp;·&nbsp; ⏱️ ${f.prazo||'—'}</div>
+      </div>`).join('')
+    : '<p class="txt-m" style="font-size:.82rem;">Nenhum fornecedor cadastrado.</p>';
+}
+function remForn(i){ fornecedores.splice(i,1); renderForn(); }
+
+// ══════════════════════════════════════════
+// FINANCEIRO
+// ══════════════════════════════════════════
+function atualizarFin() {
+  calcularDados();
+  atualizarTabPedidos();
+  atualizarTabCustos();
+  renderForn();
+}
+
+function atualizarTabPedidos() {
+  const linhas = Object.entries(INS)
+    .filter(([k]) => calc[k] && calc[k].nec > 0)
+    .map(([k,ins]) => {
+      const c   = calc[k];
+      const lbl = ins.unid==='kg' ? `${(c.nec/1000).toFixed(2)} kg` : `${(c.nec/ins.fator).toFixed(2)} ${ins.unid}`;
+      return `<tr><td>${ins.nome}</td><td><strong>${lbl}</strong></td><td class="txt-d">R$ ${c.custoNec.toFixed(2)}</td></tr>`;
+    }).join('');
+
+  document.getElementById('tabPedidos').innerHTML = linhas
+    ? `<table class="tabela"><thead><tr><th>Insumo</th><th>Qtd Sugerida</th><th>Custo</th></tr></thead><tbody>${linhas}</tbody></table>`
+    : '<p class="txt-m" style="font-size:.82rem;">✅ Todos os estoques estão acima do mínimo.</p>';
+}
+
+function atualizarTabCustos() {
+  document.querySelector('#tabCustos tbody').innerHTML = Object.entries(INS).map(([k,ins]) => {
+    const c    = calc[k] || {custoCons:0};
+    const cU   = ins.custo / ins.fator;
+    return `<tr>
+      <td>${ins.nome}</td>
+      <td>${ins.unid}</td>
+      <td>R$ ${cU.toFixed(4)}/g</td>
+      <td class="txt-d">R$ ${c.custoCons.toFixed(2)}</td>
+    </tr>`;
+  }).join('');
+}
+
+function exportar() {
+  let fat=0, custo=0;
+  todosProds().forEach(p => { fat += (vendas[norm(p.nome)]||0)*p.preco; });
+  Object.values(calc).forEach(c => custo += c.custoCons||0);
+  const linhas = Object.entries(INS).map(([k,i]) => {
+    const c = calc[k] || {};
+    return `${i.nome.padEnd(30)} CMV: R$ ${(c.custoCons||0).toFixed(2)}`;
+  }).join('\n');
+  const txt = `CMV LEGAL — RELATÓRIO SEMANAL\n${new Date().toLocaleDateString('pt-BR')}\n${'='.repeat(45)}\n
+FATURAMENTO BRUTO:   R$ ${fat.toFixed(2)}
+CUSTO DE INSUMOS:    R$ ${custo.toFixed(2)}
+MARGEM OPERACIONAL:  R$ ${(fat-custo).toFixed(2)}
+\n${'='.repeat(45)}\nCUSTO POR INSUMO:\n${linhas}
+\nQuebrass registradas: ${quebras.length}
+Fornecedores: ${fornecedores.length}
+\nDesenvolvido por Heitor Serra Neto © 2026`;
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([txt],{type:'text/plain'}));
+  a.download = `CMVLegal_${new Date().toLocaleDateString('pt-BR').replace(/\//g,'-')}.txt`;
+  a.click();
+}
+
+// ══════════════════════════════════════════
+// DASHBOARD
+// ══════════════════════════════════════════
+function atualizarDash() {
+  calcularDados();
+
+  // Alertas
+  const al = [];
+  Object.entries(INS).forEach(([k,ins]) => {
+    if(ins.v.final < ins.min) al.push({tipo:'crit',ico:'🔴',tit:`${ins.nome} abaixo do mínimo`,
+      desc:`Final: ${ins.v.final.toFixed(0)} | Mínimo: ${ins.min.toFixed(0)} | Repor: R$ ${(calc[k]?.custoNec||0).toFixed(2)}`});
+    if(calc[k] && calc[k].div < -100) al.push({tipo:'atenc',ico:'🟡',tit:`Divergência suspeita: ${ins.nome}`,
+      desc:`${Math.abs(calc[k].div).toFixed(0)} unidades a menos · R$ ${Math.abs(calc[k].divVal).toFixed(2)}`});
+  });
+
+  document.getElementById('dash-alertas').innerHTML = al.length
+    ? al.map(a => `<div class="alerta ${a.tipo}"><span class="al-ico">${a.ico}</span><div><div class="al-tit">${a.tit}</div><div class="al-desc">${a.desc}</div></div></div>`).join('')
+    : '<div class="alerta ok"><span class="al-ico">✅</span><div><div class="al-tit">Tudo em ordem!</div><div class="al-desc">Nenhum alerta crítico.</div></div></div>';
+
+  // Top produtos
+  const top = todosProds()
+    .filter(p => (vendas[norm(p.nome)]||0) > 0)
+    .sort((a,b) => (vendas[norm(b.nome)]||0) - (vendas[norm(a.nome)]||0))
+    .slice(0,5);
+
+  document.getElementById('dash-stats').innerHTML = top.length
+    ? top.map((p,i) => {
+        const q = vendas[norm(p.nome)]||0;
+        return `<div class="alerta ok">
+          <span class="al-ico">${['🥇','🥈','🥉','4️⃣','5️⃣'][i]}</span>
+          <div>
+            <div class="al-tit">${p.nome} — ${q} vendidos</div>
+            <div class="al-desc">Faturamento: R$ ${(q*p.preco).toFixed(2)} · Previsão próx. semana: ~${Math.round(q*1.08)} unid.</div>
+          </div>
+        </div>`;
+      }).join('')
+    : '<p class="txt-m" style="font-size:.82rem;">Registre vendas para ver estatísticas.</p>';
+
+  // Quebras
+  document.getElementById('dash-quebras').innerHTML = quebras.length
+    ? `<table class="tabela"><thead><tr><th>Data</th><th>Insumo</th><th>Motivo</th><th>Custo</th></tr></thead><tbody>`+
+      quebras.map(q=>`<tr><td>${q.data}</td><td>${q.nome}</td><td>${q.motivo}</td><td class="txt-d">R$ ${q.custo.toFixed(2)}</td></tr>`).join('')+
+      '</tbody></table>'
+    : '<p class="txt-m" style="font-size:.82rem;">Nenhuma quebra registrada.</p>';
+}
+
+// ══════════════════════════════════════════
+// VER TUDO
+// ══════════════════════════════════════════
+function atualizarVertudo() {
+  calcularDados();
+  let fat=0, custo=0, ped=0;
+  todosProds().forEach(p => fat += (vendas[norm(p.nome)]||0)*p.preco);
+  Object.values(calc).forEach(c => { custo += c.custoCons||0; ped += c.custoNec||0; });
+  const all = todosProds();
+  document.getElementById('vertudo-conteudo').innerHTML = `
+    <div class="fin-grid" style="margin-bottom:14px;">
+      <div class="fin-card fat"><div class="fin-lbl">Faturamento</div><div class="fin-val" style="font-size:1.1rem;">R$ ${fat.toFixed(2)}</div></div>
+      <div class="fin-card cst"><div class="fin-lbl">CMV</div><div class="fin-val" style="font-size:1.1rem;">R$ ${custo.toFixed(2)}</div></div>
+      <div class="fin-card mrg"><div class="fin-lbl">Margem</div><div class="fin-val" style="font-size:1.1rem;">R$ ${(fat-custo).toFixed(2)}</div></div>
+      <div class="fin-card ped"><div class="fin-lbl">Pedido</div><div class="fin-val" style="font-size:1.1rem;">R$ ${ped.toFixed(2)}</div></div>
+    </div>
+    <p class="txt-m" style="font-size:.8rem;">
+      📦 ${Object.keys(INS).length} insumos &nbsp;·&nbsp;
+      🛒 ${all.length} produtos &nbsp;·&nbsp;
+      ⚠️ ${quebras.length} quebras &nbsp;·&nbsp;
+      🏭 ${fornecedores.length} fornecedores
+    </p>`;
+}
+
+// ══════════════════════════════════════════
+// SIMULADORES
+// ══════════════════════════════════════════
+document.getElementById('btnSimVendas').addEventListener('click', () => {
+  todosProds().forEach(p => { vendas[norm(p.nome)] = Math.floor(Math.random()*25)+5; });
+  renderGrid(abaAtual);
+  calcularDados();
 });
-document.getElementById('simularVendasBtn').addEventListener('click', () => {
-    [lanches, refris, sucos].forEach(lista => lista.forEach(p => { const el = document.getElementById('venda_' + normaliza(p.nome)); if (el) el.value = Math.floor(Math.random() * 30) + 5; }));
-    calcular(false);
-});
-document.getElementById('simularEstoqueBtn').addEventListener('click', () => {
-    Object.entries(insumos).forEach(([chave, ins]) => {
-        const min = parseFloat(document.getElementById(`min_${chave}`)?.value) || ins.estoqueMin;
-        const ini = min * (1.5 + Math.random());
-        const compra = min * (0.3 + Math.random() * 0.5);
-        const finalReal = ini + compra - (min * (0.6 + Math.random() * 0.8));
-        document.getElementById(`ini_${chave}`).value = ini.toFixed(0);
-        document.getElementById(`compra_${chave}`).value = compra.toFixed(0);
-        document.getElementById(`final_${chave}`).value = Math.max(0, finalReal).toFixed(0);
-    });
-    calcular(false);
-});
-document.getElementById('exemploBtn').addEventListener('click', () => {
-    const dados = { carne:{ini:5000,compra:2000,final:5800}, bacon:{ini:1500,compra:600,final:1300}, queijo:{ini:3000,compra:1000,final:2800}, pao:{ini:4000,compra:2000,final:3900}, ovo:{ini:100,compra:30,final:105}, presunto:{ini:1000,compra:300,final:950} };
-    Object.entries(dados).forEach(([k,v]) => { ['ini','compra','final'].forEach(t => { const el = document.getElementById(`${t}_${k}`); if(el) el.value = v[t]; }); });
-    ['xbacon','xtudo','xsalada'].forEach((id,i) => { const el = document.getElementById(`venda_${id}`); if(el) el.value = [20,10,15][i]; });
-    calcular(false);
-});
-document.getElementById('salvarCustosBtn').addEventListener('click', () => { alert('Custos salvos!'); calcular(false); });
-document.getElementById('exportarBtn').addEventListener('click', () => {
-    let texto = '📄 Relatório CMV Legal – ' + new Date().toLocaleString() + '\n\n' + document.getElementById('resumoFinanceiro').innerText;
-    const blob = new Blob([texto], { type: 'text/plain;charset=utf-8' });
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'relatorio_cmv.txt'; a.click();
+
+document.getElementById('btnSimEst').addEventListener('click', () => {
+  Object.entries(INS).forEach(([k,ins]) => {
+    ins.v.ini    = Math.floor(ins.min * 1.6);
+    ins.v.compra = Math.floor(ins.min * 0.35);
+    ins.v.final  = Math.floor(ins.min * (0.25 + Math.random()*0.9));
+  });
+  calcularDados();
+  renderEst();
 });
 
-// ======================= DETALHES INSUMO =======================
-window.abrirDetalhes = function(chave) {
-    const ins = insumos[chave];
-    const consTeo = ultimoConsumo[chave] || 0;
-    const finalReal = parseFloat(document.getElementById(`final_${chave}`)?.value) || 0;
-    document.getElementById('modalDetalhes').style.display = 'flex';
-    document.getElementById('modalDetalhesConteudo').innerHTML = `
-        <h3>📦 ${ins.nome}</h3>
-        <canvas id="grafico_${chave}" width="400" height="200" style="max-width:100%;"></canvas>
-        <p><strong>Consumo Teórico:</strong> ${consTeo.toFixed(2)} unidades</p>
-        <p><strong>Estoque Final Real:</strong> ${finalReal.toFixed(2)} unidades</p>
-        <h4>📜 Histórico</h4>
-        ${historico.filter(h => h.consumo[chave]).slice(-5).map(h => `<p style="font-size:0.8rem;">${h.data}: ${h.consumo[chave].toFixed(2)} un</p>`).join('') || '<p>Sem histórico.</p>'}
-        <button class="btn" onclick="document.getElementById('modalDetalhes').style.display='none'" style="margin-top:10px;">Fechar</button>`;
-    setTimeout(() => {
-        const canvas = document.getElementById('grafico_' + chave);
-        if (canvas) { const ctx = canvas.getContext('2d'); ctx.clearRect(0,0,400,200); ctx.fillStyle='#27ae60'; ctx.fillRect(80,180-Math.min(160,consTeo/10),80,Math.min(160,consTeo/10)); ctx.fillStyle='#e74c3c'; ctx.fillRect(240,180-Math.min(160,finalReal/10),80,Math.min(160,finalReal/10)); ctx.fillStyle='#333'; ctx.fillText('Consumo',80,195); ctx.fillText('Final Real',240,195); }
-    }, 200);
-};
-
-// ======================= AJUDA CONTEXTUAL =======================
-window.mostrarAjudaContextual = function(secao) {
-    const textos = {
-        vendas: '<h3>🛒 Vendas</h3><p>Lance quantas unidades vendeu na semana. Cada produto tem preço de venda. Use as abas e o slider de simulação.</p>',
-        estoque: '<h3>📦 Estoque</h3><p>Cada card é um insumo. Preencha estoque inicial, compras, final real e mínimo (editável). Calcule para ver divergências e sugestões.</p>',
-        financeiro: '<h3>💰 Financeiro</h3><p>Receita, CMV e lucro. Abaixo, a Tabela de Custos (editável) e o Pedido Semanal Sugerido com valor total.</p>',
-        dashboard: '<h3>📊 Dashboard</h3><p>Ponto crítico, perdas, ganhos e resumo do pedido.</p>'
-    };
-    document.getElementById('modalAjudaContextual').style.display = 'flex';
-    document.getElementById('modalAjudaContextualConteudo').innerHTML = (textos[secao] || '') + '<button class="btn" onclick="document.getElementById(\'modalAjudaContextual\').style.display=\'none\'" style="margin-top:10px;">Fechar</button>';
-};
-
-// ======================= VER TUDO =======================
-function preencherVerTudo() {
-    document.getElementById('verTudoVendas').innerHTML = document.getElementById('secao-vendas').querySelector('.card').innerHTML;
-    document.getElementById('verTudoEstoque').innerHTML = document.getElementById('secao-estoque').querySelector('.card').innerHTML;
-    document.getElementById('verTudoFinanceiro').innerHTML = document.getElementById('resumoFinanceiro').innerHTML || 'Clique em Calcular Divergências.';
-    document.getElementById('verTudoDashboard').innerHTML = document.getElementById('dashboardContent').innerHTML || 'Clique em Calcular Divergências.';
-}
-
-// ======================= DARK MODE =======================
+// ══════════════════════════════════════════
+// DARK MODE
+// ══════════════════════════════════════════
 document.getElementById('darkToggle').addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
-    document.getElementById('darkToggle').textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+  document.body.classList.toggle('dark');
+  document.getElementById('darkToggle').textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
 });
 
-// ======================= FILTRO AJUDA =======================
-window.filtrarAjuda = function() {
-    const termo = document.getElementById('searchAjuda')?.value.toLowerCase() || '';
-    document.querySelectorAll('#ajudaConteudo h3').forEach(h3 => {
-        const p = h3.nextElementSibling;
-        const texto = (h3.textContent + ' ' + (p?.textContent || '')).toLowerCase();
-        h3.style.display = texto.includes(termo) ? 'block' : 'none';
-        if (p) p.style.display = texto.includes(termo) ? 'block' : 'none';
-    });
-};
+// ══════════════════════════════════════════
+// BOOT
+// ══════════════════════════════════════════
+initVendas();
+calcularDados();
 </script>
 </body>
 </html>
