@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>CMV Legal | Heitor Serra Neto</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 <style>
 :root {
   --bg: #f0f3f7;
@@ -34,7 +35,6 @@
 body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .3s,color .3s;overflow-x:hidden;}
 .app{display:flex;flex-direction:column;min-height:100vh;}
 
-/* HEADER */
 .header{background:var(--header);padding:11px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:60;box-shadow:0 2px 20px rgba(0,0,0,0.4);}
 .hlogo{display:flex;align-items:center;gap:10px;}
 .hbadge{background:linear-gradient(135deg,var(--primary),var(--primary-d));color:#fff;font-family:'Syne',sans-serif;font-weight:900;font-size:15px;padding:7px 11px;border-radius:9px;box-shadow:0 3px 12px rgba(29,185,84,.4);letter-spacing:1px;}
@@ -45,10 +45,8 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .btn-icon{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#fff;width:36px;height:36px;border-radius:50%;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
 .btn-icon:hover{background:rgba(255,255,255,.18);}
 
-/* MAIN */
 .main{flex:1;padding:14px;overflow-y:auto;}
 
-/* ── HUB ── */
 .hub{display:flex;flex-direction:column;align-items:center;gap:18px;max-width:540px;margin:0 auto;padding:8px 0 24px;}
 .hub-logo{background:var(--card);border-radius:22px;padding:22px 24px;box-shadow:var(--shadow);width:100%;display:flex;flex-direction:column;align-items:center;gap:8px;border:1px solid var(--border);position:relative;overflow:hidden;}
 .hub-logo::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:radial-gradient(circle,rgba(29,185,84,.15),transparent 70%);pointer-events:none;}
@@ -65,35 +63,32 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .hub-icone{font-size:2.6rem;filter:drop-shadow(0 4px 8px rgba(0,0,0,.25));}
 .hub-label{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;text-transform:uppercase;letter-spacing:.5px;color:#fff;}
 .hub-desc{font-size:.7rem;color:rgba(255,255,255,.75);font-weight:500;}
-.hb-vendas  {background:linear-gradient(140deg,#1db954,#0f7a36);}
-.hb-estoque {background:linear-gradient(140deg,#0077b6,#023e8a);}
-.hb-fin     {background:linear-gradient(140deg,#f4a261,#e76f51);}
-.hb-dash    {background:linear-gradient(140deg,#7b2d8b,#4a1259);}
-.hb-ajuda   {background:linear-gradient(140deg,#e5383b,#9b1c1f);}
-.hb-tudo    {background:linear-gradient(140deg,#0d9488,#065f46);}
+.hb-vendas{background:linear-gradient(140deg,#1db954,#0f7a36);}
+.hb-estoque{background:linear-gradient(140deg,#0077b6,#023e8a);}
+.hb-fin{background:linear-gradient(140deg,#f4a261,#e76f51);}
+.hb-dash{background:linear-gradient(140deg,#7b2d8b,#4a1259);}
+.hb-ajuda{background:linear-gradient(140deg,#e5383b,#9b1c1f);}
+.hb-tudo{background:linear-gradient(140deg,#0d9488,#065f46);}
+.hb-nf{background:linear-gradient(140deg,#6366f1,#4338ca);}
 
 .hub-footer{background:var(--card);border-radius:18px;padding:14px 20px;width:100%;text-align:center;border:1px solid var(--border);box-shadow:var(--shadow);}
 .hub-footer-brand{font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;color:var(--primary);}
 .hub-footer-autor{font-size:.75rem;color:var(--text2);margin-top:3px;}
 
-/* ── SEÇÕES ── */
 .secao{display:none;flex-direction:column;gap:14px;max-width:860px;margin:0 auto;width:100%;}
 .secao.ativa{display:flex;}
 .sec-header{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:var(--r);padding:12px 16px;box-shadow:var(--shadow);border:1px solid var(--border);}
 .btn-voltar{background:transparent;border:2px solid var(--primary);color:var(--primary);padding:6px 14px;border-radius:25px;font-weight:700;cursor:pointer;font-size:.82rem;white-space:nowrap;font-family:'DM Sans',sans-serif;}
 .sec-titulo{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:800;}
 
-/* CARD */
 .card{background:var(--card);border-radius:var(--r);padding:18px;box-shadow:var(--shadow);border:1px solid var(--border);}
 .card-title{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:800;border-left:4px solid var(--primary);padding-left:10px;margin-bottom:14px;}
 
-/* INPUTS */
 .ig{display:flex;flex-direction:column;gap:4px;}
 .ig label{font-size:.7rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.6px;}
 .ig input,.ig select,.ig textarea{padding:9px 11px;border:2px solid var(--border);border-radius:var(--rs);font-size:.88rem;background:var(--input-bg);color:var(--text);width:100%;font-family:'DM Sans',sans-serif;transition:border-color .2s;}
 .ig input:focus,.ig select:focus{border-color:var(--primary);outline:none;}
 
-/* STEPPER */
 .stepper{display:flex;align-items:center;border:2px solid var(--border);border-radius:var(--rs);background:var(--input-bg);overflow:hidden;}
 .stepper:focus-within{border-color:var(--primary);}
 .st-btn{background:transparent;border:none;width:38px;height:38px;font-size:1.1rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;color:var(--text);}
@@ -102,7 +97,6 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .st-btn:hover{background:var(--border);}
 .stepper input{flex:1;border:none;background:transparent;text-align:center;font-weight:700;font-size:.95rem;color:var(--text);padding:0;font-family:'DM Sans',sans-serif;}
 
-/* BUTTONS */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:9px 16px;border-radius:25px;font-weight:700;font-size:.85rem;cursor:pointer;border:none;transition:all .2s;font-family:'DM Sans',sans-serif;}
 .btn-green{background:var(--primary);color:#fff;}
 .btn-green:hover{background:var(--primary-d);}
@@ -110,10 +104,10 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .btn-red{background:var(--danger);color:#fff;}
 .btn-orange{background:var(--warn);color:#fff;}
 .btn-blue{background:var(--accent);color:#fff;}
+.btn-purple{background:var(--purple);color:#fff;}
 .btn-full{width:100%;}
 .btn-sm{padding:5px 11px;font-size:.78rem;}
 
-/* BADGE */
 .badge{display:inline-flex;align-items:center;justify-content:center;padding:2px 8px;border-radius:20px;font-size:.72rem;font-weight:700;}
 .bg-green{background:#d1fae5;color:#065f46;}
 .bg-red{background:#fee2e2;color:#991b1b;}
@@ -124,7 +118,6 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .dark .bg-orange{background:#78350f;color:#fde68a;}
 .dark .bg-blue{background:#1e3a5f;color:#93c5fd;}
 
-/* ── VENDAS ── */
 .abas{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
 .aba{padding:7px 14px;border-radius:20px;font-weight:700;cursor:pointer;border:2px solid var(--border);background:var(--input-bg);color:var(--text2);font-size:.82rem;transition:all .2s;display:flex;align-items:center;gap:6px;font-family:'DM Sans',sans-serif;}
 .aba.ativa{background:var(--primary);border-color:var(--primary);color:#fff;}
@@ -139,7 +132,6 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .prod-preco{font-size:.75rem;color:var(--text2);}
 .prod-sub{font-size:.72rem;font-weight:700;color:var(--primary);text-align:center;}
 
-/* ── ESTOQUE ── */
 .cat-bar{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;}
 .cat-bar::-webkit-scrollbar{display:none;}
 .cat-pill{display:flex;align-items:center;gap:5px;padding:7px 14px;border-radius:20px;font-weight:700;font-size:.8rem;cursor:pointer;white-space:nowrap;border:2px solid var(--border);background:var(--input-bg);color:var(--text2);transition:all .2s;flex-shrink:0;font-family:'DM Sans',sans-serif;}
@@ -160,7 +152,6 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .ins-info{font-size:.73rem;color:var(--text2);margin-top:2px;}
 .ins-row-r{display:flex;align-items:center;gap:7px;}
 
-/* ── MODAL CARROSSEL ESTOQUE ── */
 .modal-over{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.82);z-index:200;display:none;align-items:flex-end;justify-content:center;}
 .modal-over.open{display:flex;}
 @media(min-width:560px){.modal-over{align-items:center;}}
@@ -198,7 +189,6 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .dado-v{font-size:.98rem;font-weight:800;margin-top:3px;}
 .dado-s{font-size:.73rem;color:var(--text2);margin-top:1px;}
 
-/* ── MODAIS DE FORM ── */
 .form-over{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.75);z-index:300;display:none;align-items:center;justify-content:center;padding:14px;}
 .form-over.open{display:flex;}
 .form-box{background:var(--card);border-radius:22px;padding:22px;width:100%;max-width:480px;max-height:88vh;overflow-y:auto;box-shadow:0 30px 70px rgba(0,0,0,.45);animation:popup .2s ease-out;display:flex;flex-direction:column;gap:12px;border:1px solid var(--border);}
@@ -207,7 +197,6 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .fg2{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
 .fg2 .full{grid-column:1/-1;}
 
-/* ── FINANCEIRO ── */
 .fin-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .fin-card{padding:14px;border-radius:var(--r);display:flex;flex-direction:column;gap:4px;border:1px solid var(--border);}
 .fin-card.fat{background:#f0fdf4;border-left:4px solid var(--primary);}
@@ -228,7 +217,6 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .tabela td{padding:9px 10px;border-bottom:1px solid var(--border);font-size:.83rem;}
 .tabela tbody tr:hover{background:var(--input-bg);}
 
-/* ── DASHBOARD ── */
 .alerta{display:flex;align-items:flex-start;gap:10px;padding:12px;border-radius:var(--rs);border-left:4px solid var(--border);background:var(--input-bg);margin-bottom:7px;}
 .alerta.crit{border-left-color:var(--danger);background:#fff1f2;}
 .alerta.atenc{border-left-color:var(--warn);background:#fffbeb;}
@@ -238,12 +226,10 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .al-tit{font-weight:700;font-size:.87rem;}
 .al-desc{font-size:.76rem;color:var(--text2);margin-top:2px;}
 
-/* ── FORNECEDORES ── */
 .forn-card{background:var(--input-bg);border-radius:var(--rs);padding:12px;border:1px solid var(--border);margin-bottom:8px;}
 .forn-nome{font-weight:700;font-size:.9rem;}
 .forn-info{font-size:.76rem;color:var(--text2);margin-top:3px;}
 
-/* DIVIDER */
 hr.dv{border:0;border-top:1px dashed var(--border);margin:4px 0;}
 .txt-m{color:var(--text2);}
 .txt-s{color:var(--primary);}
@@ -255,15 +241,20 @@ hr.dv{border:0;border-top:1px dashed var(--border);margin:4px 0;}
 
 .footer{text-align:center;padding:18px;font-size:.75rem;color:var(--text2);border-top:1px solid var(--border);margin-top:auto;}
 
-/* Swipe anim */
 .swipe-in{animation:swIn .22s cubic-bezier(.16,1,.3,1);}
 @keyframes swIn{from{transform:translateX(18px);opacity:0;}to{transform:translateX(0);opacity:1;}}
+
+/* QR SCANNER */
+#qr-reader{border-radius:var(--r);overflow:hidden;max-width:400px;margin:0 auto;}
+#qr-reader video{border-radius:var(--r);}
+.qr-result{padding:10px;background:var(--input-bg);border-radius:var(--rs);font-size:.82rem;word-break:break-all;max-height:120px;overflow-y:auto;}
+.nf-item-row{display:flex;align-items:center;gap:8px;padding:8px;background:var(--input-bg);border-radius:var(--rs);margin-bottom:6px;}
+.nf-item-info{flex:1;font-size:.8rem;}
 </style>
 </head>
 <body>
 <div class="app" id="app">
 
-<!-- HEADER -->
 <header class="header">
   <div class="hlogo">
     <div class="hbadge">CMV</div>
@@ -273,7 +264,7 @@ hr.dv{border:0;border-top:1px dashed var(--border);margin:4px 0;}
     </div>
   </div>
   <div class="hactions">
-    <button class="btn-icon" id="darkToggle" title="Modo escuro">🌙</button>
+    <button class="btn-icon" id="darkToggle" aria-label="Modo escuro" title="Modo escuro">🌙</button>
   </div>
 </header>
 
@@ -318,10 +309,15 @@ hr.dv{border:0;border-top:1px dashed var(--border);margin:4px 0;}
         <div class="hub-label">Ver Tudo</div>
         <div class="hub-desc">Consolidação geral</div>
       </div>
+      <div class="hub-btn hb-nf" onclick="ir('lerNF')">
+        <div class="hub-icone">📷</div>
+        <div class="hub-label">Ler NF</div>
+        <div class="hub-desc">QR Code da nota</div>
+      </div>
     </div>
 
     <div class="hub-footer">
-      <div class="hub-footer-brand">CMV Legal v2.0</div>
+      <div class="hub-footer-brand">CMV Legal v3.0</div>
       <div class="hub-footer-autor">💡 Desenvolvido por Heitor Serra Neto © 2026</div>
     </div>
   </div>
@@ -440,6 +436,7 @@ hr.dv{border:0;border-top:1px dashed var(--border);margin:4px 0;}
         <div><strong>💰 Financeiro:</strong> Acompanhe faturamento, CMV, margem e pedido de reposição. Cadastre fornecedores e exporte relatórios .TXT.</div>
         <div><strong>📊 Dashboard:</strong> Alertas automáticos de estoque abaixo do mínimo, divergências suspeitas e previsão de demanda para a próxima semana.</div>
         <div><strong>⚠️ Quebra:</strong> Registre perdas com motivo e data. O sistema desconta do estoque e alimenta o histórico do dashboard.</div>
+        <div><strong>📷 Ler NF:</strong> Escaneie o QR Code de uma nota fiscal eletrônica. O sistema extrai os itens, sugere o vínculo com insumos cadastrados e atualiza estoque e custos automaticamente.</div>
         <div><strong>➕ Novo Produto:</strong> Em Vendas → "+ Produto": crie o lanche com nome, preço e ingredientes. Os insumos novos são adicionados ao estoque automaticamente.</div>
       </div>
     </div>
@@ -457,7 +454,32 @@ hr.dv{border:0;border-top:1px dashed var(--border);margin:4px 0;}
     </div>
   </div>
 
-</div><!-- /main -->
+  <!-- ════ LER NF ════ -->
+  <div id="secao-lerNF" class="secao">
+    <div class="sec-header">
+      <button class="btn-voltar" onclick="voltar()">← Voltar</button>
+      <span class="sec-titulo">📷 Leitura de Nota Fiscal</span>
+    </div>
+    <div class="card">
+      <div class="card-title">Escanear QR Code da NF-e / NFC-e</div>
+      <div id="qr-reader"></div>
+      <div class="flex gap8 mt8">
+        <button class="btn btn-blue" id="btnStartScan">▶️ Iniciar Câmera</button>
+        <button class="btn btn-red" id="btnStopScan" style="display:none;">⏹️ Parar</button>
+      </div>
+      <div class="qr-result mt8" id="qrResult" style="display:none;"></div>
+    </div>
+    <div class="card" id="cardNfItens" style="display:none;">
+      <div class="card-title">📋 Itens Detectados na Nota</div>
+      <div id="nfItensList"></div>
+      <div class="flex gap8 mt12">
+        <button class="btn btn-green" onclick="confirmarNFe()">✅ Confirmar e Atualizar Estoque</button>
+        <button class="btn btn-outline" onclick="cancelarNFe()">❌ Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+</div>
 
 <!-- ═══════ MODAL CARROSSEL ESTOQUE ═══════ -->
 <div class="modal-over" id="modalEst" onclick="fecharModalEstFora(event)">
@@ -469,8 +491,8 @@ hr.dv{border:0;border-top:1px dashed var(--border);margin:4px 0;}
     <div class="modal-nav">
       <div class="modal-nav-info" id="mNavInfo">— / —</div>
       <div class="nav-btns">
-        <button class="nav-arr" id="btnPrev" onclick="navIns(-1)">‹</button>
-        <button class="nav-arr" id="btnNext" onclick="navIns(1)">›</button>
+        <button class="nav-arr" id="btnPrev" onclick="navIns(-1)" aria-label="Item anterior">‹</button>
+        <button class="nav-arr" id="btnNext" onclick="navIns(1)" aria-label="Próximo item">›</button>
       </div>
     </div>
     <div class="modal-body" id="mBody"></div>
@@ -557,6 +579,7 @@ hr.dv{border:0;border-top:1px dashed var(--border);margin:4px 0;}
     <div class="form-title">🏭 Novo Fornecedor</div>
     <div class="fg2">
       <div class="ig full"><label>Nome do Fornecedor</label><input id="forn_nome" placeholder="Ex: Frigorífico SP"></div>
+      <div class="ig"><label>CNPJ (opcional)</label><input id="forn_cnpj" placeholder="00.000.000/0000-00"></div>
       <div class="ig full"><label>Insumos que Fornece</label><input id="forn_ins" placeholder="Ex: Carne Bovina, Bacon"></div>
       <div class="ig"><label>Contato / Telefone</label><input id="forn_tel" placeholder="(11) 99999-9999"></div>
       <div class="ig"><label>Prazo de Entrega</label><input id="forn_prazo" placeholder="Ex: 2 dias úteis"></div>
@@ -569,7 +592,7 @@ hr.dv{border:0;border-top:1px dashed var(--border);margin:4px 0;}
 </div>
 
 <footer class="footer"><strong>CMV Legal</strong> · Desenvolvido por <strong>Heitor Serra Neto</strong> © 2026</footer>
-</div><!-- /app -->
+</div>
 
 <script>
 // ══════════════════════════════════════════
@@ -591,8 +614,7 @@ const catItens = {
   bebidas:    ['cocacola','guarana','fanta']
 };
 
-// insumos: fator = quantas unidades base (g/un) em 1 unid de compra
-const INS = {
+const INS_DEFAULT = {
   carne:       {nome:'Carne Bovina',         cat:'carnes',     unid:'kg',    fator:1000, custo:30,   min:2000, v:{ini:0,compra:0,final:0}},
   bacon:       {nome:'Bacon',                cat:'carnes',     unid:'kg',    fator:1000, custo:40,   min:800,  v:{ini:0,compra:0,final:0}},
   presunto:    {nome:'Presunto',             cat:'carnes',     unid:'kg',    fator:1000, custo:28,   min:500,  v:{ini:0,compra:0,final:0}},
@@ -609,10 +631,10 @@ const INS = {
   laranja:     {nome:'Laranja',              cat:'hortifruti', unid:'un',    fator:1,    custo:0.50, min:80,   v:{ini:0,compra:0,final:0}},
   cocacola:    {nome:'Coca-Cola (lata)',      cat:'bebidas',    unid:'fardo', fator:12,   custo:36,   min:48,   v:{ini:0,compra:0,final:0}},
   guarana:     {nome:'Guaraná Antarctica',   cat:'bebidas',    unid:'fardo', fator:12,   custo:30,   min:48,   v:{ini:0,compra:0,final:0}},
-  fanta:       {nome:'Fanta Laranja (lata)', cat:'bebidas',    unid:'fardo', factor:12,  fator:12,   custo:30, min:24, v:{ini:0,compra:0,final:0}}
+  fanta:       {nome:'Fanta Laranja (lata)', cat:'bebidas',    unid:'fardo', fator:12,   custo:30,   min:24,   v:{ini:0,compra:0,final:0}}
 };
 
-const PRODS = {
+const PRODS_DEFAULT = {
   lanches:[
     {nome:'X-Bacon',  preco:18, receita:{carne:150,bacon:50,queijo:30,pao:70}},
     {nome:'X-Salada', preco:16, receita:{carne:120,queijo:20,alface:15,tomate:20,pao:70}},
@@ -628,18 +650,48 @@ const PRODS = {
   ]
 };
 
-// ESTADO
-let vendas = {};       // norm(nome) -> qtd
-let calc   = {};       // chave -> {consTeo, estoqueTeo, custoConsTeo, diverg, divergVal, nec, custoNec}
-let quebras = [];
-let fornecedores = [];
-let catFiltro = null;  // null = todas
-let abaAtual = 'lanches';
+// Estado carregado do localStorage
+let INS = carregar('ins', INS_DEFAULT);
+let PRODS = carregar('prods', PRODS_DEFAULT);
+let vendas = carregar('vendas', {});
+let quebras = carregar('quebras', []);
+let fornecedores = carregar('fornecedores', []);
 
-// Carrossel modal
+function carregar(chave, padrao) {
+  try {
+    const raw = localStorage.getItem('cmv_'+chave);
+    return raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(padrao));
+  } catch(e) { return JSON.parse(JSON.stringify(padrao)); }
+}
+
+function salvarTodos() {
+  localStorage.setItem('cmv_ins', JSON.stringify(INS));
+  localStorage.setItem('cmv_prods', JSON.stringify(PRODS));
+  localStorage.setItem('cmv_vendas', JSON.stringify(vendas));
+  localStorage.setItem('cmv_quebras', JSON.stringify(quebras));
+  localStorage.setItem('cmv_fornecedores', JSON.stringify(fornecedores));
+}
+
+// Garantir que todos os insumos tenham a estrutura correta
+Object.keys(INS_DEFAULT).forEach(k => {
+  if(!INS[k]) INS[k] = JSON.parse(JSON.stringify(INS_DEFAULT[k]));
+  if(!INS[k].v) INS[k].v = {ini:0,compra:0,final:0};
+  if(typeof INS[k].v.ini !== 'number') INS[k].v.ini = 0;
+  if(typeof INS[k].v.compra !== 'number') INS[k].v.compra = 0;
+  if(typeof INS[k].v.final !== 'number') INS[k].v.final = 0;
+  if(typeof INS[k].min !== 'number') INS[k].min = 0;
+});
+
+let calc = {};
+let catFiltro = null;
+let abaAtual = 'lanches';
 let mCat = 'carnes';
 let mIdx = 0;
-let txStart = 0;
+
+// QR Code state
+let nfItensDetectados = [];
+let scannerInstance = null;
+let scannerAtivo = false;
 
 // ══════════════════════════════════════════
 // NAVEGAÇÃO
@@ -647,13 +699,19 @@ let txStart = 0;
 function ir(id) {
   document.getElementById('hub').style.display = 'none';
   document.querySelectorAll('.secao').forEach(s => s.classList.remove('ativa'));
-  document.getElementById('secao-' + id).classList.add('ativa');
+  const sec = document.getElementById('secao-' + id);
+  if(sec) sec.classList.add('ativa');
+  calcularDados();
   if(id==='estoque')    { renderEst(); }
   if(id==='financeiro') { atualizarFin(); }
   if(id==='dashboard')  { atualizarDash(); }
   if(id==='vertudo')    { atualizarVertudo(); }
+  if(id==='lerNF')      { initNFSection(); }
+  if(id!=='lerNF' && scannerAtivo) pararScanner();
 }
+
 function voltar() {
+  if(scannerAtivo) pararScanner();
   document.getElementById('hub').style.display = 'flex';
   document.querySelectorAll('.secao').forEach(s => s.classList.remove('ativa'));
 }
@@ -665,7 +723,7 @@ function initVendas() {
   const cats = [{key:'lanches',lbl:'🍔 Lanches'},{key:'refri',lbl:'🥤 Refris'},{key:'sucos',lbl:'🧃 Sucos'}];
   document.getElementById('abas-vendas').innerHTML = cats.map((c,i) =>
     `<button class="aba ${i===0?'ativa':''}" data-cat="${c.key}" onclick="trocarAba('${c.key}',this)">
-      ${c.lbl} <span class="aba-ct">${PRODS[c.key].length}</span>
+      ${c.lbl} <span class="aba-ct">${PRODS[c.key]?.length||0}</span>
     </button>`
   ).join('');
   renderGrid('lanches');
@@ -679,17 +737,18 @@ function trocarAba(key, btn) {
 }
 
 function renderGrid(key) {
+  const prods = PRODS[key] || [];
   document.getElementById('grid-vendas').innerHTML =
-    `<div class="grid-prod">${PRODS[key].map(p => {
+    `<div class="grid-prod">${prods.map(p => {
       const k = norm(p.nome);
       const q = vendas[k] || 0;
       return `<div class="prod-card ${q>0?'ativo':''}" id="pc_${k}">
         <div class="prod-nome">${p.nome}</div>
         <div class="prod-preco">R$ ${p.preco.toFixed(2)}</div>
         <div class="stepper">
-          <button class="st-btn minus" onclick="stepV('${k}',-1)">−</button>
+          <button class="st-btn minus" onclick="stepV('${k}',-1)" aria-label="Diminuir">−</button>
           <input type="number" id="vi_${k}" value="${q}" min="0" onchange="onV('${k}')">
-          <button class="st-btn plus" onclick="stepV('${k}',1)">+</button>
+          <button class="st-btn plus" onclick="stepV('${k}',1)" aria-label="Aumentar">+</button>
         </div>
         ${q>0?`<div class="prod-sub">R$ ${(q*p.preco).toFixed(2)}</div>`:''}
       </div>`;
@@ -702,27 +761,35 @@ function stepV(k, d) {
   inp.value = Math.max(0,(parseInt(inp.value)||0)+d);
   onV(k);
 }
+
 function onV(k) {
   const inp = document.getElementById('vi_'+k);
   vendas[k] = Math.max(0,parseInt(inp?.value)||0);
   const card = document.getElementById('pc_'+k);
   if(card) card.classList.toggle('ativo', vendas[k]>0);
   calcularDados();
+  salvarTodos();
 }
 
 function processarVendas() {
   const all = todosProds();
   let algum = false;
+  all.forEach(p => { if((vendas[norm(p.nome)]||0) > 0) algum = true; });
+  if(!algum){ alert('Nenhuma venda registrada.'); return; }
+
+  if(!confirm(`Deseja realmente processar ${Object.values(vendas).reduce((a,b)=>a+b,0)} itens vendidos e baixar o estoque?`)) return;
+
   all.forEach(p => {
     const q = vendas[norm(p.nome)] || 0;
-    if(q>0) algum = true;
-    Object.entries(p.receita).forEach(([ins,qtdU]) => {
-      INS[ins] && (INS[ins].v.final = Math.max(0, INS[ins].v.ini + INS[ins].v.compra - qtdU*q));
-    });
+    if(q>0) {
+      Object.entries(p.receita).forEach(([ins,qtdU]) => {
+        if(INS[ins]) INS[ins].v.final = Math.max(0, INS[ins].v.final - qtdU*q);
+      });
+    }
   });
-  if(!algum){ alert('Nenhuma venda registrada.'); return; }
   calcularDados();
-  alert('✅ Vendas processadas!\nEstoque descontado automaticamente com base nas fichas técnicas.');
+  salvarTodos();
+  alert('✅ Vendas processadas! Estoque atualizado.');
 }
 
 // ══════════════════════════════════════════
@@ -758,7 +825,6 @@ function calcularDados() {
     calc[k] = { consTeo, estTeo, custoCons, div, divVal, nec, custoNec };
   });
 
-  // Atualizar cards financeiros se visíveis
   const fvFat = document.getElementById('fv-fat');
   if(fvFat){
     fvFat.textContent = `R$ ${fat.toFixed(2)}`;
@@ -768,13 +834,12 @@ function calcularDados() {
   }
 }
 
-function todosProds(){ return [...PRODS.lanches,...PRODS.refri,...PRODS.sucos]; }
+function todosProds(){ return [...(PRODS.lanches||[]),...(PRODS.refri||[]),...(PRODS.sucos||[])]; }
 
 // ══════════════════════════════════════════
 // ESTOQUE — ACCORDION
 // ══════════════════════════════════════════
 function renderEst() {
-  // Carrossel filtro
   const bar = document.getElementById('catFiltroBar');
   bar.innerHTML = `<div class="cat-pill ${catFiltro===null?'ativa':''}" onclick="filtCat(null,this)">🔍 Todas</div>` +
     Object.entries(CATS).map(([k,c]) =>
@@ -835,6 +900,8 @@ function toggleCat(hdr) {
 // ══════════════════════════════════════════
 // MODAL CARROSSEL — ESTOQUE
 // ══════════════════════════════════════════
+let mBodyTouchHandlers = null;
+
 function abrirModalEst(catKey, insKey) {
   mCat = catKey;
   mIdx = (catItens[catKey]||[]).indexOf(insKey);
@@ -843,7 +910,17 @@ function abrirModalEst(catKey, insKey) {
   renderMCard();
   document.getElementById('modalEst').classList.add('open');
 }
-function fecharModalEst() { document.getElementById('modalEst').classList.remove('open'); }
+
+function fecharModalEst() {
+  document.getElementById('modalEst').classList.remove('open');
+  if(mBodyTouchHandlers) {
+    const body = document.getElementById('mBody');
+    body.removeEventListener('touchstart', mBodyTouchHandlers.start);
+    body.removeEventListener('touchend', mBodyTouchHandlers.end);
+    mBodyTouchHandlers = null;
+  }
+}
+
 function fecharModalEstFora(e) { if(e.target.id==='modalEst') fecharModalEst(); }
 
 function renderMCatBar() {
@@ -851,6 +928,7 @@ function renderMCatBar() {
     `<div class="mcat-chip ${k===mCat?'ativa':''}" onclick="mudarCat('${k}')">${c.label}</div>`
   ).join('');
 }
+
 function mudarCat(k) { mCat=k; mIdx=0; renderMCatBar(); renderMCard(); }
 
 function navIns(d) {
@@ -896,28 +974,28 @@ function renderMCard() {
       <div class="ig"><label>Estoque Inicial (${lbl})</label>
         <div class="stepper">
           <button class="st-btn minus" onclick="stepM('${k}','ini',${-passo})">−</button>
-          <input type="number" id="m_ini_${k}" value="${ins.v.ini}" onchange="saveM('${k}')">
+          <input type="number" id="m_ini_${k}" value="${ins.v.ini}" onchange="saveM('${k}')" min="0">
           <button class="st-btn plus" onclick="stepM('${k}','ini',${passo})">+</button>
         </div>
       </div>
       <div class="ig"><label>Compras Recebidas (${lbl})</label>
         <div class="stepper">
           <button class="st-btn minus" onclick="stepM('${k}','compra',${-passo})">−</button>
-          <input type="number" id="m_compra_${k}" value="${ins.v.compra}" onchange="saveM('${k}')">
+          <input type="number" id="m_compra_${k}" value="${ins.v.compra}" onchange="saveM('${k}')" min="0">
           <button class="st-btn plus" onclick="stepM('${k}','compra',${passo})">+</button>
         </div>
       </div>
       <div class="ig"><label>Contagem Final Real (${lbl})</label>
         <div class="stepper">
           <button class="st-btn minus" onclick="stepM('${k}','final',${-passo})">−</button>
-          <input type="number" id="m_final_${k}" value="${ins.v.final}" onchange="saveM('${k}')">
+          <input type="number" id="m_final_${k}" value="${ins.v.final}" onchange="saveM('${k}')" min="0">
           <button class="st-btn plus" onclick="stepM('${k}','final',${passo})">+</button>
         </div>
       </div>
       <div class="ig"><label>Estoque Mínimo (${lbl})</label>
         <div class="stepper">
           <button class="st-btn minus" onclick="stepM('${k}','min',${-passo})">−</button>
-          <input type="number" id="m_min_${k}" value="${ins.min}" onchange="saveM('${k}')">
+          <input type="number" id="m_min_${k}" value="${ins.min}" onchange="saveM('${k}')" min="0">
           <button class="st-btn plus" onclick="stepM('${k}','min',${passo})">+</button>
         </div>
       </div>
@@ -947,16 +1025,26 @@ function renderMCard() {
         </div>
       </div>
     </div>
-    <button class="btn btn-red btn-full mt12" onclick="fecharModalEst()">❌ Fechar</button>
+    <button class="btn btn-green btn-full mt12" onclick="salvarModalEFechar()">💾 Salvar e Fechar</button>
+    <button class="btn btn-outline btn-full" onclick="fecharModalEst()">❌ Fechar sem salvar</button>
   </div>`;
 
-  // Swipe
+  // Limpar listeners antigos
+  if(mBodyTouchHandlers) {
+    const body = document.getElementById('mBody');
+    body.removeEventListener('touchstart', mBodyTouchHandlers.start);
+    body.removeEventListener('touchend', mBodyTouchHandlers.end);
+  }
   const body = document.getElementById('mBody');
-  body.addEventListener('touchstart', e => { txStart = e.touches[0].clientX; }, {passive:true});
-  body.addEventListener('touchend', e => {
+  let txStart = 0;
+  const onStart = e => { txStart = e.touches[0].clientX; };
+  const onEnd = e => {
     const d = e.changedTouches[0].clientX - txStart;
     if(Math.abs(d)>50) navIns(d<0?1:-1);
-  }, {passive:true});
+  };
+  body.addEventListener('touchstart', onStart, {passive:true});
+  body.addEventListener('touchend', onEnd, {passive:true});
+  mBodyTouchHandlers = {start:onStart, end:onEnd};
 }
 
 function stepM(k, campo, d) {
@@ -968,16 +1056,30 @@ function stepM(k, campo, d) {
   if(campo==='min') INS[k].min = novo;
   else INS[k].v[campo] = novo;
   calcularDados();
+  salvarTodos();
   renderMCard();
 }
 
 function saveM(k) {
-  const g = id => parseFloat(document.getElementById(id)?.value)||0;
+  const g = id => Math.max(0, parseFloat(document.getElementById(id)?.value)||0);
   INS[k].v.ini    = g(`m_ini_${k}`);
   INS[k].v.compra = g(`m_compra_${k}`);
   INS[k].v.final  = g(`m_final_${k}`);
   INS[k].min      = g(`m_min_${k}`);
   calcularDados();
+  salvarTodos();
+}
+
+function salvarModalEFechar() {
+  const itens = catItens[mCat] || [];
+  const k = itens[mIdx];
+  if(k) {
+    saveM(k);
+    calcularDados();
+    salvarTodos();
+  }
+  fecharModalEst();
+  renderEst();
 }
 
 // ══════════════════════════════════════════
@@ -986,7 +1088,6 @@ function saveM(k) {
 function abrirForm(id) { document.getElementById(id).classList.add('open'); }
 function fecharForm(id) { document.getElementById(id).classList.remove('open'); }
 
-// NOVO PRODUTO
 function addLinhIng() {
   const opts = Object.entries(INS).map(([k,i]) => `<option value="${k}">${i.nome}</option>`).join('');
   const div = document.createElement('div');
@@ -1009,20 +1110,22 @@ function salvarNovoProd() {
     const qtd = parseFloat(d.querySelector('.np_qtd').value)||0;
     if(qtd>0) receita[ins] = qtd;
   });
+  if(Object.keys(receita).length === 0){ alert('Adicione pelo menos um ingrediente.'); return; }
+  if(!PRODS[cat]) PRODS[cat] = [];
   PRODS[cat].push({nome,preco,receita});
   fecharForm('formNovoProd');
   initVendas();
+  salvarTodos();
   alert(`✅ Produto "${nome}" criado com sucesso!`);
 }
 
-// NOVO INSUMO
 function salvarNovoIns() {
   const nome  = document.getElementById('ni_nome').value.trim();
   const cat   = document.getElementById('ni_cat').value;
   const unid  = document.getElementById('ni_unid').value.trim();
   const fator = parseFloat(document.getElementById('ni_fator').value)||1;
   const custo = parseFloat(document.getElementById('ni_custo').value)||0;
-  const min   = parseFloat(document.getElementById('ni_min').value)||0;
+  const min   = Math.max(0, parseFloat(document.getElementById('ni_min').value)||0);
   if(!nome||!unid){ alert('Nome e unidade são obrigatórios.'); return; }
   const k = norm(nome);
   INS[k] = {nome,cat,unid,fator,custo,min,v:{ini:0,compra:0,final:0}};
@@ -1030,19 +1133,20 @@ function salvarNovoIns() {
   fecharForm('formNovoIns');
   renderEst();
   atualizarTabCustos();
+  salvarTodos();
   alert(`✅ Insumo "${nome}" adicionado!`);
 }
 
-// QUEBRA
 function abrirModalQuebra() {
   const sel = document.getElementById('qb_ins');
   sel.innerHTML = Object.entries(INS).map(([k,i]) => `<option value="${k}">${i.nome}</option>`).join('');
   document.getElementById('qb_data').value = new Date().toISOString().split('T')[0];
   abrirForm('formQuebra');
 }
+
 function salvarQuebra() {
   const k      = document.getElementById('qb_ins').value;
-  const qtd    = parseFloat(document.getElementById('qb_qtd').value)||0;
+  const qtd    = Math.max(0, parseFloat(document.getElementById('qb_qtd').value)||0);
   const data   = document.getElementById('qb_data').value;
   const motivo = document.getElementById('qb_motivo').value;
   const obs    = document.getElementById('qb_obs').value;
@@ -1052,21 +1156,24 @@ function salvarQuebra() {
   quebras.push({k, nome:INS[k].nome, qtd, data, motivo, obs, custo:qtd*custoUnit});
   fecharForm('formQuebra');
   calcularDados();
+  salvarTodos();
   alert(`⚠️ Quebra registrada: ${qtd} de ${INS[k].nome} — ${motivo}`);
 }
 
-// FORNECEDOR
 function salvarForn() {
   const nome  = document.getElementById('forn_nome').value.trim();
+  const cnpj  = document.getElementById('forn_cnpj').value.trim();
   const ins   = document.getElementById('forn_ins').value.trim();
   const tel   = document.getElementById('forn_tel').value.trim();
   const prazo = document.getElementById('forn_prazo').value.trim();
   if(!nome){ alert('Nome obrigatório.'); return; }
-  fornecedores.push({nome,ins,tel,prazo});
+  fornecedores.push({nome,cnpj,ins,tel,prazo});
   fecharForm('formForn');
   renderForn();
+  salvarTodos();
   alert(`✅ Fornecedor "${nome}" cadastrado!`);
 }
+
 function renderForn() {
   const el = document.getElementById('listaForn');
   el.innerHTML = fornecedores.length
@@ -1076,11 +1183,12 @@ function renderForn() {
           <button class="btn btn-red btn-sm" onclick="remForn(${i})">✕</button>
         </div>
         <div class="forn-info">📦 ${f.ins||'—'}</div>
-        <div class="forn-info">📞 ${f.tel||'—'} &nbsp;·&nbsp; ⏱️ ${f.prazo||'—'}</div>
+        <div class="forn-info">📞 ${f.tel||'—'} &nbsp;·&nbsp; ⏱️ ${f.prazo||'—'}${f.cnpj?' &nbsp;·&nbsp; CNPJ: '+f.cnpj:''}</div>
       </div>`).join('')
     : '<p class="txt-m" style="font-size:.82rem;">Nenhum fornecedor cadastrado.</p>';
 }
-function remForn(i){ fornecedores.splice(i,1); renderForn(); }
+
+function remForn(i){ fornecedores.splice(i,1); renderForn(); salvarTodos(); }
 
 // ══════════════════════════════════════════
 // FINANCEIRO
@@ -1132,7 +1240,7 @@ FATURAMENTO BRUTO:   R$ ${fat.toFixed(2)}
 CUSTO DE INSUMOS:    R$ ${custo.toFixed(2)}
 MARGEM OPERACIONAL:  R$ ${(fat-custo).toFixed(2)}
 \n${'='.repeat(45)}\nCUSTO POR INSUMO:\n${linhas}
-\nQuebrass registradas: ${quebras.length}
+\nQuebras registradas: ${quebras.length}
 Fornecedores: ${fornecedores.length}
 \nDesenvolvido por Heitor Serra Neto © 2026`;
   const a = document.createElement('a');
@@ -1147,7 +1255,6 @@ Fornecedores: ${fornecedores.length}
 function atualizarDash() {
   calcularDados();
 
-  // Alertas
   const al = [];
   Object.entries(INS).forEach(([k,ins]) => {
     if(ins.v.final < ins.min) al.push({tipo:'crit',ico:'🔴',tit:`${ins.nome} abaixo do mínimo`,
@@ -1160,7 +1267,6 @@ function atualizarDash() {
     ? al.map(a => `<div class="alerta ${a.tipo}"><span class="al-ico">${a.ico}</span><div><div class="al-tit">${a.tit}</div><div class="al-desc">${a.desc}</div></div></div>`).join('')
     : '<div class="alerta ok"><span class="al-ico">✅</span><div><div class="al-tit">Tudo em ordem!</div><div class="al-desc">Nenhum alerta crítico.</div></div></div>';
 
-  // Top produtos
   const top = todosProds()
     .filter(p => (vendas[norm(p.nome)]||0) > 0)
     .sort((a,b) => (vendas[norm(b.nome)]||0) - (vendas[norm(a.nome)]||0))
@@ -1179,7 +1285,6 @@ function atualizarDash() {
       }).join('')
     : '<p class="txt-m" style="font-size:.82rem;">Registre vendas para ver estatísticas.</p>';
 
-  // Quebras
   document.getElementById('dash-quebras').innerHTML = quebras.length
     ? `<table class="tabela"><thead><tr><th>Data</th><th>Insumo</th><th>Motivo</th><th>Custo</th></tr></thead><tbody>`+
       quebras.map(q=>`<tr><td>${q.data}</td><td>${q.nome}</td><td>${q.motivo}</td><td class="txt-d">R$ ${q.custo.toFixed(2)}</td></tr>`).join('')+
@@ -1212,12 +1317,227 @@ function atualizarVertudo() {
 }
 
 // ══════════════════════════════════════════
+// LEITURA DE QR CODE (NOTA FISCAL)
+// ══════════════════════════════════════════
+function initNFSection() {
+  document.getElementById('qrResult').style.display = 'none';
+  document.getElementById('cardNfItens').style.display = 'none';
+  nfItensDetectados = [];
+  if(!scannerAtivo) {
+    document.getElementById('btnStartScan').style.display = 'inline-flex';
+    document.getElementById('btnStopScan').style.display = 'none';
+  }
+}
+
+function iniciarScanner() {
+  if(scannerAtivo) return;
+  const el = document.getElementById('qr-reader');
+  el.innerHTML = '';
+  scannerInstance = new Html5Qrcode("qr-reader");
+  scannerAtivo = true;
+  document.getElementById('btnStartScan').style.display = 'none';
+  document.getElementById('btnStopScan').style.display = 'inline-flex';
+
+  scannerInstance.start(
+    { facingMode: "environment" },
+    { fps: 10, qrbox: { width: 280, height: 280 } },
+    (decodedText) => {
+      // Sucesso na leitura
+      processarQR(decodedText);
+    },
+    (errorMessage) => {
+      // Erro ignorado (scanner continua)
+    }
+  ).catch(err => {
+    alert('Erro ao iniciar câmera: ' + err);
+    scannerAtivo = false;
+    document.getElementById('btnStartScan').style.display = 'inline-flex';
+    document.getElementById('btnStopScan').style.display = 'none';
+  });
+}
+
+function pararScanner() {
+  if(scannerInstance && scannerAtivo) {
+    scannerInstance.stop().then(() => {
+      scannerAtivo = false;
+      document.getElementById('btnStartScan').style.display = 'inline-flex';
+      document.getElementById('btnStopScan').style.display = 'none';
+    }).catch(() => {});
+  }
+}
+
+function processarQR(texto) {
+  document.getElementById('qrResult').style.display = 'block';
+  document.getElementById('qrResult').textContent = '🔍 QR Code lido: ' + texto;
+
+  let itens = [];
+
+  // Tentar extrair da URL da Sefaz (depende do estado)
+  try {
+    const url = new URL(texto);
+    const params = new URLSearchParams(url.search);
+
+    // Alguns estados incluem os dados nos parâmetros da URL
+    if(params.get('uZ')) {
+      // URL de consulta da Sefaz SP, por exemplo
+      // Vamos gerar o link de consulta e instruir o usuário
+      document.getElementById('qrResult').innerHTML += '<br>⚠️ Esta nota exige consulta manual. Copie a chave de acesso abaixo e cole no site da Sefaz.';
+    }
+
+    // Tentar extrair dados se a URL for do tipo consulta direta
+    if(params.get('chave')) {
+      const chave = params.get('chave');
+      document.getElementById('qrResult').textContent = '🔑 Chave de acesso detectada: ' + chave;
+      // Simular extração de itens (na prática precisaria de backend)
+      // Por enquanto, vamos pedir que o usuário insira manualmente
+      document.getElementById('cardNfItens').style.display = 'block';
+      document.getElementById('nfItensList').innerHTML = `
+        <p class="txt-m">A chave de acesso foi detectada, mas para extrair os itens é necessário um backend. 
+        Você pode inserir os itens manualmente abaixo:</p>
+        <button class="btn btn-outline btn-sm mt8" onclick="adicionarItemManualNF()">➕ Adicionar Item Manual</button>
+        <div id="nfItensManual"></div>`;
+      return;
+    }
+  } catch(e) {
+    // Não é URL, pode ser texto puro
+  }
+
+  // Tentar parse como JSON ou texto estruturado
+  try {
+    const dados = JSON.parse(texto);
+    if(dados.itens) itens = dados.itens;
+  } catch(e) {
+    // Buscar padrão "ITEM: nome QTD: valor UN: valor"
+    const matches = texto.match(/ITEM:?\s*(.+?)\s*QTD:?\s*([\d,.]+)\s*UN:?\s*R?\$?\s*([\d,.]+)/gi);
+    if(matches) {
+      matches.forEach(m => {
+        const parts = m.match(/ITEM:?\s*(.+?)\s*QTD:?\s*([\d,.]+)\s*UN:?\s*R?\$?\s*([\d,.]+)/i);
+        if(parts) itens.push({nome: parts[1].trim(), qtd: parseFloat(parts[2].replace(',','.')), custoUn: parseFloat(parts[3].replace(',','.'))});
+      });
+    }
+  }
+
+  if(itens.length > 0) {
+    nfItensDetectados = itens;
+    exibirItensNF();
+  } else {
+    document.getElementById('cardNfItens').style.display = 'block';
+    document.getElementById('nfItensList').innerHTML = `
+      <p class="txt-m">Não foi possível extrair os itens automaticamente. Insira-os manualmente:</p>
+      <button class="btn btn-outline btn-sm mt8" onclick="adicionarItemManualNF()">➕ Adicionar Item Manual</button>
+      <div id="nfItensManual"></div>`;
+  }
+}
+
+function adicionarItemManualNF() {
+  const opts = Object.entries(INS).map(([k,i]) => `<option value="${k}">${i.nome}</option>`).join('');
+  const div = document.createElement('div');
+  div.className = 'nf-item-row';
+  div.innerHTML = `
+    <div class="nf-item-info">
+      <select class="nf_sel_ins" style="width:100%;">${opts}</select>
+      <input type="number" class="nf_qtd" placeholder="Qtd recebida" step="0.01" style="width:80px;">
+      <input type="number" class="nf_custo" placeholder="Custo total (R$)" step="0.01" style="width:100px;">
+    </div>
+    <button class="btn btn-red btn-sm" onclick="this.parentElement.remove()">✕</button>`;
+  document.getElementById('nfItensManual').appendChild(div);
+}
+
+function exibirItensNF() {
+  document.getElementById('cardNfItens').style.display = 'block';
+  const opts = Object.entries(INS).map(([k,i]) => `<option value="${k}">${i.nome}</option>`).join('');
+  document.getElementById('nfItensList').innerHTML = nfItensDetectados.map((item, i) => {
+    const similar = encontrarInsSimilar(item.nome);
+    return `<div class="nf-item-row">
+      <div class="nf-item-info">
+        <strong>${item.nome}</strong> — Qtd: ${item.qtd} — Custo Un: R$ ${(item.custoUn||0).toFixed(2)}
+      </div>
+      <select class="nf_sel_ins" data-idx="${i}">${opts}</select>
+    </div>`;
+  }).join('') + '<p class="txt-m mt8">Associe cada item ao insumo correspondente no estoque.</p>';
+
+  // Pré-selecionar similares
+  nfItensDetectados.forEach((item, i) => {
+    const similar = encontrarInsSimilar(item.nome);
+    const sel = document.querySelector(`.nf_sel_ins[data-idx="${i}"]`);
+    if(sel && similar) sel.value = similar;
+  });
+}
+
+function encontrarInsSimilar(nome) {
+  const n = norm(nome);
+  let best = null, bestScore = 0;
+  Object.entries(INS).forEach(([k, ins]) => {
+    const score = similaridade(n, norm(ins.nome));
+    if(score > bestScore && score > 0.4) { bestScore = score; best = k; }
+  });
+  return best;
+}
+
+function similaridade(a, b) {
+  if(a.includes(b) || b.includes(a)) return 0.8;
+  const intersecao = [...new Set(a)].filter(c => b.includes(c)).length;
+  return intersecao / Math.max(a.length, b.length);
+}
+
+function confirmarNFe() {
+  const selects = document.querySelectorAll('.nf_sel_ins');
+  let atualizados = 0;
+  selects.forEach(sel => {
+    const k = sel.value;
+    const idx = sel.dataset.idx;
+    if(k && INS[k]) {
+      let item;
+      if(idx !== undefined && nfItensDetectados[idx]) {
+        item = nfItensDetectados[idx];
+      } else {
+        // Item manual
+        const row = sel.closest('.nf-item-row');
+        item = {
+          qtd: parseFloat(row.querySelector('.nf_qtd')?.value)||0,
+          custoUn: (parseFloat(row.querySelector('.nf_custo')?.value)||0) / (parseFloat(row.querySelector('.nf_qtd')?.value)||1)
+        };
+      }
+      if(item.qtd > 0) {
+        INS[k].v.compra += item.qtd;
+        INS[k].v.final += item.qtd;
+        if(item.custoUn && item.custoUn > 0) {
+          INS[k].custo = item.custoUn * INS[k].fator;
+        }
+        atualizados++;
+      }
+    }
+  });
+  if(atualizados === 0) { alert('Nenhum item associado. Selecione os insumos correspondentes.'); return; }
+  calcularDados();
+  salvarTodos();
+  document.getElementById('cardNfItens').style.display = 'none';
+  document.getElementById('qrResult').style.display = 'none';
+  nfItensDetectados = [];
+  pararScanner();
+  alert(`✅ ${atualizados} itens atualizados no estoque com sucesso!`);
+}
+
+function cancelarNFe() {
+  document.getElementById('cardNfItens').style.display = 'none';
+  document.getElementById('qrResult').style.display = 'none';
+  nfItensDetectados = [];
+}
+
+// Event listeners para botões do scanner
+document.addEventListener('click', function(e) {
+  if(e.target.id === 'btnStartScan') iniciarScanner();
+  if(e.target.id === 'btnStopScan') pararScanner();
+});
+
+// ══════════════════════════════════════════
 // SIMULADORES
 // ══════════════════════════════════════════
 document.getElementById('btnSimVendas').addEventListener('click', () => {
   todosProds().forEach(p => { vendas[norm(p.nome)] = Math.floor(Math.random()*25)+5; });
   renderGrid(abaAtual);
   calcularDados();
+  salvarTodos();
 });
 
 document.getElementById('btnSimEst').addEventListener('click', () => {
@@ -1228,14 +1548,21 @@ document.getElementById('btnSimEst').addEventListener('click', () => {
   });
   calcularDados();
   renderEst();
+  salvarTodos();
 });
 
 // ══════════════════════════════════════════
 // DARK MODE
 // ══════════════════════════════════════════
-document.getElementById('darkToggle').addEventListener('click', () => {
-  document.body.classList.toggle('dark');
-  document.getElementById('darkToggle').textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+const darkToggle = document.getElementById('darkToggle');
+if(localStorage.getItem('cmv_dark') === 'true') {
+  document.body.classList.add('dark');
+  darkToggle.textContent = '☀️';
+}
+darkToggle.addEventListener('click', () => {
+  const isDark = document.body.classList.toggle('dark');
+  darkToggle.textContent = isDark ? '☀️' : '🌙';
+  localStorage.setItem('cmv_dark', isDark);
 });
 
 // ══════════════════════════════════════════
@@ -1243,6 +1570,7 @@ document.getElementById('darkToggle').addEventListener('click', () => {
 // ══════════════════════════════════════════
 initVendas();
 calcularDados();
+renderForn();
 </script>
 </body>
 </html>
